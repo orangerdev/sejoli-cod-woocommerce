@@ -9,8 +9,8 @@
  * @link       https://sejoli.co.id
  * @since      1.0.0
  *
- * @package    Scod_Shipping
- * @subpackage Scod_Shipping/includes
+ * @package    SCOD_Shipping
+ * @subpackage SCOD_Shipping/includes
  */
 
 /**
@@ -23,11 +23,11 @@
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    Scod_Shipping
- * @subpackage Scod_Shipping/includes
+ * @package    SCOD_Shipping
+ * @subpackage SCOD_Shipping/includes
  * @author     Sejoli Team <orangerdigiart@gmail.com>
  */
-class Scod_Shipping {
+class SCOD_Shipping {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -35,7 +35,7 @@ class Scod_Shipping {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Scod_Shipping_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      SCOD_Shipping_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -85,10 +85,10 @@ class Scod_Shipping {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - Scod_Shipping_Loader. Orchestrates the hooks of the plugin.
-	 * - Scod_Shipping_i18n. Defines internationalization functionality.
-	 * - Scod_Shipping_Admin. Defines all hooks for the admin area.
-	 * - Scod_Shipping_Public. Defines all hooks for the public side of the site.
+	 * - SCOD_Shipping_Loader. Orchestrates the hooks of the plugin.
+	 * - SCOD_Shipping_i18n. Defines internationalization functionality.
+	 * - SCOD_Shipping_Admin. Defines all hooks for the admin area.
+	 * - SCOD_Shipping_Public. Defines all hooks for the public side of the site.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -111,7 +111,7 @@ class Scod_Shipping {
 		require_once SCOD_SHIPPING_DIR . 'includes/class-scod-shipping-i18n.php';
 
 		/**
-		 * The class responsible for database connection
+		 * The class responsible for database connection.
 		 */
 		require_once SCOD_SHIPPING_DIR . 'includes/class-scod-shipping-database.php';
 
@@ -119,12 +119,21 @@ class Scod_Shipping {
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once SCOD_SHIPPING_DIR . 'admin/class-scod-shipping-admin.php';
-		require_once SCOD_SHIPPING_DIR . 'admin/class-scod-shipping-wc.php';
 
 		/**
-		 * The class responsible for defining all API actions
+		 * The class responsible for defining all related WooCommerce functions.
 		 */
-		require_once SCOD_SHIPPING_DIR . 'admin/class-scod-shipping-jne.php';
+		require_once SCOD_SHIPPING_DIR . 'includes/class-scod-shipping-method.php';
+
+		/**
+		 * The class responsible for defining API related functions.
+		 */
+		require_once SCOD_SHIPPING_DIR . 'includes/class-scod-shipping-api.php';
+
+		/**
+		 * The class responsible for defining all API actions.
+		 */
+		require_once SCOD_SHIPPING_DIR . 'includes/couriers/class-scod-shipping-jne.php';
 
 		/**
 		 * The class responsible for defining CLI command and function
@@ -138,16 +147,16 @@ class Scod_Shipping {
 		 */
 		require_once SCOD_SHIPPING_DIR . 'public/class-scod-shipping-public.php';
 
-		$this->loader = new Scod_Shipping_Loader();
+		$this->loader = new SCOD_Shipping_Loader();
 
-		Scod_Shipping\Core\Database::connection();
+		SCOD_Shipping\Core\Database::connection();
 
 	}
 
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Scod_Shipping_i18n class in order to set the domain and to register the hook
+	 * Uses the SCOD_Shipping_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
@@ -155,7 +164,7 @@ class Scod_Shipping {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Scod_Shipping_i18n();
+		$plugin_i18n = new SCOD_Shipping_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -170,18 +179,14 @@ class Scod_Shipping {
 	 */
 	private function define_admin_hooks() {
 
-		$admin = new Scod_Shipping\Admin( $this->get_plugin_name(), $this->get_version() );
+		$admin = new SCOD_Shipping\Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_scripts' );
 
-		add_action( 'woocommerce_shipping_init', '\Scod_Shipping\Admin\scod_shipping_init' );
+		add_action( 'woocommerce_shipping_init', 'SCOD_Shipping\scod_shipping_init' );
 
-		// $wc = new Scod_Shipping\Admin\Shipping_Method();
-
-		// $this->loader->add_action( 'woocommerce_shipping_init', 			$wc, 'scod_shipping_method_init', 		999 );
-		// $this->loader->add_action( 'woocommerce_update_options_shipping_', 	$wc, 'process_admin_options', 		999 );
-		// $this->loader->add_filter( 'woocommerce_shipping_methods', 			$wc, 'add_scod_shipping_method' );
+		$this->loader->add_filter( 'woocommerce_shipping_methods', $this, 'register_scod_method' );
 
 	}
 
@@ -194,7 +199,7 @@ class Scod_Shipping {
 	 */
 	private function define_public_hooks() {
 
-		$public = new Scod_Shipping_Public( $this->get_plugin_name(), $this->get_version() );
+		$public = new SCOD_Shipping_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $public, 'enqueue_scripts' );
@@ -225,7 +230,7 @@ class Scod_Shipping {
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     1.0.0
-	 * @return    Scod_Shipping_Loader    Orchestrates the hooks of the plugin.
+	 * @return    SCOD_Shipping_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -239,6 +244,19 @@ class Scod_Shipping {
 	 */
 	public function get_version() {
 		return $this->version;
+	}
+
+	/**
+	 * Register shipping method to WooCommerce.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $methods Registered shipping methods.
+	 */
+	public function register_scod_method( $methods ) {
+	        
+	    $methods[ 'scod-shipping' ] = new \SCOD_Shipping\Shipping_Method();
+	    return $methods;
 	}
 
 }

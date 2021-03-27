@@ -9,8 +9,8 @@
  * @link       https://sejoli.co.id
  * @since      1.0.0
  *
- * @package    Scod_Shipping
- * @subpackage Scod_Shipping/includes
+ * @package    SCOD_Shipping
+ * @subpackage SCOD_Shipping/includes
  */
 
 /**
@@ -20,11 +20,11 @@
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    Scod_Shipping
- * @subpackage Scod_Shipping/includes
+ * @package    SCOD_Shipping
+ * @subpackage SCOD_Shipping/includes
  * @author     Sejoli Team <orangerdigiart@gmail.com>
  */
-class Scod_Shipping_i18n {
+class SCOD_Shipping_i18n {
 
 
 	/**

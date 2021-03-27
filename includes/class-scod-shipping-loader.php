@@ -6,8 +6,8 @@
  * @link       https://sejoli.co.id
  * @since      1.0.0
  *
- * @package    Scod_Shipping
- * @subpackage Scod_Shipping/includes
+ * @package    SCOD_Shipping
+ * @subpackage SCOD_Shipping/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Scod_Shipping
- * @subpackage Scod_Shipping/includes
+ * @package    SCOD_Shipping
+ * @subpackage SCOD_Shipping/includes
  * @author     Sejoli Team <orangerdigiart@gmail.com>
  */
-class Scod_Shipping_Loader {
+class SCOD_Shipping_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

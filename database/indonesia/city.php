@@ -1,5 +1,5 @@
 <?php
-namespace Scod_Shipping\Database;
+namespace SCOD_Shipping\Database;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
@@ -7,7 +7,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
  * Class that responsible to database-functions for City data
  * @since   1.0.0
  */
-Class City extends \Scod_Shipping\Database
+Class City extends \SCOD_Shipping\Database
 {
     /**
      * Table name

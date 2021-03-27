@@ -22,7 +22,7 @@
  * @link       https://sejoli.co.id
  * @since      1.0.0
  *
- * @package    Scod_Shipping
+ * @package    SCOD_Shipping
  */
 
 // If uninstall not called from WordPress, then exit.

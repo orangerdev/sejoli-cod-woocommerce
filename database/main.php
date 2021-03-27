@@ -1,5 +1,5 @@
 <?php
-namespace Scod_Shipping;
+namespace SCOD_Shipping;
 
 Class Database
 {

@@ -1,6 +1,6 @@
 <?php
 
-use Scod_Shipping\API\JNE as API_JNE;
+use SCOD_Shipping\API\JNE as API_JNE;
 
 // Add custom commands
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
@@ -33,8 +33,7 @@ function get_tariff( $args = array(), $assoc_args = array() ) {
     // Check if arguments are alright.
     if ( ! empty( $arguments['origin'] ) && ! empty( $arguments['destination'] ) ) {
        
-        $api_jne = new API_JNE();
-        $get_tariff = $api_jne->get_tariff( $arguments['origin'], $arguments['destination'], $arguments['weight'] );
+        $get_tariff = API_JNE::set_params()->get_tariff( $arguments['origin'], $arguments['destination'], $arguments['weight'] );
 
         if( $get_tariff ) {
 
@@ -45,14 +44,12 @@ function get_tariff( $args = array(), $assoc_args = array() ) {
 
             // Arguments not okay, show an error.
             WP_CLI::error( 'Fail to get result.' );
-
         }
 
     } else {
 
         // Arguments not okay, show an error.
         WP_CLI::error( 'Invalid arguments.' );
-
     }
 }
 
@@ -65,21 +62,19 @@ function get_tariff( $args = array(), $assoc_args = array() ) {
  * Usage: wp scod-jne-get-origin
  */
 function get_origin( $args = array(), $assoc_args = array() ) {
-       
-    $api_jne = new API_JNE();
-    $get_origin = $api_jne->get_origin();
+
+    $get_origin = API_JNE::set_params()->get_origin();
 
     if( $get_origin ) {
 
-        // Show success message.
         WP_CLI::success( print_r( $get_origin, true ) );
 
     } else {
 
         // Arguments not okay, show an error.
         WP_CLI::error( 'Fail to get result.' );
-
     }
+
 }
 
 /**
@@ -92,8 +87,7 @@ function get_origin( $args = array(), $assoc_args = array() ) {
  */
 function get_destination( $args = array(), $assoc_args = array() ) {
        
-    $api_jne = new API_JNE();
-    $get_destination = $api_jne->get_destination();
+    $get_destination = API_JNE::set_params()->get_destination();
 
     if( $get_destination ) {
 
@@ -104,6 +98,5 @@ function get_destination( $args = array(), $assoc_args = array() ) {
 
         // Arguments not okay, show an error.
         WP_CLI::error( 'Fail to get result.' );
-
     }
 }

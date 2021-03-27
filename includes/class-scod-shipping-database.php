@@ -1,5 +1,5 @@
 <?php
-namespace Scod_Shipping\Core;
+namespace SCOD_Shipping\Core;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 

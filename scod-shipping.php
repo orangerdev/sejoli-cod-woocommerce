@@ -10,7 +10,7 @@
  *
  * @link              https://sejoli.co.id
  * @since             1.0.0
- * @package           Scod_Shipping
+ * @package           SCOD_Shipping
  *
  * @wordpress-plugin
  * Plugin Name:       Sejoli COD - WC Shipping
@@ -45,7 +45,7 @@ define( 'SCOD_SHIPPING_URL',	 plugin_dir_url( __FILE__ ) );
  */
 function activate_scod_shipping() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-scod-shipping-activator.php';
-	Scod_Shipping_Activator::activate();
+	SCOD_Shipping_Activator::activate();
 }
 
 /**
@@ -54,7 +54,7 @@ function activate_scod_shipping() {
  */
 function deactivate_scod_shipping() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-scod-shipping-deactivator.php';
-	Scod_Shipping_Deactivator::deactivate();
+	SCOD_Shipping_Deactivator::deactivate();
 }
 
 register_activation_hook( __FILE__, 'activate_scod_shipping' );
@@ -83,7 +83,7 @@ require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
  */
 function run_scod_shipping() {
 
-	$plugin = new Scod_Shipping();
+	$plugin = new SCOD_Shipping();
 	$plugin->run();
 
 }

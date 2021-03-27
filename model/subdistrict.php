@@ -1,5 +1,5 @@
 <?php
-namespace Scod_Shipping\Model;
+namespace SCOD_Shipping\Model;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
@@ -62,11 +62,11 @@ class Subdistrict extends Eloquent
 
 	public function city() {
 
-		return $this->belongsTo( 'Scod_Shipping\Model\City' );
+		return $this->belongsTo( 'SCOD_Shipping\Model\City' );
 	}
 
 	public function state() {
 
-		return $this->belongsTo( 'Scod_Shipping\Model\State' );
+		return $this->belongsTo( 'SCOD_Shipping\Model\State' );
 	}
 }

@@ -6,8 +6,8 @@
  * @link       https://sejoli.co.id
  * @since      1.0.0
  *
- * @package    Scod_Shipping
- * @subpackage Scod_Shipping/includes
+ * @package    SCOD_Shipping
+ * @subpackage SCOD_Shipping/includes
  */
 
 /**
@@ -16,11 +16,11 @@
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0.0
- * @package    Scod_Shipping
- * @subpackage Scod_Shipping/includes
+ * @package    SCOD_Shipping
+ * @subpackage SCOD_Shipping/includes
  * @author     Sejoli Team <orangerdigiart@gmail.com>
  */
-class Scod_Shipping_Activator {
+class SCOD_Shipping_Activator {
 
 	/**
 	 * Short Description. (use period)
@@ -31,14 +31,15 @@ class Scod_Shipping_Activator {
 	 */
 	public static function activate() {
 
-		Scod_Shipping\Database\State::create_table();
-		Scod_Shipping\Database\City::create_table();
-		Scod_Shipping\Database\Subdistrict::create_table();
+		SCOD_Shipping\Database\State::create_table();
+		SCOD_Shipping\Database\City::create_table();
+		SCOD_Shipping\Database\Subdistrict::create_table();
+		$seed = new SCOD_Shipping\Database\Seed();
 		
-		Scod_Shipping\Database\JNE\Origin::create_table();
-		Scod_Shipping\Database\JNE\Destination::create_table();
-		Scod_Shipping\Database\JNE\Tariff::create_table();
-		$seed = new Scod_Shipping\Database\JNE\Seed();
+		SCOD_Shipping\Database\JNE\Origin::create_table();
+		SCOD_Shipping\Database\JNE\Destination::create_table();
+		SCOD_Shipping\Database\JNE\Tariff::create_table();
+
 	}
 
 }

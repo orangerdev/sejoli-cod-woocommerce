@@ -6,8 +6,8 @@
  * @link       https://sejoli.co.id
  * @since      1.0.0
  *
- * @package    Scod_Shipping
- * @subpackage Scod_Shipping/public
+ * @package    SCOD_Shipping
+ * @subpackage SCOD_Shipping/public
  */
 
 /**
@@ -16,11 +16,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the public-facing stylesheet and JavaScript.
  *
- * @package    Scod_Shipping
- * @subpackage Scod_Shipping/public
+ * @package    SCOD_Shipping
+ * @subpackage SCOD_Shipping/public
  * @author     Sejoli Team <orangerdigiart@gmail.com>
  */
-class Scod_Shipping_Public {
+class SCOD_Shipping_Public {
 
 	/**
 	 * The ID of this plugin.
@@ -65,10 +65,10 @@ class Scod_Shipping_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Scod_Shipping_Loader as all of the hooks are defined
+		 * defined in SCOD_Shipping_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Scod_Shipping_Loader will then create the relationship
+		 * The SCOD_Shipping_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
@@ -88,10 +88,10 @@ class Scod_Shipping_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Scod_Shipping_Loader as all of the hooks are defined
+		 * defined in SCOD_Shipping_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Scod_Shipping_Loader will then create the relationship
+		 * The SCOD_Shipping_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */

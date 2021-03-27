@@ -1,12 +1,12 @@
 <?php
-namespace Scod_Shipping\Database\JNE;
+namespace SCOD_Shipping\Database;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
-use Scod_Shipping\Model\State as State;
-use Scod_Shipping\Model\City as City;
-use Scod_Shipping\Model\Subdistrict as Subdistrict;
+use SCOD_Shipping\Model\State as State;
+use SCOD_Shipping\Model\City as City;
+use SCOD_Shipping\Model\Subdistrict as Subdistrict;
 
-Class Seed extends \Scod_Shipping\Database
+Class Seed extends \SCOD_Shipping\Database
 {
     public function __construct() {
 

@@ -1,5 +1,5 @@
 <?php
-namespace Scod_Shipping\Model;
+namespace SCOD_Shipping\Model;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
@@ -62,6 +62,6 @@ class City extends Eloquent
 
 	public function state() {
 
-		return $this->belongsTo( 'Scod_Shipping\Model\State' );
+		return $this->belongsTo( 'SCOD_Shipping\Model\State' );
 	}
 }

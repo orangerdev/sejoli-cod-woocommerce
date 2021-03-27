@@ -8,8 +8,8 @@
  * @link       https://sejoli.co.id
  * @since      1.0.0
  *
- * @package    Scod_Shipping
- * @subpackage Scod_Shipping/public/partials
+ * @package    SCOD_Shipping
+ * @subpackage SCOD_Shipping/public/partials
  */
 ?>
 
