@@ -109,7 +109,13 @@ function scod_shipping_init() {
 					'type'    		=> 'select',
 					'default' 		=> '',
 					'options' 		=> $this->generate_origin_dropdown(),
-				)
+				),
+        		'base_weight' => array(
+        			'title' 		=> __( 'Berat Barang Minimal (kg)', 'scod-shipping' ),
+        			'type' 			=> 'text',
+        			'description' 	=> __( 'Digunakan untuk menghitung total berat jika belum di set di pengaturan barang.', 'scod-shipping' ),
+        			'default' 		=> '',
+        		),
 			);
 
 			$this->instance_form_fields = $settings;
@@ -148,7 +154,6 @@ function scod_shipping_init() {
 				return false;
 			}
 
-			// error_log( __METHOD__ . print_r( $origin, true ) );
 			return $origin;
 		}
 
@@ -162,7 +167,6 @@ function scod_shipping_init() {
 		 * @return 	(Object|false) returns an object on true, or false if fail
 		 */
 		private function get_destination_info( array $destination ) {
-			// error_log( __METHOD__ . print_r( $destination, true ) );
 
 			if( $destination['country'] !== 'ID' ) {
 				return false;
@@ -235,6 +239,30 @@ function scod_shipping_init() {
 			return $get_tariff;
 		}
 
+		/**
+		 * Get cart package total weight
+		 *
+		 * @since 	1.0.0
+	     *
+		 * @return 	(Double|false) 	returns double type number, or false if fail
+		 */
+		private function get_cart_weight() {
+
+			$scod_weight_unit = 'kg';
+			$cart_weight = WC()->cart->get_cart_contents_weight();
+			$wc_weight_unit = get_option( 'woocommerce_weight_unit' );
+ 
+   			if( $wc_weight_unit != $scod_weight_unit && $cart_weight > 0 ) {
+   				$cart_weight = wc_get_weight( $cart_weight, $scod_weight_unit, $wc_weight_unit );
+   			}
+
+       		if( $cart_weight == 0 ) {
+       			$cart_weight = $this->get_option( 'base_weight' );
+       		}
+
+       		return ceil( $cart_weight );
+		}
+
 	    /**
 	     * This function is used to calculate the shipping cost. Within this function we can check for weights, dimensions and other parameters.
 	     *
@@ -245,9 +273,8 @@ function scod_shipping_init() {
 	     * @return 	boolean|rate returns false if fail, add rate to wc if available
 	     */
 	    public function calculate_shipping( $package = array() ) {
-	    	// error_log( __METHOD__ . ' ' . time() . ': '. print_r( $package, true ) );
-
-	        $origin = $this->get_origin_info();
+	    	
+	    	$origin = $this->get_origin_info();
 	        
 	        if( ! $origin ) {
 	        	return false;
@@ -265,16 +292,20 @@ function scod_shipping_init() {
 	        	return false;
 	        }
 
-	        // error_log( __METHOD__ . ' tariff->tariff_data '. print_r( $tariff->tariff_data, true ) );
-	       	// Note weight is not yet calculated
-	       	if( is_array( $tariff->tariff_data ) && count( $tariff->tariff_data ) > 0 ) {
+	        if( is_array( $tariff->tariff_data ) && count( $tariff->tariff_data ) > 0 ) {
+
+	       		$cart_weight = $this->get_cart_weight();
+
+	       		if( ! $cart_weight ) {
+	       			return false;
+	       		}
 
 	       		foreach ( $tariff->tariff_data as $rate ) {
 		        
 			        $this->add_rate( array(
 						'id'    => $this->id . $this->instance_id . $rate->service_code,
-						'label' => $tariff->getLabel( $rate->service_display ),
-						'cost' 	=> $rate->price
+						'label' => $tariff->getLabel( $rate ),
+						'cost' 	=> $rate->price * $cart_weight
 					));
 	        	}
 	       	}

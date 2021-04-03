@@ -29,16 +29,6 @@ class Tariff extends Eloquent
 	];
 
     /**
-     * Get tariff label.
-     *
-     * @param   $service service name to return.
-     * @return  string
-     */
-    public function getLabel( $service ) {
-        return $this->label . ' - ' . $service;
-    }
-
-    /**
      * Set tariff data.
      *
      * @param  string  $value
@@ -76,6 +66,50 @@ class Tariff extends Eloquent
      */
     public function destination() {
         return $this->belongsTo( 'SCOD_Shipping\Model\JNE\Destination', 'jne_destination_id' );
+    }
+
+    /**
+     * Get tariff label.
+     *
+     * @param   $rate array of service information
+     * @return  string
+     */
+    public function getLabel( $rate ) {
+
+        $label = array();
+
+        if( $this->label ) {
+            $label[] = $this->label;
+        }
+
+        if( $rate->service_display ) {
+            $label[] = $rate->service_display; 
+        }
+
+        $label = implode( " - ", $label );
+
+        if( $rate->etd_from && $rate->etd_thru ) {
+            
+            $label .= ' (';
+
+            if( $rate->etd_from == 1 && $rate->etd_from == $rate->etd_thru ) {
+                $label .= $rate->etd_from;
+
+                if( $rate->times == 'D' ) {
+                    $label .= ' day';
+                }
+            } else {
+                $label .= $rate->etd_from . '-' . $rate->etd_thru;
+
+                if( $rate->times == 'D' ) {
+                    $label .= ' days';
+                }
+            }
+
+            $label .= ')'; 
+        }
+
+        return $label;
     }
 
 }
