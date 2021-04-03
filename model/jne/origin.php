@@ -1,16 +1,16 @@
 <?php
-namespace SCOD_Shipping\Model;
+namespace SCOD_Shipping\Model\JNE;
 
 use SCOD_Shipping\Model\Main as Eloquent;
 
-class State extends Eloquent
+class Origin extends Eloquent
 {
     /**
      * The table associated with the model without prefix.
      *
      * @var string
      */
-    protected $table = 'scod_shipping_state';
+    protected $table = 'scod_shipping_jne_origin';
 
     /**
      * Indicates if the model should be timestamped.
@@ -25,17 +25,7 @@ class State extends Eloquent
      * @var array
      */
 	protected $fillable = [
-	   'name', 'code'
+	   'code', 'name'
 	];
 
-    /**
-     * Define relationship with City model
-     *
-     * @since    1.0.0
-     * @return  string
-     */
-	public function cities() {
-		return $this->hasMany( 'SCOD_Shipping\Model\City', 'state_id' );
-	}
-    
 }

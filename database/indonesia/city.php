@@ -28,7 +28,7 @@ Class City extends \SCOD_Shipping\Database
             Capsule::schema()->create( self::table(), function( $table ){
 
                 $table->increments  ('ID');
-                $table->string      ('value');
+                $table->string      ('name');
                 $table->integer     ('state_id');
 
             });

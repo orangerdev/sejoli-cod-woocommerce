@@ -111,9 +111,35 @@ class SCOD_Shipping {
 		require_once SCOD_SHIPPING_DIR . 'includes/class-scod-shipping-i18n.php';
 
 		/**
-		 * The class responsible for database connection.
+		 * The class responsible for creating database tables.
 		 */
-		require_once SCOD_SHIPPING_DIR . 'includes/class-scod-shipping-database.php';
+		require_once SCOD_SHIPPING_DIR . 'database/main.php';
+
+		require_once SCOD_SHIPPING_DIR . 'database/indonesia/state.php';
+		require_once SCOD_SHIPPING_DIR . 'database/indonesia/city.php';
+		require_once SCOD_SHIPPING_DIR . 'database/indonesia/district.php';
+
+		require_once SCOD_SHIPPING_DIR . 'database/jne/origin.php';
+		require_once SCOD_SHIPPING_DIR . 'database/jne/destination.php';
+		require_once SCOD_SHIPPING_DIR . 'database/jne/tariff.php';
+
+		/**
+		 * The class responsible for database seed.
+		 */
+		require_once SCOD_SHIPPING_DIR . 'database/indonesia/seed.php';
+
+		/**
+		 * The class responsible for database models.
+		 */
+		require_once SCOD_SHIPPING_DIR . 'model/main.php';
+
+		require_once SCOD_SHIPPING_DIR . 'model/state.php';
+		require_once SCOD_SHIPPING_DIR . 'model/city.php';
+		require_once SCOD_SHIPPING_DIR . 'model/district.php';
+
+		require_once SCOD_SHIPPING_DIR . 'model/jne/origin.php';
+		require_once SCOD_SHIPPING_DIR . 'model/jne/destination.php';
+		require_once SCOD_SHIPPING_DIR . 'model/jne/tariff.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -131,9 +157,14 @@ class SCOD_Shipping {
 		require_once SCOD_SHIPPING_DIR . 'includes/class-scod-shipping-api.php';
 
 		/**
-		 * The class responsible for defining all API actions.
+		 * The class responsible for courier API related functions.
 		 */
-		require_once SCOD_SHIPPING_DIR . 'includes/couriers/class-scod-shipping-jne.php';
+		require_once SCOD_SHIPPING_DIR . 'api/class-scod-shipping-jne.php';
+
+		/**
+		 * The class responsible for courier helper functions.
+		 */
+		require_once SCOD_SHIPPING_DIR . 'functions/scod-shipping-indonesia.php';
 
 		/**
 		 * The class responsible for defining CLI command and function
@@ -148,8 +179,6 @@ class SCOD_Shipping {
 		require_once SCOD_SHIPPING_DIR . 'public/class-scod-shipping-public.php';
 
 		$this->loader = new SCOD_Shipping_Loader();
-
-		SCOD_Shipping\Core\Database::connection();
 
 	}
 

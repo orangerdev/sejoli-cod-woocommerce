@@ -29,4 +29,10 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
+	$( document ).ready( function( $ ) {
+
+		$('#woocommerce_scod-shipping_shipping_origin').select2();
+
+	});
+
 })( jQuery );

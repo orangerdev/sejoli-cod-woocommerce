@@ -33,12 +33,13 @@ class SCOD_Shipping_Activator {
 
 		SCOD_Shipping\Database\State::create_table();
 		SCOD_Shipping\Database\City::create_table();
-		SCOD_Shipping\Database\Subdistrict::create_table();
-		$seed = new SCOD_Shipping\Database\Seed();
+		SCOD_Shipping\Database\District::create_table();
 		
 		SCOD_Shipping\Database\JNE\Origin::create_table();
 		SCOD_Shipping\Database\JNE\Destination::create_table();
 		SCOD_Shipping\Database\JNE\Tariff::create_table();
+
+		$seed = new SCOD_Shipping\Database\Seed();
 
 	}
 

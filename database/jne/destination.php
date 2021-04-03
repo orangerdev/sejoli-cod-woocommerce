@@ -28,10 +28,9 @@ Class Destination extends \SCOD_Shipping\Database
             Capsule::schema()->create( self::table(), function( $table ){
 
                 $table->increments  ('ID');
-                $table->integer     ('province_id');
-                $table->string      ('city_id');
-                $table->integer     ('subdistrict_id');
-                $table->string      ('zip_code');
+                $table->integer     ('city_id')->nullable();
+                $table->integer     ('district_id')->nullable();
+                $table->string      ('code');
 
             });
 

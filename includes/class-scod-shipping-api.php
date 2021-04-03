@@ -90,12 +90,12 @@ class API {
      *
      * @since   1.0.0
      *
-     * @param 	$response 		object instance of WP_HTTP_Response
+     * @param 	$response 		$response to check
      * @param 	$code			status code to check, default 200 (success)
      *
      * @return 	(boolean)
      */
-	public static function verify_response_code( WP_HTTP_Response $response, int $code = 200 ) {
+	public static function verify_response_code( $response, int $code = 200 ) {
 		
 		if( $response == NULL ) {
 			return false;

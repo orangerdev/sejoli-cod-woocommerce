@@ -1,6 +1,11 @@
 <?php
 namespace SCOD_Shipping;
 
+use \WeDevs\ORM\Eloquent\Facades\DB;
+use SCOD_Shipping\Model\JNE\Origin as JNE_Origin;
+use SCOD_Shipping\Model\JNE\Destination as JNE_Destination;
+use SCOD_Shipping\Model\JNE\Tariff as JNE_Tariff;
+use SCOD_Shipping\API\JNE as API_JNE;
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -41,8 +46,9 @@ function scod_shipping_init() {
 	     */
 	    public function __construct( $instance_id = 0 ) {
 
-	        $this->id 					= 'scod-shipping'; 
+	        $this->id 					= 'scod-shipping';
 	        $this->instance_id 			= absint( $instance_id );
+	        $this->title         		= __( 'Sejoli COD Shipping', 'scod-shipping' );
 	        $this->method_title         = __( 'Sejoli COD Shipping', 'scod-shipping' );
 	        $this->method_description 	= __( 'Sejoli COD for WooCommerce shipping method', 'scod-shipping' ); 
 			$this->init();
@@ -59,8 +65,6 @@ function scod_shipping_init() {
 			$this->init_settings();
 
 			$this->enabled		    	= $this->get_option( 'enabled' );
-			$this->title                = $this->get_option( 'title' );
-			$this->tax_status 			= $this->get_option( 'tax_status' ); 
 
 			add_action( 'woocommerce_update_options_shipping_' . $this->id, array( $this, 'process_admin_options' ) );
 		}
@@ -96,54 +100,185 @@ function scod_shipping_init() {
         		'api_key' => array(
         			'title' 		=> __( 'Store Secret Key', 'scod-shipping' ),
         			'type' 			=> 'text',
-        			'description' 	=> __( 'Please enter your registered store secret key.', 'scod-shipping' ),
+        			'description' 	=> __( 'Please enter your store secret key.', 'scod-shipping' ),
         			'default' 		=> '',
         		),
-        		'title' => array(
-        			'title' 		=> __( 'Sejoli COD Shipping', 'scod-shipping' ),
-        			'type' 			=> 'text',
-        			'description' 	=> __( 'This controls the title which the user sees during checkout.', 'scod-shipping' ),
-        			'default'		=> __( 'Sejoli COD Shipping', 'scod-shipping' ),
-        			'desc_tip'		=> true
-        		),
-				'tax_status'                => array(
-					'title'   		=> __( 'Tax Status', 'scod-shipping' ),
-        			'description' 	=> __( 'This controls whether tax should be calculated for this shipping.', 'scod-shipping' ),
+        		'shipping_origin'  	=> array(
+					'title'   		=> __( 'Shipping Origin', 'scod-shipping' ),
+        			'description' 	=> __( 'Please select your shipping origin location.', 'scod-shipping' ),
 					'type'    		=> 'select',
-					'default' 		=> 'none',
-					'options' 		=> array(
-						'taxable' 	=> __( 'Taxable', 'scod-shipping' ),
-						'none'    	=> _x( 'None', 'Tax status', 'scod-shipping' ),
-					),
-				),
+					'default' 		=> '',
+					'options' 		=> $this->generate_origin_dropdown(),
+				)
 			);
 
 			$this->instance_form_fields = $settings;
 		}
 
+		/**
+		 * Generate options for origin dropdown
+		 *
+		 * @since 1.0.0
+		 *
+		 * @return array
+		 */
+		private function generate_origin_dropdown() {
+
+			return JNE_Origin::pluck( 'name', 'id' )->toArray();
+		}
+
+		/**
+		 * Get origin object
+		 *
+		 * @since 	1.0.0
+		 *
+		 * @return 	(Object|false) returns an object on true, or false if fail
+		 */
+		private function get_origin_info() {
+
+			$origin_option = $this->get_option( 'shipping_origin' );
+
+			if( ! $origin_option ) {
+				return false;
+			}
+
+			$origin = JNE_Origin::find( $origin_option );
+			
+			if( ! $origin ) {
+				return false;
+			}
+
+			// error_log( __METHOD__ . print_r( $origin, true ) );
+			return $origin;
+		}
+
+		/**
+		 * Get destination object
+		 *
+		 * @since 	1.0.0
+		 *
+		 * @param array $destination destination array with country, state, postcode, city, address, address_1, address_2
+		 *
+		 * @return 	(Object|false) returns an object on true, or false if fail
+		 */
+		private function get_destination_info( array $destination ) {
+			// error_log( __METHOD__ . print_r( $destination, true ) );
+
+			if( $destination['country'] !== 'ID' ) {
+				return false;
+			}
+
+			$location_data = array(
+				'state'			=> $destination['state'],
+				'city'			=> $destination['city'],
+				'district'		=> $destination['address_2']
+			);
+
+			$get_loc_data = scod_get_indonesia_data( $location_data );
+
+			$get_dest = DB::table( (new JNE_Destination)->getTableName() );
+
+			if( empty( $get_loc_data['city'] ) ) {
+				$get_dest = $get_dest->whereNull( 'city_id' );
+			} else {
+				$get_dest = $get_dest->where( 'city_id', $get_loc_data['city']->ID );
+			}
+
+			if( empty( $get_loc_data['district'] ) ) {
+				$get_dest = $get_dest->whereNull( 'district_id' );
+			} else {
+				$get_dest = $get_dest->where( 'district_id', $get_loc_data['district']->ID );
+			}
+
+			if( $destination = $get_dest->first() ) {
+				return $destination;
+			}
+
+			return false;
+		}
+
+		/**
+		 * Get tariff object
+		 *
+		 * @since 	1.0.0
+		 *
+	     * @param 	$origin 		origin object to find
+	     * @param 	$destination 	destination object to find
+	     *
+		 * @return 	(Object|false) 	returns an object on true, or false if fail
+		 */
+		private function get_tariff_info( $origin, $destination ) {
+
+			$get_tariff = JNE_Tariff::where( 'jne_origin_id', $origin->ID )
+							->where( 'jne_destination_id', $destination->ID )
+							->first();
+
+			if( ! $get_tariff ) {
+
+	        	$req_tariff_data = API_JNE::set_params()->get_tariff( $origin->code, $destination->code );
+
+	        	if( is_wp_error( $req_tariff_data ) ) {
+	        		return false;
+	        	}
+
+	        	$get_tariff 					= new JNE_Tariff();
+	        	$get_tariff->jne_origin_id 		= $origin->ID;
+	        	$get_tariff->jne_destination_id = $destination->ID;
+	        	$get_tariff->tariff_data 		= $req_tariff_data;
+
+	        	if( ! $get_tariff->save() ) {
+	        		return false;
+	        	}
+
+	        }
+
+			return $get_tariff;
+		}
+
 	    /**
 	     * This function is used to calculate the shipping cost. Within this function we can check for weights, dimensions and other parameters.
 	     *
-	     * @param array $package default: array()
+		 * @since 	1.0.0
+		 *
+	     * @param 	array $package default: array()
+	     *
+	     * @return 	boolean|rate returns false if fail, add rate to wc if available
 	     */
 	    public function calculate_shipping( $package = array() ) {
+	    	// error_log( __METHOD__ . ' ' . time() . ': '. print_r( $package, true ) );
 
-	        // $package[destination] => Array
-	        // (
-	        //     [country] => ID
-	        //     [state] => LA
-	        //     [postcode] => 12450
-	        //     [city] => Kabupaten Lampung Selatan
-	        //     [address] => Jl Damai Musyawarah RT/RW 11/03 no 69 Pondok Labu, Cilandak, Jakarta Selatan 12450
-	        //     [address_1] => Jl Damai Musyawarah RT/RW 11/03 no 69 Pondok Labu, Cilandak, Jakarta Selatan 12450
-	        //     [address_2] => Candipuro
-	        // )
+	        $origin = $this->get_origin_info();
+	        
+	        if( ! $origin ) {
+	        	return false;
+	        }
 
-	        $this->add_rate( array(
-				'id'    => $this->id . $this->instance_id,
-				'label' => $this->title,
-				'cost'  => 100,
-			) );
+	        $destination = $this->get_destination_info( $package['destination'] );
+	        
+	        if( ! $destination ) {
+	        	return false;
+	        }
+
+	        $tariff = $this->get_tariff_info( $origin, $destination );
+
+	        if( ! $tariff ) {
+	        	return false;
+	        }
+
+	        // error_log( __METHOD__ . ' tariff->tariff_data '. print_r( $tariff->tariff_data, true ) );
+	       	// Note weight is not yet calculated
+	       	if( is_array( $tariff->tariff_data ) && count( $tariff->tariff_data ) > 0 ) {
+
+	       		foreach ( $tariff->tariff_data as $rate ) {
+		        
+			        $this->add_rate( array(
+						'id'    => $this->id . $this->instance_id . $rate->service_code,
+						'label' => $tariff->getLabel( $rate->service_display ),
+						'cost' 	=> $rate->price
+					));
+	        	}
+	       	}
+
 	    }
 
 	}

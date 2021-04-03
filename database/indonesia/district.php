@@ -4,16 +4,16 @@ namespace SCOD_Shipping\Database;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 /**
- * Class that responsible to database-functions for Subdistrict data
+ * Class that responsible to database-functions for District data
  * @since   1.0.0
  */
-Class Subdistrict extends \SCOD_Shipping\Database
+Class District extends \SCOD_Shipping\Database
 {
     /**
      * Table name
      * @since   1.0.0
      */
-    static protected $table       = 'scod_shipping_subdistrict';
+    static protected $table       = 'scod_shipping_district';
 
     /**
      * Create table if not exists
@@ -28,7 +28,7 @@ Class Subdistrict extends \SCOD_Shipping\Database
             Capsule::schema()->create( self::table(), function( $table ){
 
                 $table->increments  ('ID');
-                $table->string      ('value');
+                $table->string      ('name');
                 $table->integer     ('city_id');
 
             });

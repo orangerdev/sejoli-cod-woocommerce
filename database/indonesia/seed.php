@@ -1,23 +1,27 @@
 <?php
 namespace SCOD_Shipping\Database;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
 use SCOD_Shipping\Model\State as State;
 use SCOD_Shipping\Model\City as City;
-use SCOD_Shipping\Model\Subdistrict as Subdistrict;
+use SCOD_Shipping\Model\District as District;
+use SCOD_Shipping\Model\JNE\Origin as JNE_Origin;
+use SCOD_Shipping\API\JNE as API_JNE;
 
-Class Seed extends \SCOD_Shipping\Database
+Class Seed
 {
     public function __construct() {
 
-        $state = Capsule::table( State::get_table() )->get();
+        $state = State::all();
         if( count( $state ) == 0 ) { $this->state(); }
            
-        $city = Capsule::table( City::get_table() )->get();
+        $city = City::all();
         if( count( $city ) == 0 ) { $this->city(); }
 
-        $subdistrict = Capsule::table( Subdistrict::get_table() )->get();
-        if( count( $subdistrict ) == 0 ) { $this->subdistrict(); }
+        $district = District::all();
+        if( count( $district ) == 0 ) { $this->district(); }
+
+        $origin = JNE_Origin::all();
+        if( count( $origin ) == 0 ) { $this->origin(); }
     }
 
     public function parseJsonFile( $file ) {
@@ -36,11 +40,11 @@ Class Seed extends \SCOD_Shipping\Database
 
             $data = array(
                 'ID'        => $row[ 'id' ],
-                'label'     => $row[ 'label' ],
-                'value'     => $row[ 'value' ]
+                'name'      => $row[ 'label' ],
+                'code'      => $row[ 'value' ]
             );
             
-            Capsule::table( State::get_table() )->insertGetId( $data );
+            State::insert( $data );
         }
     }
 
@@ -54,29 +58,45 @@ Class Seed extends \SCOD_Shipping\Database
 
             $data = array(
                 'ID'        => $row[ 'id' ],
-                'value'     => $row[ 'value' ],
+                'name'      => $row[ 'value' ],
                 'state_id'  => $row[ 'state_id' ]
             );
             
-            Capsule::table( City::get_table() )->insertGetId( $data );
+            City::insert( $data );
         }
     }
 
-    public function subdistrict() {
-        error_log( __METHOD__ . ' seed subdistrict data' );
+    public function district() {
+        error_log( __METHOD__ . ' seed district data' );
 
-        $file = SCOD_SHIPPING_DIR . 'database/indonesia/data/subdistrict.json';
+        $file = SCOD_SHIPPING_DIR . 'database/indonesia/data/district.json';
         $jsonData = $this->parseJsonFile( $file );
 
         foreach( $jsonData as $id => $row ) {
 
             $data = array(
                 'ID'        => $row[ 'id' ],
-                'value'     => $row[ 'value' ],
+                'name'      => $row[ 'value' ],
                 'city_id'   => $row[ 'city_id' ]
             );
             
-            Capsule::table( Subdistrict::get_table() )->insertGetId( $data );
+            District::insert( $data );
+        }
+    }
+
+    public function origin() {
+        error_log( __METHOD__ . ' seed origin data' );
+
+        $origins = API_JNE::set_params()->get_origin();
+        
+        foreach( $origins as $id => $row ) {
+
+            $data = array(
+                'code'     => $row->City_Code,
+                'name'     => $row->City_Name
+            );
+            
+            JNE_Origin::insert( $data );
         }
     }
 

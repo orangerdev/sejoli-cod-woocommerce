@@ -198,7 +198,14 @@ class JNE extends \SCOD_Shipping\API {
 				if ( self::verify_response_code( $get_response ) ) :
 
 					if( $data = self::get_valid_body_object( $get_response ) ) :
-						return $data->price;
+
+						if( isset( $data->price ) ) {
+
+							return $data->price;
+						}
+
+						return new \WP_Error( 'invalid_api_response', 'Invalid tariff data.' );
+						
 					else:
 						return new \WP_Error( 'invalid_api_response', 'Invalid response body.' );
 					endif;
@@ -208,7 +215,7 @@ class JNE extends \SCOD_Shipping\API {
 				endif;
 
 			else :
-				return $get_response;
+				return new \WP_Error( 'invalid_api_response', 'Invalid response.' );
 			endif;
 
 		} catch ( Exception $e ) {

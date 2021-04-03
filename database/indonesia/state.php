@@ -43,8 +43,8 @@ Class State extends \SCOD_Shipping\Database
             Capsule::schema()->create( self::table(), function( $table ){
 
                 $table->increments  ('ID');
-                $table->string      ('label');
-                $table->string     	('value');
+                $table->string      ('name');
+                $table->string     	('code');
 
             });
 

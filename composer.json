@@ -1,11 +1,5 @@
 {
     "require": {
-        "illuminate/database": "^7.30"
-    },
-    "autoload": {
-       "classmap": [
-       	   "database",
-           "model"
-       ]
-   }
+        "tareq1988/wp-eloquent": "dev-master"
+    }
 }
