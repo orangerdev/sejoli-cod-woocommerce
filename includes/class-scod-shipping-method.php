@@ -2,6 +2,9 @@
 namespace SCOD_Shipping;
 
 use \WeDevs\ORM\Eloquent\Facades\DB;
+use SCOD_Shipping\Model\State as State;
+use SCOD_Shipping\Model\City as City;
+use SCOD_Shipping\Model\District as District;
 use SCOD_Shipping\Model\JNE\Origin as JNE_Origin;
 use SCOD_Shipping\Model\JNE\Destination as JNE_Destination;
 use SCOD_Shipping\Model\JNE\Tariff as JNE_Tariff;
@@ -50,7 +53,7 @@ function scod_shipping_init() {
 	        $this->instance_id 			= absint( $instance_id );
 	        $this->title         		= __( 'Sejoli COD Shipping', 'scod-shipping' );
 	        $this->method_title         = __( 'Sejoli COD Shipping', 'scod-shipping' );
-	        $this->method_description 	= __( 'Sejoli COD for WooCommerce shipping method', 'scod-shipping' ); 
+	        $this->method_description 	= __( 'Sejoli COD for WooCommerce shipping method', 'scod-shipping' );
 			$this->init();
 	    }
 
@@ -75,7 +78,7 @@ function scod_shipping_init() {
 		 * @since 1.0.0
 		 */
 		public function init_form_fields() {
-			
+
 			if ( 'ID' !== WC()->countries->get_base_country() ) {
 
 				$this->instance_form_fields = array(
@@ -113,7 +116,7 @@ function scod_shipping_init() {
         		'base_weight' => array(
         			'title' 		=> __( 'Berat Barang Minimal (kg)', 'scod-shipping' ),
         			'type' 			=> 'text',
-        			'description' 	=> __( 'Digunakan untuk menghitung total berat jika belum di set di pengaturan barang.', 'scod-shipping' ),
+        			'description' 	=> __( 'Harus diisi untuk menampilkan pilihan pengiriman ketika checkout.', 'scod-shipping' ),
         			'default' 		=> '',
         		),
 			);
@@ -130,7 +133,9 @@ function scod_shipping_init() {
 		 */
 		private function generate_origin_dropdown() {
 
-			return JNE_Origin::pluck( 'name', 'id' )->toArray();
+			$option_default = array( '' => __( 'Pilih Origin' ) );
+			$option_cities = JNE_Origin::pluck( 'name', 'id' )->toArray();
+			return array_merge( $option_default, $option_cities );
 		}
 
 		/**
@@ -149,7 +154,7 @@ function scod_shipping_init() {
 			}
 
 			$origin = JNE_Origin::find( $origin_option );
-			
+
 			if( ! $origin ) {
 				return false;
 			}
@@ -173,25 +178,47 @@ function scod_shipping_init() {
 			}
 
 			$location_data = array(
-				'state'			=> $destination['state'],
-				'city'			=> $destination['city'],
-				'district'		=> $destination['address_2']
+				'state'			=> NULL,
+				'city'			=> NULL,
+				'district'		=> NULL
 			);
 
-			$get_loc_data = scod_get_indonesia_data( $location_data );
+			if( $destination['state'] ) {
+
+				$state = State::find( $destination['state'] );
+				if( $state ) {
+					$location_data[ 'state' ] = $state;
+				}
+			}
+
+			if( $destination['city'] ) {
+
+				$city = City::find( $destination['city'] );
+				if( $city ) {
+					$location_data[ 'city' ] = $city;
+				}
+			}
+
+			if( $destination['address_2'] ) {
+
+				$district = District::find( $destination['address_2'] );
+				if( $district ) {
+					$location_data[ 'district' ] = $district;
+				}
+			}
 
 			$get_dest = DB::table( (new JNE_Destination)->getTableName() );
 
-			if( empty( $get_loc_data['city'] ) ) {
+			if( empty( $location_data['city'] ) ) {
 				$get_dest = $get_dest->whereNull( 'city_id' );
 			} else {
-				$get_dest = $get_dest->where( 'city_id', $get_loc_data['city']->ID );
+				$get_dest = $get_dest->where( 'city_id', $location_data['city']->ID );
 			}
 
-			if( empty( $get_loc_data['district'] ) ) {
+			if( empty( $location_data['district'] ) ) {
 				$get_dest = $get_dest->whereNull( 'district_id' );
 			} else {
-				$get_dest = $get_dest->where( 'district_id', $get_loc_data['district']->ID );
+				$get_dest = $get_dest->where( 'district_id', $location_data['district']->ID );
 			}
 
 			if( $destination = $get_dest->first() ) {
@@ -251,7 +278,7 @@ function scod_shipping_init() {
 			$scod_weight_unit = 'kg';
 			$cart_weight = WC()->cart->get_cart_contents_weight();
 			$wc_weight_unit = get_option( 'woocommerce_weight_unit' );
- 
+
    			if( $wc_weight_unit != $scod_weight_unit && $cart_weight > 0 ) {
    				$cart_weight = wc_get_weight( $cart_weight, $scod_weight_unit, $wc_weight_unit );
    			}
@@ -260,7 +287,12 @@ function scod_shipping_init() {
        			$cart_weight = $this->get_option( 'base_weight' );
        		}
 
-       		return ceil( $cart_weight );
+       		if( is_numeric( $cart_weight ) ) {
+       			return ceil( $cart_weight );
+       		}
+
+			// error_log( __METHOD__ . ' cart_weight '. var_dump( $cart_weight ) );
+       		return false;
 		}
 
 	    /**
@@ -273,21 +305,22 @@ function scod_shipping_init() {
 	     * @return 	boolean|rate returns false if fail, add rate to wc if available
 	     */
 	    public function calculate_shipping( $package = array() ) {
-	    	
-	    	$origin = $this->get_origin_info();
-	        
+	    	// error_log( __METHOD__ . ' package '. print_r( $package, true ) );
+
+			$origin = $this->get_origin_info();
+			error_log( __METHOD__ . ' origin '. print_r( $origin, true ) );
 	        if( ! $origin ) {
 	        	return false;
 	        }
 
 	        $destination = $this->get_destination_info( $package['destination'] );
-	        
+			error_log( __METHOD__ . ' destination '. print_r( $destination, true ) );
 	        if( ! $destination ) {
 	        	return false;
 	        }
 
 	        $tariff = $this->get_tariff_info( $origin, $destination );
-
+			error_log( __METHOD__ . ' tariff '. print_r( $tariff, true ) );
 	        if( ! $tariff ) {
 	        	return false;
 	        }
@@ -301,12 +334,15 @@ function scod_shipping_init() {
 	       		}
 
 	       		foreach ( $tariff->tariff_data as $rate ) {
-		        
-			        $this->add_rate( array(
-						'id'    => $this->id . $this->instance_id . $rate->service_code,
-						'label' => $tariff->getLabel( $rate ),
-						'cost' 	=> $rate->price * $cart_weight
-					));
+
+					if( \in_array( $rate->service_code, JNE_Tariff::get_available_services() ) ) {
+
+				        $this->add_rate( array(
+							'id'    => $this->id . $this->instance_id . $rate->service_code,
+							'label' => $tariff->getLabel( $rate ),
+							'cost' 	=> $rate->price * $cart_weight
+						));
+					}
 	        	}
 	       	}
 

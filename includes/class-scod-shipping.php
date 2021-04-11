@@ -114,11 +114,9 @@ class SCOD_Shipping {
 		 * The class responsible for creating database tables.
 		 */
 		require_once SCOD_SHIPPING_DIR . 'database/main.php';
-
 		require_once SCOD_SHIPPING_DIR . 'database/indonesia/state.php';
 		require_once SCOD_SHIPPING_DIR . 'database/indonesia/city.php';
 		require_once SCOD_SHIPPING_DIR . 'database/indonesia/district.php';
-
 		require_once SCOD_SHIPPING_DIR . 'database/jne/origin.php';
 		require_once SCOD_SHIPPING_DIR . 'database/jne/destination.php';
 		require_once SCOD_SHIPPING_DIR . 'database/jne/tariff.php';
@@ -132,11 +130,9 @@ class SCOD_Shipping {
 		 * The class responsible for database models.
 		 */
 		require_once SCOD_SHIPPING_DIR . 'model/main.php';
-
 		require_once SCOD_SHIPPING_DIR . 'model/state.php';
 		require_once SCOD_SHIPPING_DIR . 'model/city.php';
 		require_once SCOD_SHIPPING_DIR . 'model/district.php';
-
 		require_once SCOD_SHIPPING_DIR . 'model/jne/origin.php';
 		require_once SCOD_SHIPPING_DIR . 'model/jne/destination.php';
 		require_once SCOD_SHIPPING_DIR . 'model/jne/tariff.php';
@@ -160,11 +156,6 @@ class SCOD_Shipping {
 		 * The class responsible for courier API related functions.
 		 */
 		require_once SCOD_SHIPPING_DIR . 'api/class-scod-shipping-jne.php';
-
-		/**
-		 * The class responsible for courier helper functions.
-		 */
-		require_once SCOD_SHIPPING_DIR . 'functions/scod-shipping-indonesia.php';
 
 		/**
 		 * The class responsible for defining CLI command and function
@@ -228,11 +219,19 @@ class SCOD_Shipping {
 	 */
 	private function define_public_hooks() {
 
-		$public = new SCOD_Shipping_Public( $this->get_plugin_name(), $this->get_version() );
+		$public = new SCOD_Shipping\Front( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $public, 'enqueue_scripts' );
+		$this->loader->add_action( 'wp_enqueue_scripts', 					$public, 'enqueue_styles' );
+		$this->loader->add_action( 'wp_enqueue_scripts', 					$public, 'enqueue_scripts' );
+		$this->loader->add_filter( 'woocommerce_states', 					$public, 'checkout_state_dropdown' );
+		$this->loader->add_filter( 'woocommerce_checkout_fields', 			$public, 'scod_checkout_fields' );
+		$this->loader->add_filter( 'woocommerce_default_address_fields', 	$public, 'override_locale_fields' );
+		$this->loader->add_action( 'wp_enqueue_scripts', 					$public, 'enqueue_styles' );
 
+		$this->loader->add_action( 'wp_ajax_scods-get-city-by-state', 		$public, 'get_city_by_state',		1);
+		$this->loader->add_action( 'wp_ajax_nopriv_scods-get-city-by-state',$public, 'get_city_by_state',		1);
+		$this->loader->add_action( 'wp_ajax_scods-get-district-by-city', 		$public, 'get_district_by_city',		1);
+		$this->loader->add_action( 'wp_ajax_nopriv_scods-get-district-by-city',$public, 'get_district_by_city',		1);
 	}
 
 	/**
@@ -283,7 +282,7 @@ class SCOD_Shipping {
 	 * @param array $methods Registered shipping methods.
 	 */
 	public function register_scod_method( $methods ) {
-	        
+
 	    $methods[ 'scod-shipping' ] = new \SCOD_Shipping\Shipping_Method();
 	    return $methods;
 	}

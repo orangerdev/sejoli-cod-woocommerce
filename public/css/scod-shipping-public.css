@@ -2,3 +2,7 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+#billing_city_field.hidden, #billing_city2_field.hidden,
+#shipping_city_field.hidden, #shipping_city2_field.hidden {
+	display: none !important;
+}

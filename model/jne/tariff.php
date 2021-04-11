@@ -13,11 +13,20 @@ class Tariff extends Eloquent
     protected $table = 'scod_shipping_jne_tariff';
 
     /**
-     * The table associated with the model without prefix.
+     * The label for this class.
      *
      * @var string
      */
     protected $label = 'JNE';
+
+    /**
+     * Array of services available to return, use service code as value.
+     *
+     * @var array
+     */
+	static protected $available_services = [
+        'OKE19', 'REG19', 'YES19'
+	];
 
     /**
      * The attributes that are mass assignable.
@@ -27,6 +36,10 @@ class Tariff extends Eloquent
 	protected $fillable = [
 	   'jne_origin_id', 'jne_destination_id', 'tariff_data'
 	];
+
+    public static function get_available_services() {
+        return self::$available_services;
+    }
 
     /**
      * Set tariff data.
@@ -83,13 +96,13 @@ class Tariff extends Eloquent
         }
 
         if( $rate->service_display ) {
-            $label[] = $rate->service_display; 
+            $label[] = $rate->service_display;
         }
 
         $label = implode( " - ", $label );
 
         if( $rate->etd_from && $rate->etd_thru ) {
-            
+
             $label .= ' (';
 
             if( $rate->etd_from == 1 && $rate->etd_from == $rate->etd_thru ) {
@@ -106,7 +119,7 @@ class Tariff extends Eloquent
                 }
             }
 
-            $label .= ')'; 
+            $label .= ')';
         }
 
         return $label;
