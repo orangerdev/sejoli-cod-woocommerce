@@ -116,4 +116,23 @@ class Tariff extends Eloquent
         return $label;
     }
 
+    /**
+     * Filtered service code.
+     *
+     * @param   $code string of code to filtered
+     * @return  string
+     */
+    public function getFriendlyCode( $code ) {
+
+        if( preg_match( "/>/i", $code ) ) {
+            $code = preg_replace( "/>/i", "bt", $code );
+        }
+
+        if( preg_match( "/</i", $code ) ) {
+            $code = preg_replace( "/</i", "lt", $code );
+        }
+
+        return $code;
+    }
+
 }

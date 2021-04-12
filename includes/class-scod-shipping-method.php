@@ -394,7 +394,7 @@ function scod_shipping_init() {
 					if( \in_array( $rate->service_code, $this->get_jne_services() ) ) {
 
 				        $this->add_rate( array(
-							'id'    => $this->id . $this->instance_id . $rate->service_code,
+							'id'    => $this->id . $this->instance_id . $tariff->getFriendlyCode( $rate->service_code ),
 							'label' => $tariff->getLabel( $rate ),
 							'cost' 	=> $rate->price * $cart_weight
 						));
