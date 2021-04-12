@@ -20,15 +20,6 @@ class Tariff extends Eloquent
     protected $label = 'JNE';
 
     /**
-     * Array of services available to return, use service code as value.
-     *
-     * @var array
-     */
-	static protected $available_services = [
-        'OKE19', 'REG19', 'YES19'
-	];
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array

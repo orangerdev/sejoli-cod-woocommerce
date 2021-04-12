@@ -117,7 +117,7 @@ class Front {
 	public function scod_checkout_fields( $fields ) {
 		// error_log( __METHOD__ . ' fields '. print_r( $fields, true ) );
 		$shipping_country = WC()->customer->get_shipping_country();
-		
+
 		if( $shipping_country != 'ID' ) {
 			return $fields;
 		}

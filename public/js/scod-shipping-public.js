@@ -9,7 +9,7 @@
 			billingState 	= $( 'select#billing_state' ),
 			shippingState 	= $( 'select#shipping_state' );
 
-	    function showHideFields( country, fieldset ) {
+		function showHideFields( country, fieldset ) {
 	        var select2Classes = 'country_select select2-hidden-accessible';
 
 	        if( country === targetedCountry ) {

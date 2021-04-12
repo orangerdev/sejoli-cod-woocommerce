@@ -43,6 +43,12 @@ function scod_shipping_init() {
 		);
 
 		/**
+		 * Array of supported country code.
+		 *
+		 */
+		public $available_countries = array( 'ID' );
+
+		/**
 	     * Constructor. The instance ID is passed to this.
 	     *
 	     * @param integer $instance_id default: 0
@@ -67,9 +73,20 @@ function scod_shipping_init() {
 			$this->init_form_fields();
 			$this->init_settings();
 
-			$this->enabled		    	= $this->get_option( 'enabled' );
-
 			add_action( 'woocommerce_update_options_shipping_' . $this->id, array( $this, 'process_admin_options' ) );
+		}
+
+		/**
+		 * Validate if current value of country code is supported.
+		 *
+		 * @param $country_code (string) country code to check.
+		 *
+		 * @since 1.0.0
+		 */
+		public function validate_supported_country( string $country_code ) {
+
+			$supported_countries = $this->available_countries;
+			return \in_array( $country_code, $supported_countries );
 		}
 
 	    /**
@@ -79,7 +96,7 @@ function scod_shipping_init() {
 		 */
 		public function init_form_fields() {
 
-			if ( 'ID' !== WC()->countries->get_base_country() ) {
+			if ( ! $this->validate_supported_country( WC()->countries->get_base_country() ) ) {
 
 				$this->instance_form_fields = array(
 					'title' => array(
@@ -93,13 +110,6 @@ function scod_shipping_init() {
 			}
 
 			$settings = array(
-        		'enabled' => array(
-        			'title' 		=> __( 'Enable/Disable', 'scod-shipping' ),
-        			'type' 			=> 'checkbox',
-        			'description' 	=> __( 'This controls whether to activate/disable this shipping method.', 'scod-shipping' ),
-        			'label' 		=> __( 'Enable this shipping method', 'scod-shipping' ),
-        			'default' 		=> 'yes',
-        		),
         		'api_key' => array(
         			'title' 		=> __( 'Store Secret Key', 'scod-shipping' ),
         			'type' 			=> 'text',
@@ -114,10 +124,31 @@ function scod_shipping_init() {
 					'options' 		=> $this->generate_origin_dropdown(),
 				),
         		'base_weight' => array(
-        			'title' 		=> __( 'Berat Barang Minimal (kg)', 'scod-shipping' ),
+        			'title' 		=> __( 'Default Item Weight (Kg)', 'scod-shipping' ),
         			'type' 			=> 'text',
-        			'description' 	=> __( 'Harus diisi untuk menampilkan pilihan pengiriman ketika checkout.', 'scod-shipping' ),
+        			'description' 	=> __( 'Berat default yang digunakan ketika berat per barang tidak ada.', 'scod-shipping' ),
         			'default' 		=> '',
+        		),
+        		'jne_service_yes' => array(
+					'title' 		=> __( 'JNE Services', 'scod-shipping' ),
+        			'label'			=> __( 'YES', 'scod-shipping' ),
+        			'type' 			=> 'checkbox',
+					'default'		=> 'yes',
+        		),
+        		'jne_service_reg' => array(
+        			'label'			=> __( 'Regular (COD Available)', 'scod-shipping' ),
+        			'type' 			=> 'checkbox',
+					'default'		=> 'yes',
+        		),
+        		'jne_service_oke' => array(
+        			'label'			=> __( 'OKE (COD Available) ', 'scod-shipping' ),
+        			'type' 			=> 'checkbox',
+					'default'		=> 'yes',
+        		),
+        		'jne_service_jtr' => array(
+        			'label'			=> __( 'JNE Trucking (COD Available) ', 'scod-shipping' ),
+        			'type' 			=> 'checkbox',
+					'default'		=> 'yes',
         		),
 			);
 
@@ -133,9 +164,39 @@ function scod_shipping_init() {
 		 */
 		private function generate_origin_dropdown() {
 
-			$option_default = array( '' => __( 'Pilih Origin' ) );
+			$option_default = array( '' => __( '--- Pilih Origin ---' ) );
 			$option_cities = JNE_Origin::pluck( 'name', 'id' )->toArray();
-			return array_merge( $option_default, $option_cities );
+			return $option_default + $option_cities;
+		}
+
+		/**
+		 * Generate options for origin dropdown
+		 *
+		 * @since 1.0.0
+		 *
+		 * @return array
+		 */
+		private function get_jne_services() {
+			$services = array();
+
+			if( $this->get_option('jne_service_yes') == 'yes' ) {
+				$services[] = 'YES19';
+			}
+
+			if( $this->get_option('jne_service_oke') == 'yes' ) {
+				$services[] = 'OKE19';
+			}
+
+			if( $this->get_option('jne_service_reg') == 'yes' ) {
+				$services[] = 'REG19';
+			}
+
+			if( $this->get_option('jne_service_jtr') == 'yes' ) {
+				$codes = array( 'JTR18', 'JTR250', 'JTR<150', 'JTR>250' );
+				$services = array_merge( $services, $codes );
+			}
+
+			return $services;
 		}
 
 		/**
@@ -148,13 +209,11 @@ function scod_shipping_init() {
 		private function get_origin_info() {
 
 			$origin_option = $this->get_option( 'shipping_origin' );
-
 			if( ! $origin_option ) {
 				return false;
 			}
 
 			$origin = JNE_Origin::find( $origin_option );
-
 			if( ! $origin ) {
 				return false;
 			}
@@ -172,8 +231,7 @@ function scod_shipping_init() {
 		 * @return 	(Object|false) returns an object on true, or false if fail
 		 */
 		private function get_destination_info( array $destination ) {
-
-			if( $destination['country'] !== 'ID' ) {
+			if( ! $this->validate_supported_country( $destination['country'] ) ) {
 				return false;
 			}
 
@@ -184,24 +242,24 @@ function scod_shipping_init() {
 			);
 
 			if( $destination['state'] ) {
-
 				$state = State::find( $destination['state'] );
+
 				if( $state ) {
 					$location_data[ 'state' ] = $state;
 				}
 			}
 
 			if( $destination['city'] ) {
-
 				$city = City::find( $destination['city'] );
+
 				if( $city ) {
 					$location_data[ 'city' ] = $city;
 				}
 			}
 
 			if( $destination['address_2'] ) {
-
 				$district = District::find( $destination['address_2'] );
+
 				if( $district ) {
 					$location_data[ 'district' ] = $district;
 				}
@@ -245,10 +303,9 @@ function scod_shipping_init() {
 							->first();
 
 			if( ! $get_tariff ) {
-
 	        	$req_tariff_data = API_JNE::set_params()->get_tariff( $origin->code, $destination->code );
 
-	        	if( is_wp_error( $req_tariff_data ) ) {
+				if( is_wp_error( $req_tariff_data ) ) {
 	        		return false;
 	        	}
 
@@ -260,7 +317,6 @@ function scod_shipping_init() {
 	        	if( ! $get_tariff->save() ) {
 	        		return false;
 	        	}
-
 	        }
 
 			return $get_tariff;
@@ -308,19 +364,19 @@ function scod_shipping_init() {
 	    	// error_log( __METHOD__ . ' package '. print_r( $package, true ) );
 
 			$origin = $this->get_origin_info();
-			error_log( __METHOD__ . ' origin '. print_r( $origin, true ) );
-	        if( ! $origin ) {
+			// error_log( __METHOD__ . ' origin '. print_r( $origin, true ) );
+			if( ! $origin ) {
 	        	return false;
 	        }
 
-	        $destination = $this->get_destination_info( $package['destination'] );
-			error_log( __METHOD__ . ' destination '. print_r( $destination, true ) );
+			$destination = $this->get_destination_info( $package['destination'] );
+			// error_log( __METHOD__ . ' destination '. print_r( $destination, true ) );
 	        if( ! $destination ) {
 	        	return false;
 	        }
 
-	        $tariff = $this->get_tariff_info( $origin, $destination );
-			error_log( __METHOD__ . ' tariff '. print_r( $tariff, true ) );
+			$tariff = $this->get_tariff_info( $origin, $destination );
+			// error_log( __METHOD__ . ' tariff '. print_r( $tariff, true ) );
 	        if( ! $tariff ) {
 	        	return false;
 	        }
@@ -335,7 +391,7 @@ function scod_shipping_init() {
 
 	       		foreach ( $tariff->tariff_data as $rate ) {
 
-					if( \in_array( $rate->service_code, JNE_Tariff::get_available_services() ) ) {
+					if( \in_array( $rate->service_code, $this->get_jne_services() ) ) {
 
 				        $this->add_rate( array(
 							'id'    => $this->id . $this->instance_id . $rate->service_code,
