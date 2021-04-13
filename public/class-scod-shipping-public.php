@@ -55,7 +55,6 @@ class Front {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
 	}
 
 	/**
@@ -66,7 +65,6 @@ class Front {
 	public function enqueue_styles() {
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/scod-shipping-public.css', array(), $this->version, 'all' );
-
 	}
 
 	/**
@@ -104,7 +102,6 @@ class Front {
 	 * @since    1.0.0
 	 */
 	public function checkout_state_dropdown( $states ) {
-
 		$states['ID'] = State::pluck( 'name', 'id' )->toArray();
 		return $states;
 	}
@@ -199,13 +196,12 @@ class Front {
 	 * @since    1.0.0
 	 */
 	public function get_city_by_state() {
+		$data = [];
 
 		$params = wp_parse_args($_POST, array(
             'state_id'  => NULL,
             'nonce'     => NULL
         ));
-
-        $data = [];
 
         if( wp_verify_nonce( $params[ 'nonce' ], 'scods-get-city-by-state' ) ) :
 
@@ -231,13 +227,12 @@ class Front {
 	 * @since    1.0.0
 	 */
 	public function get_district_by_city() {
+		$data = [];
 
 		$params = wp_parse_args($_POST, array(
             'city_id'  => NULL,
             'nonce'     => NULL
         ));
-
-        $data = [];
 
         if( wp_verify_nonce( $params[ 'nonce' ], 'scods-get-district-by-city' ) ) :
 
@@ -253,6 +248,27 @@ class Front {
         endif;
 
         echo wp_send_json( $data );
+	}
+
+	/**
+	 * WooCommerce checkout disable COD payment if JNE YES shipping is selected.
+	 *
+	 * @since    1.0.0
+	 */
+	public function scods_checkout_available_payments( $available_gateways ) {
+		$chosen_shipping_methods = WC()->session->get( 'chosen_shipping_methods' );
+
+		if( ! empty( $chosen_shipping_methods ) ) :
+			if( $chosen_shipping_methods[0] == 'scod-shipping_jne_yes19' ) :
+
+				if( isset( $available_gateways['cod'] ) ) :
+					unset( $available_gateways['cod'] );
+				endif;
+
+			endif;
+		endif;
+
+		return $available_gateways;
 	}
 
 }

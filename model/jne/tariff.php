@@ -117,22 +117,31 @@ class Tariff extends Eloquent
     }
 
     /**
-     * Filtered service code.
+     * Generate Rate ID for shipping methods.
      *
-     * @param   $code string of code to filtered
+     * @param   $rate rate object
+     * @param   $prefix
      * @return  string
      */
-    public function getFriendlyCode( $code ) {
+    public function getRateID( $prefix, $rate ) {
 
-        if( preg_match( "/>/i", $code ) ) {
-            $code = preg_replace( "/>/i", "bt", $code );
+        $ids = array( $prefix , $this->label );
+        $code = $rate->service_code;
+        $separator = "_";
+
+        $lessthan_pattern = "/</i";
+        $lessthan_placeholder = "lt";
+        $biggerthan_pattern = "/>/i";
+        $biggerthan_placeholder = "bt";
+
+        if( preg_match( $biggerthan_pattern, $code ) ) {
+            $code = preg_replace( $biggerthan_pattern, $biggerthan_placeholder, $code );
+        } elseif( preg_match( $lessthan_pattern, $code ) ) {
+            $code = preg_replace( $lessthan_pattern, $lessthan_placeholder, $code );
         }
 
-        if( preg_match( "/</i", $code ) ) {
-            $code = preg_replace( "/</i", "lt", $code );
-        }
-
-        return $code;
+        $ids[] = $code;
+        return mb_strtolower( \implode( $separator, $ids ) );
     }
 
 }
