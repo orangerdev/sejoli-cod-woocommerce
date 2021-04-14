@@ -58,7 +58,6 @@
 					state_id : state_id
 				},
 				success: function(data) {
-					// console.log(data);
 					addLocOptions( field, data );
 					addDefaultOption( field );
 				},
@@ -81,7 +80,6 @@
 					city_id : city_id
 				},
 				success: function(data) {
-					// console.log(data);
 					addLocOptions( field, data );
 					addDefaultOption( field );
 				},
@@ -91,9 +89,21 @@
 			});
 		}
 
+		function showHideYesShipping() {
+			var selected_payment = $('input[name="payment_method"]:checked' ).val();
+			var targeted_shipping = $('#shipping_method_0_scod-shipping_jne_yes19');
+
+			if( selected_payment == 'cod') {
+				targeted_shipping.parent().hide();
+			} else {
+				targeted_shipping.parent().show();
+			}
+		}
+
 	    // On Start (after Checkout page is loaded)
 	    showHideFields(initialBCountry, 'billing');
 	    showHideFields(initialSCountry, 'shipping');
+		showHideYesShipping();
 		if( billingState.val() ) { getCityResults( billingState.val(), 'billing' ) }
 		if( billingState.val() ) { getCityResults( billingState.val(), 'shipping' ) }
 
@@ -118,11 +128,13 @@
 		    var data = e.params.data;
 			resetLocOptions( 'all', 'billing' );
 			getCityResults( data.id, 'billing' );
+			showHideYesShipping();
 		});
 		$('select#shipping_state').on('select2:select', function (e) {
 		    var data = e.params.data;
 			resetLocOptions( 'all', 'shipping' );
 			getCityResults( data.id, 'shipping' );
+			showHideYesShipping();
 		});
 
 		// Live: On City2 select2 change
@@ -130,12 +142,19 @@
 		    var data = e.params.data;
 			resetLocOptions( 'district', 'billing' );
 			getDistrictResults( data.id, 'billing' );
+			showHideYesShipping();
 		});
 		$('select#shipping_city2').on('select2:select', function (e) {
 		    var data = e.params.data;
 			resetLocOptions( 'district', 'shipping' );
 			getDistrictResults( data.id, 'shipping' );
+			showHideYesShipping();
 		});
+
+		// Live: On change payment method
+		$('form.checkout').on( 'change', 'input[name^="payment_method"]', function() {
+			showHideYesShipping();
+	    });
 
 	});
 

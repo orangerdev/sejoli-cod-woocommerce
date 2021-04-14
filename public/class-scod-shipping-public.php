@@ -256,6 +256,7 @@ class Front {
 	 * @since    1.0.0
 	 */
 	public function scods_checkout_available_payments( $available_gateways ) {
+
 		$chosen_shipping_methods = WC()->session->get( 'chosen_shipping_methods' );
 
 		if( ! empty( $chosen_shipping_methods ) ) :
@@ -269,6 +270,26 @@ class Front {
 		endif;
 
 		return $available_gateways;
+	}
+
+	/**
+	 * WooCommerce checkout disable JNE YES if COD payment is selected.
+	 *
+	 * @since    1.0.0
+	 */
+	public function scods_checkout_available_shippings( $rates, $package ) {
+
+		$chosen_payment_method = WC()->session->get( 'chosen_payment_method' );
+
+		if( $chosen_payment_method == 'cod' ) :
+
+			if( isset( $rates['scod-shipping_jne_yes19'] ) ) :
+				unset( $rates['scod-shipping_jne_yes19'] );
+			endif;
+
+		endif;
+
+		return $rates;
 	}
 
 }

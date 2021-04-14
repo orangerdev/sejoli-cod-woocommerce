@@ -228,6 +228,7 @@ class SCOD_Shipping {
 		$this->loader->add_filter( 'woocommerce_default_address_fields', 		$public, 'override_locale_fields' );
 		$this->loader->add_action( 'wp_enqueue_scripts', 						$public, 'enqueue_styles' );
 		$this->loader->add_action( 'woocommerce_available_payment_gateways', 	$public, 'scods_checkout_available_payments', 1);
+		$this->loader->add_filter( 'woocommerce_package_rates', 				$public, 'scods_checkout_available_shippings', 10, 2 );
 
 		$this->loader->add_action( 'wp_ajax_scods-get-city-by-state', 			$public, 'get_city_by_state',		1);
 		$this->loader->add_action( 'wp_ajax_nopriv_scods-get-city-by-state',	$public, 'get_city_by_state',		1);
