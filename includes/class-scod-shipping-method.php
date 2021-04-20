@@ -9,6 +9,7 @@ use SCOD_Shipping\Model\JNE\Origin as JNE_Origin;
 use SCOD_Shipping\Model\JNE\Destination as JNE_Destination;
 use SCOD_Shipping\Model\JNE\Tariff as JNE_Tariff;
 use SCOD_Shipping\API\JNE as API_JNE;
+use SCOD_Shipping\API\SCOD as API_SCOD;
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -34,6 +35,14 @@ function scod_shipping_init() {
 	class Shipping_Method extends \WC_Shipping_Method {
 
 		/**
+		 * Woongkir_API API Class Object
+		 *
+		 * @since 1.0.0
+		 * @var API_SCOD
+		 */
+		private $api;
+
+		/**
 		 * Supported features.
 		 *
 		 */
@@ -55,6 +64,7 @@ function scod_shipping_init() {
 	     */
 	    public function __construct( $instance_id = 0 ) {
 
+			$this->api                	= new API_SCOD();
 	        $this->id 					= 'scod-shipping';
 	        $this->instance_id 			= absint( $instance_id );
 	        $this->title         		= __( 'Sejoli COD Shipping', 'scod-shipping' );
@@ -74,19 +84,6 @@ function scod_shipping_init() {
 			$this->init_settings();
 
 			add_action( 'woocommerce_update_options_shipping_' . $this->id, array( $this, 'process_admin_options' ) );
-		}
-
-		/**
-		 * Validate if current value of country code is supported.
-		 *
-		 * @param $country_code (string) country code to check.
-		 *
-		 * @since 1.0.0
-		 */
-		public function validate_supported_country( string $country_code ) {
-
-			$supported_countries = $this->available_countries;
-			return \in_array( $country_code, $supported_countries );
 		}
 
 	    /**
@@ -110,8 +107,24 @@ function scod_shipping_init() {
 			}
 
 			$settings = array(
-        		'api_key' => array(
-        			'title' 		=> __( 'Store Secret Key', 'scod-shipping' ),
+        		'scod_username' => array(
+        			'title' 		=> __( 'SCOD Username', 'scod-shipping' ),
+        			'type' 			=> 'text',
+        			'description' 	=> __( 'Please enter your account username.', 'scod-shipping' ),
+        		),
+        		'scod_password' => array(
+        			'title' 		=> __( 'SCOD Password', 'scod-shipping' ),
+        			'type' 			=> 'password',
+        			'description' 	=> __( 'Please enter your account password.', 'scod-shipping' ),
+        		),
+        		'store_id' => array(
+        			'title' 		=> __( 'SCOD Store ID', 'scod-shipping' ),
+        			'type' 			=> 'text',
+        			'description' 	=> __( 'Please enter your store ID.', 'scod-shipping' ),
+        			'default' 		=> '',
+        		),
+        		'store_secret_key' => array(
+        			'title' 		=> __( 'SCOD Store Secret Key', 'scod-shipping' ),
         			'type' 			=> 'text',
         			'description' 	=> __( 'Please enter your store secret key.', 'scod-shipping' ),
         			'default' 		=> '',
@@ -167,6 +180,85 @@ function scod_shipping_init() {
 			$option_default = array( '' => __( '--- Pilih Origin ---' ) );
 			$option_cities = JNE_Origin::pluck( 'name', 'id' )->toArray();
 			return $option_default + $option_cities;
+		}
+
+		/**
+		 * Validate if current value of country code is supported.
+		 *
+		 * @param $country_code (string) country code to check.
+		 *
+		 * @since 1.0.0
+		 */
+		public function validate_supported_country( string $country_code ) {
+
+			$supported_countries = $this->available_countries;
+			return \in_array( $country_code, $supported_countries );
+		}
+
+		/**
+		 * Validate username & password settings field.
+		 *
+		 * @since 1.0.0
+		 * @param string $key Input field key.
+		 * @param string $value Input field current value.
+		 * @throws Exception Error message.
+		 */
+		public function validate_scod_username_field( $key, $value ) {
+
+			$error_msg = wp_sprintf( __( '%s is not valid. Please use a valid account.', 'scod-shipping' ), 'Username or password' );
+			$posted = $this->get_post_data();
+			$current_username = $this->get_option( 'scod_username' );
+			$current_password = $this->get_option( 'scod_password' );
+			$username = $posted[ $this->get_field_key( 'scod_username' ) ];
+			$password = $posted[ $this->get_field_key( 'scod_password' ) ];
+
+			if( $current_password != $password || $current_username != $username ) {
+
+				if ( ! $username || ! $password ) {
+					throw new \Exception( $error_msg );
+				}
+
+				$get_token = $this->api->get_new_token( $username, $password );
+
+				if( is_wp_error( $get_token ) ) {
+					throw new \Exception( $error_msg );
+				}
+			}
+
+			return $value;
+		}
+
+		/**
+		 * Validate store account fields.
+		 *
+		 * @since 1.0.0
+		 * @param string $key Input field key.
+		 * @param string $value Input field current value.
+		 * @throws Exception Error message.
+		 */
+		public function validate_store_secret_key_field( $key, $value ) {
+
+			$error_msg = wp_sprintf( __( '%s is not valid. Please use a valid account.', 'scod-shipping' ), 'Store ID or Store secret key' );
+			$posted = $this->get_post_data();
+			$current_store_id = $this->get_option( 'store_id' );
+			$current_store_secret_key = $this->get_option( 'store_secret_key' );
+			$store_id = $posted[ $this->get_field_key( 'store_id' ) ];
+			$store_secret_key = $posted[ $this->get_field_key( 'store_secret_key' ) ];
+
+			if( $current_store_id != $store_id || $current_store_secret_key != $store_secret_key ) {
+
+				if ( ! $store_id || ! $store_secret_key ) {
+					throw new \Exception( $error_msg );
+				}
+
+				$validate_store = $this->api->get_store_detail( $store_id, $store_secret_key );
+
+				if( is_wp_error( $validate_store ) ) {
+					throw new \Exception( $error_msg );
+				}
+			}
+
+			return $value;
 		}
 
 		/**
@@ -347,8 +439,7 @@ function scod_shipping_init() {
        			return ceil( $cart_weight );
        		}
 
-			// error_log( __METHOD__ . ' cart_weight '. var_dump( $cart_weight ) );
-       		return false;
+			return false;
 		}
 
 	    /**
@@ -364,20 +455,20 @@ function scod_shipping_init() {
 	    	// error_log( __METHOD__ . ' package '. print_r( $package, true ) );
 
 			$origin = $this->get_origin_info();
-			// error_log( __METHOD__ . ' origin '. print_r( $origin, true ) );
+
 			if( ! $origin ) {
 	        	return false;
 	        }
 
 			$destination = $this->get_destination_info( $package['destination'] );
-			// error_log( __METHOD__ . ' destination '. print_r( $destination, true ) );
-	        if( ! $destination ) {
+
+			if( ! $destination ) {
 	        	return false;
 	        }
 
 			$tariff = $this->get_tariff_info( $origin, $destination );
-			// error_log( __METHOD__ . ' tariff '. print_r( $tariff, true ) );
-	        if( ! $tariff ) {
+
+			if( ! $tariff ) {
 	        	return false;
 	        }
 
@@ -403,7 +494,6 @@ function scod_shipping_init() {
 	       	}
 
 	    }
-
 	}
 
 }

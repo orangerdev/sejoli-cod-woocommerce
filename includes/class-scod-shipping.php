@@ -151,11 +151,8 @@ class SCOD_Shipping {
 		 * The class responsible for defining API related functions.
 		 */
 		require_once SCOD_SHIPPING_DIR . 'includes/class-scod-shipping-api.php';
-
-		/**
-		 * The class responsible for courier API related functions.
-		 */
 		require_once SCOD_SHIPPING_DIR . 'api/class-scod-shipping-jne.php';
+		require_once SCOD_SHIPPING_DIR . 'api/class-scod-shipping-saas.php';
 
 		/**
 		 * The class responsible for defining CLI command and function
@@ -203,11 +200,12 @@ class SCOD_Shipping {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_scripts' );
-
 		add_action( 'woocommerce_shipping_init', 'SCOD_Shipping\scod_shipping_init' );
-
 		$this->loader->add_filter( 'woocommerce_shipping_methods', $this, 'register_scod_method' );
 
+		$scod_api = new SCOD_Shipping\API\SCOD( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_filter( 'http_request_args', $scod_api, 'disable_ssl_verify', 10, 2 ); //local dev purpose only
 	}
 
 	/**

@@ -257,19 +257,23 @@ class Front {
 	 */
 	public function scods_checkout_available_payments( $available_gateways ) {
 
-		$chosen_shipping_methods = WC()->session->get( 'chosen_shipping_methods' );
+		if( isset( WC()->session ) ):
 
-		if( ! empty( $chosen_shipping_methods ) ) :
-			if( $chosen_shipping_methods[0] == 'scod-shipping_jne_yes19' ) :
+			$chosen_shipping_methods = WC()->session->get( 'chosen_shipping_methods' );
 
-				if( isset( $available_gateways['cod'] ) ) :
-					unset( $available_gateways['cod'] );
+			if( ! empty( $chosen_shipping_methods ) ) :
+				if( $chosen_shipping_methods[0] == 'scod-shipping_jne_yes19' ) :
+
+					if( isset( $available_gateways['cod'] ) ) :
+						unset( $available_gateways['cod'] );
+					endif;
+
 				endif;
-
 			endif;
-		endif;
 
-		return $available_gateways;
+			return $available_gateways;
+
+		endif;
 	}
 
 	/**
@@ -279,17 +283,21 @@ class Front {
 	 */
 	public function scods_checkout_available_shippings( $rates, $package ) {
 
-		$chosen_payment_method = WC()->session->get( 'chosen_payment_method' );
+		if( isset( WC()->session ) ):
 
-		if( $chosen_payment_method == 'cod' ) :
+			$chosen_payment_method = WC()->session->get( 'chosen_payment_method' );
 
-			if( isset( $rates['scod-shipping_jne_yes19'] ) ) :
-				unset( $rates['scod-shipping_jne_yes19'] );
+			if( $chosen_payment_method == 'cod' ) :
+
+				if( isset( $rates['scod-shipping_jne_yes19'] ) ) :
+					unset( $rates['scod-shipping_jne_yes19'] );
+				endif;
+
 			endif;
 
-		endif;
+			return $rates;
 
-		return $rates;
+		endif;
 	}
 
 }
