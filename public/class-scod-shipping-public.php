@@ -4,6 +4,8 @@ namespace SCOD_Shipping;
 use SCOD_Shipping\Model\State as State;
 use SCOD_Shipping\Model\City as City;
 use SCOD_Shipping\Model\District as District;
+use SCOD_Shipping\API\SCOD as API_SCOD;
+use SCOD_Shipping\Shipping_Method;
 /**
  * The public-facing functionality of the plugin.
  *
@@ -298,6 +300,86 @@ class Front {
 			return $rates;
 
 		endif;
+	}
+
+	/**
+	 * WooCommerce action to send newly created order data to API.
+	 *
+	 * @since    1.0.0
+	 */
+	public function send_order_data_to_api( $order_id ) {
+	    if ( ! $order_id ) return;
+
+	    // Allow code execution only once
+	    if( ! get_post_meta( $order_id, '_sync_order_action_scod_done', true ) ) {
+
+			// Get an instance of the WC_Order object
+	        $order = wc_get_order( $order_id );
+
+			// Check payment method
+			if( $order->get_payment_method() != 'cod' ) {
+				return;
+			}
+
+			// Get shipping method
+			$shipping_methods	= $order->get_shipping_methods();
+			$shipping_method_id = NULL;
+			$shipping_instance_id = NULL;
+			$courier_name = NULL;
+
+			foreach ($shipping_methods as $shipping_method) {
+				$shipping_name = $shipping_method['name'];
+				$shipping_method_id = $shipping_method->get_method_id();
+				$shipping_instance_id = $shipping_method->get_instance_id();
+
+				if( \str_contains( strtolower( $shipping_name ), 'jne' ) ):
+					$courier_name = 'jne';
+				endif;
+			}
+
+			// Check selected shipping
+			if( $shipping_method_id != 'scod-shipping' ) {
+				return;
+			}
+
+			// Get store account data
+			$store_id = NULL;
+			$store_secret_key = NULL;
+
+			if( $shipping_instance_id ) {
+				$shipping_class = new Shipping_Method( $shipping_instance_id );
+				$store_id = $shipping_class->get_option( 'store_id' );
+				$store_secret_key = $shipping_class->get_option( 'store_secret_key' );
+			}
+
+			// Default params
+			$order_params = array(
+				'store_id'			=> $store_id,
+				'secret_key'		=> $store_secret_key,
+				'buyer_name'		=> $order->get_billing_first_name() .' '. $order->get_billing_last_name(),
+				'buyer_email'		=> $order->get_billing_email(),
+				'buyer_phone'		=> $order->get_billing_phone(),
+				'courier_name'		=> $courier_name,
+				'invoice_number'	=> $order->get_order_number(),
+				'invoice_total' 	=> $order->get_total(),
+				'shipping_fee'		=> $order->get_total_shipping(),
+				'shipping_status'	=> 'pickup',
+				'notes'				=> $order->get_customer_note(),
+				'order'				=> $order
+			);
+
+			// Send data to API
+			$api_scod = new API_SCOD();
+			$create_order = $api_scod->post_create_order( $order_params );
+
+			if( ! is_wp_error( $create_order ) ) {
+				// Flag the action as done (to avoid repetitions on reload for example)
+				$order->update_meta_data( '_sync_order_action_scod_done', true );
+				$order->save();
+			}
+			
+			error_log( 'Done processing for order ID '. $order_id );
+	    }
 	}
 
 }
