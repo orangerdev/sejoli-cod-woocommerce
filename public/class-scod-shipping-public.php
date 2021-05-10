@@ -110,18 +110,16 @@ class Front {
 
 	/**
 	 * Custom checkout fields
-	 *
+	 * Hook via woocommerce_checkout_fields
 	 * @since    1.0.0
 	 */
 	public function scod_checkout_fields( $fields ) {
-		// error_log( __METHOD__ . ' fields '. print_r( $fields, true ) );
-		$shipping_country = WC()->customer->get_shipping_country();
-
-		if( $shipping_country != 'ID' ) {
+		
+		if( WC()->customer->get_shipping_country() != 'ID' ) {
 			return $fields;
 		}
-
-		// Custom fields
+		
+		// Add custom fields for city dropdown
 	    $fields['billing']['billing_city2'] = $fields['shipping']['shipping_city2'] = array(
 	        'label'		  	=> $fields['billing']['billing_city']['label'],
 		    'type'         	=> 'select',
@@ -132,6 +130,7 @@ class Front {
 	        'class'		   	=> array( 'address-field', 'form-row-wide', 'hidden' ),
 	    );
 
+		// Change default address2 to district field
 	    $fields['billing']['billing_address_2'] = $fields['shipping']['shipping_address_2'] = array(
 	        'label'     	=> __( 'District', 'scod-shipping' ),
 		    'type'			=> 'select',
@@ -140,6 +139,10 @@ class Front {
 			'placeholder'	=> __( 'Select an option...', 'scod-shipping' ),
     		'class'     	=> array( 'form-row-wide', 'address-field', 'hidden' ),
 	    );
+
+		// Disabled default country select to prevent conflict with wc dynamic fields.
+		$fields['billing']['billing_country']['custom_attributes'] = array( 'disabled' => 'disabled' );
+		$fields['shipping']['shipping_country']['custom_attributes'] = array( 'disabled' => 'disabled' );
 
 	    // Sort fields
 	    $fields['billing']['billing_first_name']['priority'] 	= 1;
@@ -166,18 +169,17 @@ class Front {
 	    $fields['shipping']['shipping_address_1']['priority'] 	= 8;
 	    $fields['shipping']['shipping_postcode']['priority'] 	= 9;
 
-	    return $fields;
+		return $fields;
 	}
 
 	/**
 	 * Override checkout fields locale
-	 *
+	 * Hook via woocommerce_default_address_fields
 	 * @since    1.0.0
 	 */
 	public function override_locale_fields( $fields ) {
-		$shipping_country = WC()->customer->get_shipping_country();
-
-		if( $shipping_country != 'ID' ) {
+		
+		if( WC()->customer->get_shipping_country() != 'ID' ) {
 			return $fields;
 		}
 
@@ -188,6 +190,25 @@ class Front {
 	    $fields['postcode']['priority'] 	= 9;
 
 	    return $fields;
+	}
+
+	/**
+	 * Add hidden country field to replace disabled default field.
+	 * Hook via woocommerce_after_checkout_billing_form
+	 *
+	 * @since    1.0.0
+	 */
+	public function checkout_country_hidden_fields_replacement( $fields ) {
+		
+		$billing_country = WC()->customer->get_billing_country();
+		$shipping_country = WC()->customer->get_shipping_country();
+		
+		?>
+		
+		<input type="hidden" name="billing_country" value="<?php echo $billing_country; ?>">
+		<input type="hidden" name="shipping_country" value="<?php echo $shipping_country; ?>">
+		
+		<?php
 	}
 
 	/**
@@ -375,10 +396,14 @@ class Front {
 			if( ! is_wp_error( $create_order ) ) {
 				// Flag the action as done (to avoid repetitions on reload for example)
 				$order->update_meta_data( '_sync_order_action_scod_done', true );
-				$order->save();
+				if( $order->save() ) {
+					error_log( 'Sync order success ..' );
+				}
+			} else {
+				error_log( 'Sync order error .. ' );
 			}
 			
-			error_log( 'Done processing for order ID '. $order_id );
+			error_log( 'Done processing order ID '. $order_id );
 	    }
 	}
 

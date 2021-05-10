@@ -359,6 +359,10 @@ class SCOD {
 				$body = json_decode( $get_response['body'] );
 				$response_code = wp_remote_retrieve_response_code( $get_response );
 
+				if( $response_code != 200 ) {
+					return new \WP_Error( 'invalid_response' );
+				}
+
 				if( $response_code == 409 ) {
 					$conflict_msg = 'Order already registered.';
 					

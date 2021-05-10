@@ -97,7 +97,7 @@ function scod_shipping_init() {
 
 				$this->instance_form_fields = array(
 					'title' => array(
-						'title'       => __( 'Error', 'scod-shipping' ),
+						'title'       => __( 'Plugin Unavailable', 'scod-shipping' ),
 						'type'        => 'title',
 						'description' => __( 'This plugin only work for Store Address based in Indonesia.', 'scod-shipping' ),
 					),
@@ -204,7 +204,7 @@ function scod_shipping_init() {
 		 * @throws Exception Error message.
 		 */
 		public function validate_scod_username_field( $key, $value ) {
-
+			error_log( 'Validating scod account ..' );
 			$error_msg = wp_sprintf( __( '%s is not valid. Please use a valid account.', 'scod-shipping' ), 'Username or password' );
 			$posted = $this->get_post_data();
 			$current_username = $this->get_option( 'scod_username' );
@@ -237,7 +237,7 @@ function scod_shipping_init() {
 		 * @throws Exception Error message.
 		 */
 		public function validate_store_secret_key_field( $key, $value ) {
-
+			error_log( 'Validating scod store account ..' );
 			$error_msg = wp_sprintf( __( '%s is not valid. Please use a valid account.', 'scod-shipping' ), 'Store ID or Store secret key' );
 			$posted = $this->get_post_data();
 			$current_store_id = $this->get_option( 'store_id' );

@@ -224,6 +224,7 @@ class SCOD_Shipping {
 		$this->loader->add_filter( 'woocommerce_states', 						$public, 'checkout_state_dropdown' );
 		$this->loader->add_filter( 'woocommerce_checkout_fields', 				$public, 'scod_checkout_fields' );
 		$this->loader->add_filter( 'woocommerce_default_address_fields', 		$public, 'override_locale_fields' );
+		$this->loader->add_filter( 'woocommerce_after_checkout_billing_form', 	$public, 'checkout_country_hidden_fields_replacement' );
 		$this->loader->add_action( 'wp_enqueue_scripts', 						$public, 'enqueue_styles' );
 		$this->loader->add_action( 'woocommerce_available_payment_gateways', 	$public, 'scods_checkout_available_payments', 1);
 		$this->loader->add_filter( 'woocommerce_package_rates', 				$public, 'scods_checkout_available_shippings', 10, 2 );
