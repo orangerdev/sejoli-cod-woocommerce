@@ -110,6 +110,13 @@ class SCOD_Shipping {
 		 */
 		require_once SCOD_SHIPPING_DIR . 'includes/class-scod-shipping-i18n.php';
 
+
+		/**
+		 * The class responsible for integrating with database
+		 * @var [type]
+		 */
+		require_once SCOD_SHIPPING_DIR . '/includes/class-scod-shipping-database.php';
+
 		/**
 		 * The class responsible for creating database tables.
 		 */
@@ -167,6 +174,8 @@ class SCOD_Shipping {
 		require_once SCOD_SHIPPING_DIR . 'public/class-scod-shipping-public.php';
 
 		$this->loader = new SCOD_Shipping_Loader();
+
+		SCOD_Shipping\DBIntegration::connection();
 
 	}
 
