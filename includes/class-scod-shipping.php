@@ -230,7 +230,9 @@ class SCOD_Shipping {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', 						$public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', 						$public, 'enqueue_scripts' );
+		if( !is_admin() ){
 		$this->loader->add_filter( 'woocommerce_states', 						$public, 'checkout_state_dropdown' );
+		}
 		$this->loader->add_filter( 'woocommerce_checkout_fields', 				$public, 'scod_checkout_fields' );
 		$this->loader->add_filter( 'woocommerce_default_address_fields', 		$public, 'override_locale_fields' );
 		$this->loader->add_filter( 'woocommerce_after_checkout_billing_form', 	$public, 'checkout_country_hidden_fields_replacement' );
