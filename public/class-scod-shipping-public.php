@@ -1,6 +1,7 @@
 <?php
 namespace SCOD_Shipping;
 
+use \WeDevs\ORM\Eloquent\Facades\DB;
 use SCOD_Shipping\Model\State as State;
 use SCOD_Shipping\Model\City as City;
 use SCOD_Shipping\Model\District as District;
@@ -108,6 +109,335 @@ class Front {
 		return $states;
 	}
 
+	public function woo_custom_order_formatted_shipping_address( $address , $order_id) {
+		$order = wc_get_order( $order_id );
+		$order_id  = $order->get_id(); // Get the order ID
+		$order_data = $order->get_data(); // The Order data
+		$order_shipping_state = $order_data['shipping']['state'];
+		$order_shipping_city = $order_data['shipping']['city'];
+		$order_shipping_district = $order_data['shipping']['address_2'];
+
+		$getStatesName = DB::table( 'scod_shipping_state' )
+                ->where( 'ID', $order_shipping_state )
+                ->get();
+        $getCityName = DB::table( 'scod_shipping_city' )
+                ->where( 'ID', $order_shipping_city )
+                ->get();
+        $getDistrictName = DB::table( 'scod_shipping_district' )
+                ->where( 'ID', $order_shipping_district )
+                ->get();
+	    $address = array(
+	        'first_name'    => $order_data['shipping']['first_name'],
+	        'last_name'     => $order_data['shipping']['last_name'],
+	        'company'       => $order_data['shipping']['company'],
+	        'address_1'     => $order_data['shipping']['address_1'],
+	        'address_2'     => isset($getDistrictName[0]->name) ? $getDistrictName[0]->name : $order_data['shipping']['address_2'] ,
+	        'city'          => isset($getCityName[0]->name) ? $getCityName[0]->name : $order_data['shipping']['city'],
+	        'state'         => isset($getStatesName[0]->name) ? $getStatesName[0]->name : $order_data['shipping']['state'],
+	        'postcode'      => $order_data['shipping']['postcode'],
+	        'country'       => $order_data['shipping']['country']
+	    );
+
+	    return $address;
+	}
+
+	public function woo_custom_order_formatted_billing_address( $address, $order_id ) {
+		$order = wc_get_order( $order_id );
+		$order_id  = $order->get_id(); // Get the order ID
+		$order_data = $order->get_data(); // The Order data
+		$order_billing_state = $order_data['billing']['state'];
+		$order_billing_city = $order_data['billing']['city'];
+		$order_billing_district = $order_data['billing']['address_2'];
+
+		$getStatesName = DB::table( 'scod_shipping_state' )
+                ->where( 'ID', $order_billing_state )
+                ->get();
+        $getCityName = DB::table( 'scod_shipping_city' )
+                ->where( 'ID', $order_billing_city )
+                ->get();
+        $getDistrictName = DB::table( 'scod_shipping_district' )
+                ->where( 'ID', $order_billing_district )
+                ->get();
+	    $address = array(
+	        'first_name'    => $order_data['billing']['first_name'],
+	        'last_name'     => $order_data['billing']['last_name'],
+	        'company'       => $order_data['billing']['company'],
+	        'address_1'     => $order_data['billing']['address_1'],
+	        'address_2'     => isset($getDistrictName[0]->name) ? $getDistrictName[0]->name : $order_data['billing']['address_2'] ,
+	        'city'          => isset($getCityName[0]->name) ? $getCityName[0]->name : $order_data['billing']['city'],
+	        'state'         => isset($getStatesName[0]->name) ? $getStatesName[0]->name : $order_data['billing']['state'],
+	        'postcode'      => $order_data['billing']['postcode'],
+	        'country'       => $order_data['billing']['country']
+	    );
+
+	    return $address;
+	}
+
+	public function filter_woocommerce_my_account_my_address_formatted_address( $address, $customer_id, $name ) { 
+		$order_billing_state = get_user_meta($customer_id, $name . '_state', true);
+		$order_billing_city = get_user_meta($customer_id, $name . '_city', true);
+		$order_billing_district = get_user_meta($customer_id, $name . '_address_2', true);
+
+		$getStatesName = DB::table( 'scod_shipping_state' )
+                ->where( 'ID', $order_billing_state )
+                ->get();
+        $getCityName = DB::table( 'scod_shipping_city' )
+                ->where( 'ID', $order_billing_city )
+                ->get();
+        $getDistrictName = DB::table( 'scod_shipping_district' )
+                ->where( 'ID', $order_billing_district )
+                ->get();
+
+	    $address = array( 
+	    	'first_name' => get_user_meta($customer_id, $name . '_first_name', true), 
+	    	'last_name' => get_user_meta($customer_id, $name . '_last_name', true), 
+	    	'company' => get_user_meta($customer_id, $name . '_company', true), 
+	    	'address_1' => get_user_meta($customer_id, $name . '_address_1', true), 
+	    	'address_2' => isset($getDistrictName[0]->name) ? $getDistrictName[0]->name : get_user_meta($customer_id, $name . '_address_2', true), 
+	    	'city' => isset($getCityName[0]->name) ? $getCityName[0]->name : get_user_meta($customer_id, $name . '_city', true), 
+	    	'state' => isset($getStateName[0]->name) ? $getStateName[0]->name : get_user_meta($customer_id, $name . '_state', true), 
+	    	'postcode' => get_user_meta($customer_id, $name . '_postcode', true), 
+	    	'country' => get_user_meta($customer_id, $name . '_country', true) 
+	    );
+	    return $address; 
+	}
+
+	public function checkout_send_custom_package_via_ajax_js() {
+	    if ( is_checkout() && ! is_wc_endpoint_url() ) :
+	    ?><script type="text/javascript">
+	    jQuery( function($){
+	        if (typeof wc_checkout_params === 'undefined')
+	            return false;
+
+	        // Function that send the Ajax request
+	        function sendAjaxRequest( value, fieldset = 'billing' ) {
+	            $.ajax({
+	                type: 'POST',
+	                url: wc_checkout_params.ajax_url,
+	                data: {
+	                    'action': 'city2',
+	                    'city2': value,
+	                    'fieldset' : fieldset
+	                },
+	                success: function (result) {
+	                    // $(document.body).trigger('update_checkout'); // Update checkout processes
+	                    console.log( result ); // For testing (output data sent)
+	                }
+	            });
+	        }
+
+	        function sendAjaxRequestDistrict( value, fieldset = 'billing' ) {
+	            $.ajax({
+	                type: 'POST',
+	                url: wc_checkout_params.ajax_url,
+	                data: {
+	                    'action': 'district',
+	                    'district': value,
+	                    'fieldset' : fieldset
+	                },
+	                success: function (result) {
+	                    // $(document.body).trigger('update_checkout'); // Update checkout processes
+	                    console.log( result ); // For testing (output data sent)
+	                }
+	            });
+	        }
+
+	        $(window).load(function() {	 
+				$('select#billing_city2').on('select2:select', function (e) {
+				    // var data = e.params.data;
+					var selectedCity = $(this).find("option:selected").val();
+				  	sendAjaxRequest( selectedCity );
+				});
+
+				$('select#shipping_city2').on('select2:select', function (e) {
+				    // var data = e.params.data;
+					var selectedCity = $(this).find("option:selected").val();
+				  	sendAjaxRequest( selectedCity, 'shipping' );
+				});
+
+				$('select#billing_district').on('select2:select', function (e) {
+				    // var data = e.params.data;
+					var selectedDistrict = $(this).find("option:selected").val();
+				  	sendAjaxRequestDistrict( selectedDistrict );
+				});
+
+				$('select#shipping_district').on('select2:select', function (e) {
+				    // var data = e.params.data;
+					var selectedDistrict = $(this).find("option:selected").val();
+				  	sendAjaxRequestDistrict( selectedDistrict, 'shipping' );
+				});
+			});
+	    });
+	    </script>
+	    <?php
+	    endif;
+	}
+
+	public function set_city2_to_wc_session() {
+	    $field_key = 'city2';
+	    if ( isset($_POST[$field_key]) && isset($_POST['fieldset']) ){
+	        // Get data from custom session variable
+	        $values = (array) WC()->session->get($field_key);
+	        // Initializing when empty
+	        if( ! empty($values) ) {
+	            $values = array(
+	                'billing' => WC()->customer->get_meta('billing_'.$field_key),
+	                'shipping' => WC()->customer->get_meta('shipping_'.$field_key)
+	            );
+	        }
+
+	        // Sanitizing data sent
+	        $fieldset  = esc_attr($_POST['fieldset']);
+	        $city2 = sanitize_text_field($_POST[$field_key]);
+
+	        // Set / udpate custom WC_Session variable
+	        $values[$fieldset] = $city2;
+	        WC()->session->set($field_key, wc_clean($values));
+
+	        // Send back to javascript the data received as an array (json encoded)
+	        echo json_encode(array($fieldset.'_'.$field_key => $city2));
+	        wp_die(); // always use die() or wp_die() at the end to avoird errors
+	    }
+	}
+
+
+	public function update_city2_checkout_fields_values( $value, $input ) {
+	    $field_key = 'city2';
+	    // Get data from custom session variable
+	    $values = (array) WC()->session->get($field_key);
+
+	    if ( ! empty($values) ) {
+	        if ( 'billing_'.$field_key === $input ) {
+	            $value = $values['billing'];
+	        }
+	        if ( 'shipping_'.$field_key === $input ) {
+	            $value = isset($values['shipping']) ? $values['shipping'] : '';
+	        }
+	    }
+	    return $value;
+	}
+
+	public function add_city2_to_destination_shipping_package( $packages ) {
+	    $customer   = WC()->customer; // The WC_Customer Object
+
+	    // Get 'city2' data from customer meta data
+	    $main_key   = 'city2';
+	    $meta_value = $customer->get_meta('shipping_'.$main_key);
+	    $meta_value = empty($meta_value) ? $customer->get_meta('billing_'.$main_key) : $meta_value;
+
+	    // Get data from custom session variable
+	    $values = (array) WC()->session->get($main_key);
+
+	    if ( ! empty($values) ) {
+	        $session_value = isset($values['shipping']) ? $values['shipping'] : '';
+
+	        if ( $session_value === $meta_value ) {
+	            $session_value = $values['billing'];
+
+	            if ( $session_value !== $meta_value ) {
+	                $meta_value = $values['billing'];
+	            }
+	        } else {
+	            $meta_value = $session_value;
+	        }
+	    }
+
+	    // Loop through shipping packages
+	    foreach ( $packages as $key => $package ) {
+	        // Set to destination package the "city2"
+	        $packages[$key]['destination'][$main_key] = $meta_value;
+	    }
+	    return $packages;
+	}
+
+	public function remove_city2_custom_wc_session_variable() {
+	    // Remove the custom WC_Session variable
+	    WC()->session->__unset('city2');
+	}
+
+	public function set_district_to_wc_session() {
+	    $field_key = 'district';
+	    if ( isset($_POST[$field_key]) && isset($_POST['fieldset']) ){
+	        // Get data from custom session variable
+	        $values = (array) WC()->session->get($field_key);
+
+	        // Initializing when empty
+	        if( ! empty($values) ) {
+	            $values = array(
+	                'billing' => WC()->customer->get_meta('billing_'.$field_key),
+	                'shipping' => WC()->customer->get_meta('shipping_'.$field_key)
+	            );
+	        }
+
+	        // Sanitizing data sent
+	        $fieldset  = esc_attr($_POST['fieldset']);
+	        $district = sanitize_text_field($_POST[$field_key]);
+
+	        // Set / udpate custom WC_Session variable
+	        $values[$fieldset] = $district;
+	        WC()->session->set($field_key, wc_clean($values));
+
+	        // Send back to javascript the data received as an array (json encoded)
+	        echo json_encode(array($fieldset.'_'.$field_key => $district));
+	        wp_die(); // always use die() or wp_die() at the end to avoird errors
+	    }
+	}
+
+	public function update_district_checkout_fields_values( $value, $input ) {
+	    $field_key = 'district';
+
+	    // Get data from custom session variable
+	    $values = (array) WC()->session->get($field_key);
+
+	    if ( ! empty($values) ) {
+	        if ( 'billing_'.$field_key === $input ) {
+	            $value = $values['billing'];
+	        }
+	        if ( 'shipping_'.$field_key === $input ) {
+	            $value = isset($values['shipping']) ? $values['shipping'] : '';
+	        }
+	    }
+	    return $value;
+	}
+
+	public function add_district_to_destination_shipping_package( $packages ) {
+	    $customer   = WC()->customer; // The WC_Customer Object
+
+	    // Get 'district' data from customer meta data
+	    $main_key   = 'district';
+	    $meta_value = $customer->get_meta('shipping_'.$main_key);
+	    $meta_value = empty($meta_value) ? $customer->get_meta('billing_'.$main_key) : $meta_value;
+
+	    // Get data from custom session variable
+	    $values = (array) WC()->session->get($main_key);
+
+	    if ( ! empty($values) ) {
+	        $session_value = isset($values['shipping']) ? $values['shipping'] : '';
+
+	        if ( $session_value === $meta_value ) {
+	            $session_value = $values['billing'];
+
+	            if ( $session_value !== $meta_value ) {
+	                $meta_value = $values['billing'];
+	            }
+	        } else {
+	            $meta_value = $session_value;
+	        }
+	    }
+
+	    // Loop through shipping packages
+	    foreach ( $packages as $key => $package ) {
+	        // Set to destination package the "district"
+	        $packages[$key]['destination'][$main_key] = $meta_value;
+	    }
+	    return $packages;
+	}
+
+	public function remove_district_custom_wc_session_variable() {
+	    // Remove the custom WC_Session variable
+	    WC()->session->__unset('district');
+	}
+
 	/**
 	 * Custom checkout fields
 	 * Hook via woocommerce_checkout_fields
@@ -130,11 +460,11 @@ class Front {
 	        'class'		   	=> array( 'address-field', 'form-row-wide', 'hidden' ),
 	    );
 
-		// Change default address2 to district field
-	    $fields['billing']['billing_address_2'] = $fields['shipping']['shipping_address_2'] = array(
+	    // Add custom fields for district dropdown
+	    $fields['billing']['billing_district'] = $fields['shipping']['shipping_district'] = array(
 	        'label'     	=> __( 'District', 'scod-shipping' ),
 		    'type'			=> 'select',
-		    'required'  	=> false,
+		    'required'  	=> true,
 	    	'options'		=> array( '' => '' ),
 			'placeholder'	=> __( 'Select an option...', 'scod-shipping' ),
     		'class'     	=> array( 'form-row-wide', 'address-field', 'hidden' ),
@@ -151,12 +481,13 @@ class Front {
 	    $fields['billing']['billing_country']['priority'] 		= 4;
 	    $fields['billing']['billing_state']['priority'] 		= 5;
 	    $fields['billing']['billing_city']['priority'] 			= 6;
-	    $fields['billing']['billing_city2']['priority'] 		= 6;
-	    $fields['billing']['billing_address_2']['priority'] 	= 7;
-	    $fields['billing']['billing_address_1']['priority'] 	= 8;
-	    $fields['billing']['billing_postcode']['priority'] 		= 9;
-	    $fields['billing']['billing_email']['priority'] 		= 10;
-	    $fields['billing']['billing_phone']['priority'] 		= 11;
+	    $fields['billing']['billing_city2']['priority'] 		= 7;
+	    $fields['billing']['billing_district']['priority'] 		= 8;
+	    $fields['billing']['billing_address_2']['priority'] 	= 9;
+	    $fields['billing']['billing_address_1']['priority'] 	= 10;
+	    $fields['billing']['billing_postcode']['priority'] 		= 11;
+	    $fields['billing']['billing_email']['priority'] 		= 12;
+	    $fields['billing']['billing_phone']['priority'] 		= 13;
 
 	    $fields['shipping']['shipping_first_name']['priority'] 	= 1;
 	    $fields['shipping']['shipping_last_name']['priority'] 	= 2;
@@ -164,14 +495,16 @@ class Front {
 	    $fields['shipping']['shipping_country']['priority'] 	= 4;
 	    $fields['shipping']['shipping_state']['priority'] 		= 5;
 	    $fields['shipping']['shipping_city']['priority'] 		= 6;
-	    $fields['shipping']['shipping_city2']['priority'] 		= 6;
-	    $fields['shipping']['shipping_address_2']['priority'] 	= 7;
-	    $fields['shipping']['shipping_address_1']['priority'] 	= 8;
-	    $fields['shipping']['shipping_postcode']['priority'] 	= 9;
+	    $fields['shipping']['shipping_city2']['priority'] 		= 7;
+	    $fields['shipping']['shipping_district']['priority'] 	= 8;
+	    $fields['shipping']['shipping_address_2']['priority'] 	= 9;
+	    $fields['shipping']['shipping_address_1']['priority'] 	= 10;
+	    $fields['shipping']['shipping_postcode']['priority'] 	= 11;
 
 		return $fields;
 	}
 
+	
 	/**
 	 * Override checkout fields locale
 	 * Hook via woocommerce_default_address_fields
@@ -183,9 +516,32 @@ class Front {
 			return $fields;
 		}
 
+		// Custom fields for city
+		$fields['city2'] = array(
+	        'label'		  	=> $fields['city']['label'],
+		    'type'         	=> 'select',
+	        'required'     	=> true,
+	        'options'      	=> array( '' => '' ),
+	        'autocomplete' 	=> 'address-level2',
+			'placeholder'	=> __( 'Select an option...', 'scod-shipping' ),
+	        'class'		   	=> array( 'address-field', 'form-row-wide', 'hidden' ),
+	    );
+
+		// Custom field for District
+	    $fields['district'] = array(
+	        'label'     	=> __( 'District', 'scod-shipping' ),
+		    'type'			=> 'select',
+		    'required'  	=> true,
+	    	'options'		=> array( '' => '' ),
+			'placeholder'	=> __( 'Select an option...', 'scod-shipping' ),
+    		'class'     	=> array( 'form-row-wide', 'address-field', 'hidden' ),
+	    );
+
 		$fields['state']['priority'] 		= 5;
 	    $fields['city']['priority'] 		= 6;
+	    $fields['city2']['priority'] 		= 6;
 	    $fields['address_2']['priority'] 	= 7; //custom district
+	    $fields['district']['priority'] 	= 7;
 	    $fields['address_1']['priority'] 	= 8;
 	    $fields['postcode']['priority'] 	= 9;
 
