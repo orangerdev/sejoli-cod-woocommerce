@@ -98,6 +98,17 @@ class Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/scod-shipping-admin.js', array( 'jquery' ), $this->version, false );
+
+		wp_localize_script( $this->plugin_name, 'scod_admin_ajax', array(
+			'generate_airwaybill' => array(
+				'ajaxurl'	=> add_query_arg(array(
+						'action' => 'scods-generate-airwaybill'
+					), admin_url('admin-ajax.php')
+				),
+				'nonce'	=> wp_create_nonce('scods-generate-airwaybill')
+			)
+        ));
+
 	    wp_enqueue_script( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/3.4.8/select2.js', array( 'jquery' ), '1.0', true );
 	}
 

@@ -388,6 +388,41 @@ class SCOD {
 	}
 
 	/**
+     * API to create new order data.
+     *
+     * @since   1.0.0
+     *
+     * @return 	(array|WP_Error) The response array or a WP_Error on failure
+     */
+	public function post_update_order( $order_id, $status, $shipNumber ) {
+		error_log( 'Updating order data ..' );
+		try {
+
+			$this->endpoint 	= 'wp-json/scod/v1/orders/update/' . $order_id. '/' .$status. '/' .$shipNumber;
+			$this->method 		= 'PUT';
+			$this->body			= NULL;
+
+			$get_response 		= $this->do_request();
+
+			if ( ! is_wp_error( $get_response ) ) :
+
+				$body = json_decode( $get_response['body'] );
+				// echo "uhuy"; print_r($body); exit;
+				if( isset( $body->data->status ) && ( $body->data->status != 200 ) ) :
+					return new \WP_Error( 'invalid_api_response', $body->message );
+				endif;
+
+				return $body;
+			else :
+				return $get_response;
+			endif;
+
+		} catch ( Exception $e ) {
+			return new \WP_Error( 'invalid_api_response', wp_sprintf( __( '<strong>Error from SCOD API</strong>: %s', 'scod-shipping' ), $e->getMessage() ) );
+		}
+	}
+
+	/**
      * Check response from api to determine if request is successful
      *
      * @since   1.0.0

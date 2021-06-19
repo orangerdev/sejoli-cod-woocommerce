@@ -223,4 +223,87 @@ class JNE extends \SCOD_Shipping\API {
 		}
 	}
 
+	/**
+     * Get airway bill or number resi data from JNE API
+     *
+     * @since   1.0.0
+     *
+     * @param 	$origin 		jne origin code
+     * @param 	$destination 	jne destination code
+     * @param 	$weight			weight of goods in Kg
+     *
+     * @return 	(array|WP_Error) The response array or a WP_Error on failure
+     */
+	public function get_airwaybill( int $order_id, string $shipper_name, string $shipper_addr1, string $shipper_addr2, string $shipper_city, int $shipper_zip, string $shipper_phone, string $receiver_name , string $receiver_addr1, string $receiver_addr2, string $receiver_city, int $receiver_zip, string $receiver_phone, int $qty, int $weight, string $goodsdesc, int $goodsvalue, int $goodstype, string $origin, string $destination, string $service, int $codamount ) {
+
+		try {
+
+			self::$endpoint 	= 'http://apiv2.jne.co.id:10102/tracing/api/generatecnote';
+			self::$method 		= 'POST';
+			self::$body 		= array_merge( self::$body, [
+				'OLSHOP_BRANCH'			=> 'CGK000',
+				'OLSHOP_CUST'			=> '10950700',
+				'OLSHOP_ORDERID'		=> $order_id,
+				'OLSHOP_SHIPPER_NAME'	=> $shipper_name,
+				'OLSHOP_SHIPPER_ADDR1'	=> $shipper_addr1,
+				'OLSHOP_SHIPPER_ADDR2'	=> $shipper_addr2,
+				'OLSHOP_SHIPPER_ADDR3'	=> null,
+				'OLSHOP_SHIPPER_CITY'	=> $shipper_city,
+				'OLSHOP_SHIPPER_REGION'	=> null,
+				'OLSHOP_SHIPPER_ZIP'	=> $shipper_zip,
+				'OLSHOP_SHIPPER_PHONE'	=> $shipper_phone,
+				'OLSHOP_RECEIVER_NAME'	=> $receiver_name,
+				'OLSHOP_RECEIVER_ADDR1'	=> $receiver_addr1,
+				'OLSHOP_RECEIVER_ADDR2'	=> $receiver_addr2,
+				'OLSHOP_RECEIVER_ADDR3'	=> null,
+				'OLSHOP_RECEIVER_CITY'	=> $receiver_city,
+				'OLSHOP_RECEIVER_REGION'=> null,
+				'OLSHOP_RECEIVER_ZIP'	=> $receiver_zip,
+				'OLSHOP_RECEIVER_PHONE'	=> $receiver_phone,
+				'OLSHOP_QTY'			=> $qty,
+				'OLSHOP_WEIGHT'			=> $weight,
+				'OLSHOP_GOODSDESC'		=> $goodsdesc,
+				'OLSHOP_GOODSVALUE'		=> $goodsvalue,
+				'OLSHOP_GOODSTYPE'		=> $goodstype,
+				'OLSHOP_INST'			=> null,
+				'OLSHOP_INS_FLAG'		=> 'N',
+				'OLSHOP_ORIG'			=> $origin,
+				'OLSHOP_DEST'			=> $destination,
+				'OLSHOP_SERVICE'		=> $service,
+				'OLSHOP_COD_FLAG'		=> 'YES',
+				'OLSHOP_COD_AMOUNT'		=> $codamount
+			]);
+
+			$get_response = self::do_request();
+
+			if ( ! is_wp_error( $get_response ) ) :
+
+				if ( self::verify_response_code( $get_response ) ) :
+
+					if( $data = self::get_valid_body_object( $get_response ) ) :
+
+						if( isset( $data->detail ) ) {
+
+							return $data->detail;
+						}
+
+						return new \WP_Error( 'invalid_api_response', 'Invalid airwaybill data.' );
+						
+					else:
+						return new \WP_Error( 'invalid_api_response', 'Invalid response body.' );
+					endif;
+
+				else :
+					return new \WP_Error( 'invalid_api_response', 'Invalid response code.' );
+				endif;
+
+			else :
+				return new \WP_Error( 'invalid_api_response', 'Invalid response.' );
+			endif;
+
+		} catch ( Exception $e ) {
+			return new \WP_Error( 'invalid_api_response', wp_sprintf( __( '<strong>Error from JNE API</strong>: %s', 'scod-shipping' ), $e->getMessage() ) );
+		}
+	}
+
 }

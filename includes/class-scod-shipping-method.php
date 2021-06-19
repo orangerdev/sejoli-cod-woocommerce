@@ -306,6 +306,7 @@ function scod_shipping_init() {
 			}
 
 			$origin = JNE_Origin::find( $origin_option );
+
 			if( ! $origin ) {
 				return false;
 			}
@@ -359,22 +360,61 @@ function scod_shipping_init() {
 
 			$get_dest = DB::table( (new JNE_Destination)->getTableName() );
 
-			if( empty( $location_data['city'] ) ) {
-				$get_dest = $get_dest->whereNull( 'city_id' );
-			} else {
-				$get_dest = $get_dest->where( 'city_id', $location_data['city']->ID );
-			}
+			// if( empty( $location_data['city'] ) ) {
+			// 	$get_dest = $get_dest->whereNull( 'city_id' );
+			// } else {
+			// 	$get_dest = $get_dest->where( 'city_id', $location_data['city']->ID );
+			// }
+
+			// if( empty( $location_data['district'] ) ) {
+			// 	$get_dest = $get_dest->whereNull( 'district_id' );
+			// } else {
+			// 	$get_dest = $get_dest->where( 'district_id', $location_data['district']->ID );
+			// }
+
+			// if( empty( $location_data['city'] ) ) {
+			// 	$get_dest = $get_dest->whereNull( 'city_name' );
+			// } else {
+			// 	$get_dest = $get_dest->Where('city_name', 'like', '%' . $location_data['city']->name);
+			// }
 
 			if( empty( $location_data['district'] ) ) {
-				$get_dest = $get_dest->whereNull( 'district_id' );
+				$get_dest = $get_dest->whereNull( 'district_name' );
 			} else {
-				$get_dest = $get_dest->where( 'district_id', $location_data['district']->ID );
+				$get_dest = $get_dest->Where('district_name', 'like', '%' . strtoupper($location_data['district']->name));
 			}
+			
+			// $file = SCOD_SHIPPING_DIR . 'database/jne/data/jne_destination.json';
+			// $data = file_get_contents( $file ); 
+	  //       $jsonData = json_decode($data);
 
+	  //       $getDistrictName = strtoupper($location_data['district']->name);
+
+	  //       $datades = null;
+	  //       foreach( $jsonData as $id => $row ) {
+	  //       	if ($getDistrictName == $row->district_name) {
+		 //            $datades = array(
+		 //                'ID'            => $row->ID,
+		 //                'city_id'       => $row->city_id,
+		 //                'district_id'   => $row->district_id,
+		 //                'city_name'     => $row->city_name,
+		 //                'district_name' => $row->district_name,
+		 //                'code'          => $row->code
+		 //            );
+	  //       	}
+	  //       }
+			
+			// if($datades == null){
+			// 	$getDestination = $datades;	
+			// } else {
+			// 	$getDestination = (object)$datades;	
+			// }
+
+			// if( $destination = $getDestination ) {
 			if( $destination = $get_dest->first() ) {
 				return $destination;
 			}
-
+			
 			return false;
 		}
 
@@ -452,15 +492,18 @@ function scod_shipping_init() {
 	     * @return 	boolean|rate returns false if fail, add rate to wc if available
 	     */
 	    public function calculate_shipping( $package = array() ) {
-	    	// error_log( __METHOD__ . ' package '. print_r( $package, true ) );
 
 			$origin = $this->get_origin_info();
+			$destination = $this->get_destination_info( $package['destination'] );
+
+			echo "uhuy";
+			print_r($destination);
+			echo "ahay";
+			print_r($origin);
 
 			if( ! $origin ) {
 	        	return false;
 	        }
-
-			$destination = $this->get_destination_info( $package['destination'] );
 
 			if( ! $destination ) {
 	        	return false;

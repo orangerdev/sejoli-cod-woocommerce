@@ -231,7 +231,10 @@ class SCOD_Shipping {
 		$this->loader->add_action( 'wp_enqueue_scripts', 						$public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', 						$public, 'enqueue_scripts' );
 		if( !is_admin() ){
-		$this->loader->add_filter( 'woocommerce_states', 						$public, 'checkout_state_dropdown' );
+			$this->loader->add_filter( 'woocommerce_states', 						$public, 'checkout_state_dropdown' );
+
+			// Custom Shipping Number Meta Box
+			$this->loader->add_action( 'woocommerce_order_details_after_order_table', $public, 'display_sejoli_shipping_number_in_order_view', 10, 1 );
 		}
 		$this->loader->add_filter( 'woocommerce_checkout_fields', 				$public, 'scod_checkout_fields' );
 		$this->loader->add_filter( 'woocommerce_default_address_fields', 		$public, 'override_locale_fields' );
@@ -244,6 +247,51 @@ class SCOD_Shipping {
 		$this->loader->add_action( 'wp_ajax_scods-get-district-by-city', 		$public, 'get_district_by_city',	1);
 		$this->loader->add_action( 'wp_ajax_nopriv_scods-get-district-by-city',	$public, 'get_district_by_city',	1);
 		$this->loader->add_action( 'woocommerce_thankyou',						$public, 'send_order_data_to_api',	10, 1 );
+		
+		$this->loader->add_filter( 'woocommerce_order_formatted_billing_address' , $public, 'woo_custom_order_formatted_billing_address', 10, 2 );
+		$this->loader->add_filter( 'woocommerce_order_formatted_shipping_address' , $public, 'woo_custom_order_formatted_shipping_address', 10, 2 );
+
+		$this->loader->add_filter( 'woocommerce_my_account_my_address_formatted_address', $public, 'filter_woocommerce_my_account_my_address_formatted_address', 10, 3 ); 
+
+		// Add New Package Destination Woocommerce
+		$this->loader->add_action( 'wp_footer', $public, 'checkout_send_custom_package_via_ajax_js' );
+		$this->loader->add_action( 'wp_ajax_city2', $public, 'set_city2_to_wc_session' );
+		$this->loader->add_action( 'wp_ajax_nopriv_city2', $public, 'set_city2_to_wc_session' );
+		$this->loader->add_filter( 'woocommerce_checkout_get_value', $public, 'update_city2_checkout_fields_values', 10, 2 );
+		$this->loader->add_filter( 'woocommerce_cart_shipping_packages', $public, 'add_city2_to_destination_shipping_package' );
+		$this->loader->add_action( 'woocommerce_checkout_order_created', $public, 'remove_city2_custom_wc_session_variable' );
+		$this->loader->add_action( 'wp_ajax_district', $public, 'set_district_to_wc_session' );
+		$this->loader->add_action( 'wp_ajax_nopriv_district', $public, 'set_district_to_wc_session' );
+		$this->loader->add_filter( 'woocommerce_checkout_get_value', $public, 'update_district_checkout_fields_values', 10, 2 );
+		$this->loader->add_filter( 'woocommerce_cart_shipping_packages', $public, 'add_district_to_destination_shipping_package' );
+		$this->loader->add_action( 'woocommerce_checkout_order_created', $public, 'remove_district_custom_wc_session_variable' );
+
+		if( is_admin() ){
+			// Custom Order Status Woocommerce
+			$this->loader->add_filter( 'wc_order_statuses', $public, 'add_custom_order_statuses' );
+
+			// Disable Calculate Shipping Field
+			add_filter( 'woocommerce_shipping_calculator_enable_country', '__return_true' );
+			add_filter( 'woocommerce_shipping_calculator_enable_city', '__return_false' );
+			add_filter( 'woocommerce_shipping_calculator_enable_state', '__return_false' );
+			add_filter( 'woocommerce_shipping_calculator_enable_postcode', '__return_false' );
+
+			// Requesting Pickup
+			$this->loader->add_action( 'woocommerce_order_status_pickup-shipping', $public, 'add_actions_processing_pickup_order');
+
+			// Requesting In-Shipping
+			$this->loader->add_action( 'woocommerce_order_status_in-shipping', $public, 'add_actions_processing_in_shipping_order');
+
+			// Custom Order Meta Box
+			// https://stackoverflow.com/questions/37772912/woocommerce-add-custom-metabox-to-admin-order-page
+			$this->loader->add_action( 'add_meta_boxes', $public, 'add_order_shipping_number_meta_boxes' );
+			$this->loader->add_action( 'save_post', $public, 'save_wc_order_shipping_number_fields', 10, 1 );
+			$this->loader->add_action( 'woocommerce_admin_order_data_after_billing_address', $public, 'shipping_number_field_display_admin_order_meta', 10, 1 );
+
+			// Ajax Generate Airwaybill
+			$this->loader->add_action( 'wp_ajax_scods-generate-airwaybill', 		$public, 'generate_airwaybill',		1);
+			$this->loader->add_action( 'wp_ajax_nopriv_scods-generate-airwaybill',	$public, 'generate_airwaybill',		1);
+		}
 	}
 
 	/**
