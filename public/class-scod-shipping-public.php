@@ -116,11 +116,19 @@ class Front {
 	 * @since    1.0.0
 	 */
 	public function woo_custom_order_formatted_shipping_address( $address , $order_id) {
+<<<<<<< HEAD
 		$order 				 	 = wc_get_order( $order_id );
 		$order_id  				 = $order->get_id(); // Get the order ID
 		$order_data 			 = $order->get_data(); // The Order data
 		$order_shipping_state 	 = $order_data['shipping']['state'];
 		$order_shipping_city 	 = $order_data['shipping']['city'];
+=======
+		$order = wc_get_order( $order_id );
+		$order_id  = $order->get_id(); // Get the order ID
+		$order_data = $order->get_data(); // The Order data
+		$order_shipping_state = $order_data['shipping']['state'];
+		$order_shipping_city = $order_data['shipping']['city'];
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 		$order_shipping_district = $order_data['shipping']['address_2'];
 
 		$getStatesName = DB::table( 'scod_shipping_state' )
@@ -132,6 +140,7 @@ class Front {
         $getDistrictName = DB::table( 'scod_shipping_district' )
                 ->where( 'ID', $order_shipping_district )
                 ->get();
+<<<<<<< HEAD
 
 	    $address = array(
 	        'first_name' => $order_data['shipping']['first_name'],
@@ -143,6 +152,18 @@ class Front {
 	        'state'      => isset($getStatesName[0]->name) ? $getStatesName[0]->name : $order_data['shipping']['state'],
 	        'postcode'   => $order_data['shipping']['postcode'],
 	        'country'    => $order_data['shipping']['country']
+=======
+	    $address = array(
+	        'first_name'    => $order_data['shipping']['first_name'],
+	        'last_name'     => $order_data['shipping']['last_name'],
+	        'company'       => $order_data['shipping']['company'],
+	        'address_1'     => $order_data['shipping']['address_1'],
+	        'address_2'     => isset($getDistrictName[0]->name) ? $getDistrictName[0]->name : $order_data['shipping']['address_2'],
+	        'city'          => isset($getCityName[0]->name) ? $getCityName[0]->name : $order_data['shipping']['city'],
+	        'state'         => isset($getStatesName[0]->name) ? $getStatesName[0]->name : $order_data['shipping']['state'],
+	        'postcode'      => $order_data['shipping']['postcode'],
+	        'country'       => $order_data['shipping']['country']
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 	    );
 
 	    return $address;
@@ -154,11 +175,19 @@ class Front {
 	 * @since    1.0.0
 	 */
 	public function woo_custom_order_formatted_billing_address( $address, $order_id ) {
+<<<<<<< HEAD
 		$order 				 	= wc_get_order( $order_id );
 		$order_id  			 	= $order->get_id(); // Get the order ID
 		$order_data 		 	= $order->get_data(); // The Order data
 		$order_billing_state 	= $order_data['billing']['state'];
 		$order_billing_city 	= $order_data['billing']['city'];
+=======
+		$order = wc_get_order( $order_id );
+		$order_id  = $order->get_id(); // Get the order ID
+		$order_data = $order->get_data(); // The Order data
+		$order_billing_state = $order_data['billing']['state'];
+		$order_billing_city = $order_data['billing']['city'];
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 		$order_billing_district = $order_data['billing']['address_2'];
 
 		$getStatesName = DB::table( 'scod_shipping_state' )
@@ -170,6 +199,7 @@ class Front {
         $getDistrictName = DB::table( 'scod_shipping_district' )
                 ->where( 'ID', $order_billing_district )
                 ->get();
+<<<<<<< HEAD
 
 	    $address = array(
 	        'first_name' => $order_data['billing']['first_name'],
@@ -181,6 +211,18 @@ class Front {
 	        'state'      => isset($getStatesName[0]->name) ? $getStatesName[0]->name : $order_data['billing']['state'],
 	        'postcode'   => $order_data['billing']['postcode'],
 	        'country'    => $order_data['billing']['country']
+=======
+	    $address = array(
+	        'first_name'    => $order_data['billing']['first_name'],
+	        'last_name'     => $order_data['billing']['last_name'],
+	        'company'       => $order_data['billing']['company'],
+	        'address_1'     => $order_data['billing']['address_1'],
+	        'address_2'     => isset($getDistrictName[0]->name) ? $getDistrictName[0]->name : $order_data['billing']['address_2'] ,
+	        'city'          => isset($getCityName[0]->name) ? $getCityName[0]->name : $order_data['billing']['city'],
+	        'state'         => isset($getStatesName[0]->name) ? $getStatesName[0]->name : $order_data['billing']['state'],
+	        'postcode'      => $order_data['billing']['postcode'],
+	        'country'       => $order_data['billing']['country']
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 	    );
 
 	    return $address;
@@ -192,8 +234,13 @@ class Front {
 	 * @since    1.0.0
 	 */
 	public function filter_woocommerce_my_account_my_address_formatted_address( $address, $customer_id, $name ) {
+<<<<<<< HEAD
 		$order_billing_state 	= get_user_meta($customer_id, $name . '_state', true);
 		$order_billing_city 	= get_user_meta($customer_id, $name . '_city', true);
+=======
+		$order_billing_state = get_user_meta($customer_id, $name . '_state', true);
+		$order_billing_city = get_user_meta($customer_id, $name . '_city', true);
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 		$order_billing_district = get_user_meta($customer_id, $name . '_address_2', true);
 
 		$getStatesName = DB::table( 'scod_shipping_state' )
@@ -208,6 +255,7 @@ class Front {
 
 	    $address = array( 
 	    	'first_name' => get_user_meta($customer_id, $name . '_first_name', true), 
+<<<<<<< HEAD
 	    	'last_name'  => get_user_meta($customer_id, $name . '_last_name', true), 
 	    	'company' 	 => get_user_meta($customer_id, $name . '_company', true), 
 	    	'address_1'  => get_user_meta($customer_id, $name . '_address_1', true), 
@@ -218,6 +266,17 @@ class Front {
 	    	'country' 	 => get_user_meta($customer_id, $name . '_country', true) 
 	    );
 
+=======
+	    	'last_name' => get_user_meta($customer_id, $name . '_last_name', true), 
+	    	'company' => get_user_meta($customer_id, $name . '_company', true), 
+	    	'address_1' => get_user_meta($customer_id, $name . '_address_1', true), 
+	    	'address_2' => isset($getDistrictName[0]->name) ? $getDistrictName[0]->name : get_user_meta($customer_id, $name . '_address_2', true), 
+	    	'city' => isset($getCityName[0]->name) ? $getCityName[0]->name : get_user_meta($customer_id, $name . '_city', true), 
+	    	'state' => isset($getStateName[0]->name) ? $getStateName[0]->name : get_user_meta($customer_id, $name . '_state', true), 
+	    	'postcode' => get_user_meta($customer_id, $name . '_postcode', true), 
+	    	'country' => get_user_meta($customer_id, $name . '_country', true) 
+	    );
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 	    return $address; 
 	}
 
@@ -228,8 +287,12 @@ class Front {
 	 */
 	public function checkout_send_custom_package_via_ajax_js() {
 	    if ( is_checkout() && ! is_wc_endpoint_url() ) :
+<<<<<<< HEAD
 	    ?>
 		<script type="text/javascript">
+=======
+	    ?><script type="text/javascript">
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 	    jQuery( function($){
 	        if (typeof wc_checkout_params === 'undefined')
 	            return false;
@@ -311,14 +374,23 @@ class Front {
 	        // Initializing when empty
 	        if( ! empty($values) ) {
 	            $values = array(
+<<<<<<< HEAD
 	                'billing'  => WC()->customer->get_meta('billing_'.$field_key),
+=======
+	                'billing' => WC()->customer->get_meta('billing_'.$field_key),
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 	                'shipping' => WC()->customer->get_meta('shipping_'.$field_key)
 	            );
 	        }
 
 	        // Sanitizing data sent
+<<<<<<< HEAD
 	        $fieldset = esc_attr($_POST['fieldset']);
 	        $city2 	  = sanitize_text_field($_POST[$field_key]);
+=======
+	        $fieldset  = esc_attr($_POST['fieldset']);
+	        $city2 = sanitize_text_field($_POST[$field_key]);
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 
 	        // Set / udpate custom WC_Session variable
 	        $values[$fieldset] = $city2;
@@ -337,7 +409,10 @@ class Front {
 	 */
 	public function update_city2_checkout_fields_values( $value, $input ) {
 	    $field_key = 'city2';
+<<<<<<< HEAD
 
+=======
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 	    // Get data from custom session variable
 	    $values = (array) WC()->session->get($field_key);
 
@@ -370,6 +445,10 @@ class Front {
 
 	    if ( ! empty($values) ) {
 	        $session_value = isset($values['shipping']) ? $values['shipping'] : '';
+<<<<<<< HEAD
+=======
+
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 	        if ( $session_value === $meta_value ) {
 	            $session_value = $values['billing'];
 
@@ -413,13 +492,21 @@ class Front {
 	        // Initializing when empty
 	        if( ! empty($values) ) {
 	            $values = array(
+<<<<<<< HEAD
 	                'billing'  => WC()->customer->get_meta('billing_'.$field_key),
+=======
+	                'billing' => WC()->customer->get_meta('billing_'.$field_key),
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 	                'shipping' => WC()->customer->get_meta('shipping_'.$field_key)
 	            );
 	        }
 
 	        // Sanitizing data sent
+<<<<<<< HEAD
 	        $fieldset = esc_attr($_POST['fieldset']);
+=======
+	        $fieldset  = esc_attr($_POST['fieldset']);
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 	        $district = sanitize_text_field($_POST[$field_key]);
 
 	        // Set / udpate custom WC_Session variable
@@ -502,6 +589,135 @@ class Front {
 	    WC()->session->__unset('district');
 	}
 
+<<<<<<< HEAD
+=======
+	/**
+	 * Custom Order Status
+	 * Hook via wc_order_statuses
+	 * @since    1.0.0
+	 */
+	// Add to list of WC Order statuses
+	public function add_custom_order_statuses( $order_statuses ) {
+	    $new_order_statuses = array();
+	 
+	    // add new order status after processing
+	    foreach ( $order_statuses as $key => $status ) {
+	        $new_order_statuses[ $key ] = $status;
+
+	        if ( 'wc-processing' === $key ) {
+	        	$new_order_statuses['wc-pickup-shipping'] = __( 'Pickup', 'scod-shipping' );
+	            $new_order_statuses['wc-in-shipping'] = __( 'In-Shipping', 'scod-shipping' );
+	        }
+	    }
+	 
+	    return $new_order_statuses;
+	}
+
+	/**
+	 * Add Shipping Number Meta Box in Order Detail Admin
+	 * Hook via add_meta_boxes
+	 * @since    1.0.0
+	 */
+	// Adding Meta container admin shop_order pages
+    public function add_order_shipping_number_meta_boxes()
+    {
+        add_meta_box(
+	       'sejoli_shipping_number',
+	       __('Shipping Number', 'scod-shipping'),
+	       array( $this, 'add_other_fields_for_shipping_number' ),
+	       'shop_order',
+	       'side',
+	       'core'
+	   	);
+    }
+
+    /**
+	 * Add Shipping Number Field Meta Box Container in Order Detail Side Admin
+	 * @since    1.0.0
+	 */
+    // Adding Meta field in the meta container admin shop_order pages
+    public function add_other_fields_for_shipping_number($post)
+    {
+	    $value = get_post_meta( $post->ID, '_sejoli_shipping_number', true );
+	    $text = ! empty( $value ) ? esc_attr( $value ) : '';
+	    echo '<input type="text" readonly class="input-text" name="sejoli_shipping_number" id="sejoli_shipping_number" value="' . $text . '" style="width:100%" />';
+	    echo '<input type="hidden" name="sejoli_shipping_number_nonce" value="' . wp_create_nonce() . '">';
+
+	    $order = wc_get_order( $post->ID );
+	    $order_status  = $order->get_status();
+	   	if ($order_status == 'pickup-shipping') {
+	   		echo '<a href="#" 
+	   		data-id="'.$post->ID.'"
+	   		data-shipper-name="Zakky"
+	   		data-shipper-addr1="JL Rusa 2"
+	   		data-shipper-addr2="Cibodas"
+	   		data-shipper-city="Jakarta"
+	   		data-shipper-zip="15189"
+	   		data-shipper-phone="+628569082338"
+	   		data-receiver-name="Isti"
+	   		data-receiver-addr1="JL Darmawangsa"
+	   		data-receiver-addr2="Arcamanik"
+	   		data-receiver-city="Kota Bandung"
+	   		data-receiver-zip="14465"
+	   		data-receiver-phone="+628569082338"
+	   		data-qty="1"
+	   		data-weight="1"
+	   		data-goodsdesc="TEST"
+	   		data-goodsvalue="1000"
+	   		data-goodstype="1"
+	   		data-origin="CGK10000"
+	   		data-destination="BDO10000"
+	   		data-service="REG"
+	   		data-codamount="11000"
+	   		class="generate-airwaybill">Generate Number Resi</a>';
+	   	}
+
+	   	// $origin_option = $this->get_option( 'shipping_origin' );
+		// $origin = JNE_Origin::find( $origin_option );
+		// print_r($origin);
+
+	   	// print_r($order);
+	   	
+	   	// $shipping_method = new Shipping_Method();
+		// $get_origin = $shipping_method->get_origin_info();
+	   	
+	   	// print_r($get_origin);
+    }
+
+    /**
+	 * Save Custom Meta Box Shipping Number Field
+	 * Hook via save_post
+	 * @since    1.0.0
+	 */
+    // Save the data of the Meta field
+    public function save_wc_order_shipping_number_fields( $post_id ) {
+	    // Only for shop order
+	    if ( 'shop_order' != $_POST[ 'post_type' ] )
+	        return $post_id;
+
+	    // Check if our nonce is set (and our cutom field)
+	    if ( ! isset( $_POST[ 'sejoli_shipping_number_nonce' ] ) && isset( $_POST['sejoli_shipping_number'] ) )
+	        return $post_id;
+
+	    $nonce = $_POST[ 'sejoli_shipping_number_nonce' ];
+
+	    // Verify that the nonce is valid.
+	    if ( ! wp_verify_nonce( $nonce ) )
+	        return $post_id;
+
+	    // Checking that is not an autosave
+	    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+	        return $post_id;
+
+	    // Check the user’s permissions (for 'shop_manager' and 'administrator' user roles)
+	    if ( ! current_user_can( 'edit_shop_order', $post_id ) && ! current_user_can( 'edit_shop_orders', $post_id ) )
+	        return $post_id;
+
+	    // Saving the data
+	    update_post_meta( $post_id, '_sejoli_shipping_number', sanitize_text_field( $_POST[ 'sejoli_shipping_number' ] ) );
+    }
+
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
     /**
 	 * Display Custom Shipping Number Meta Box Value on the My Account View Order Detail
 	 * Hook via woocommerce_order_details_after_order_table
@@ -512,6 +728,7 @@ class Front {
 	{
 	    $shipping_number = get_post_meta( $order->get_id(), '_sejoli_shipping_number', true );
 	    if ( ! empty( $shipping_number ) ) {
+<<<<<<< HEAD
 	        // echo '<p><strong>'. __("Shipping Number", "scod-shipping").':</strong><mark class="order-status">' . get_post_meta( $order->get_id(), '_sejoli_shipping_number', true ) . '</mark></p>';
 	        echo '<h2 class="woocommerce-order-details__title">'. __("Shipping Information", "scod-shipping").'</h2>';
 	        
@@ -562,6 +779,22 @@ class Front {
 				   	echo '</tr>';
 			   	}
 			   	echo '</table>';
+=======
+	        echo '<p><strong>'. __("Shipping Number", "scod-shipping").':</strong><mark class="order-status">' . get_post_meta( $order->get_id(), '_sejoli_shipping_number', true ) . '</mark></p>';
+	    }
+	}
+
+	/**
+	 * Display Custom Shipping Number Meta Box Value on the Order Edit Page Admin
+	 * Hook via woocommerce_admin_order_data_after_billing_address
+	 * @since    1.0.0
+	 */
+	// Display field value on the order edit page (not in custom fields metabox)
+	public function shipping_number_field_display_admin_order_meta($order){
+	    $shipping_number = get_post_meta( $order->get_id(), '_sejoli_shipping_number', true );
+	    if ( ! empty( $shipping_number ) ) {
+	        echo '<p><strong>'. __("Shipping Number", "scod-shipping").':</strong><mark class="order-status">' . get_post_meta( $order->get_id(), '_sejoli_shipping_number', true ) . '</mark></p>';
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 	    }
 	}
 
@@ -588,12 +821,21 @@ class Front {
 
 	    // Add custom fields for district dropdown
 	    $fields['billing']['billing_district'] = $fields['shipping']['shipping_district'] = array(
+<<<<<<< HEAD
 	        'label'       => __( 'District', 'scod-shipping' ),
 		    'type'		  => 'select',
 		    'required'    => true,
 	    	'options'	  => array( '' => '' ),
 			'placeholder' => __( 'Select an option...', 'scod-shipping' ),
     		'class'       => array( 'form-row-wide', 'address-field', 'hidden' ),
+=======
+	        'label'     	=> __( 'District', 'scod-shipping' ),
+		    'type'			=> 'select',
+		    'required'  	=> true,
+	    	'options'		=> array( '' => '' ),
+			'placeholder'	=> __( 'Select an option...', 'scod-shipping' ),
+    		'class'     	=> array( 'form-row-wide', 'address-field', 'hidden' ),
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 	    );
 
 		// Disabled default country select to prevent conflict with wc dynamic fields.
@@ -601,6 +843,7 @@ class Front {
 		$fields['shipping']['shipping_country']['custom_attributes'] = array( 'disabled' => 'disabled' );
 
 	    // Sort fields
+<<<<<<< HEAD
 	    $fields['billing']['billing_first_name']['priority']  = 1;
 	    $fields['billing']['billing_last_name']['priority']   = 2;
 	    $fields['billing']['billing_company']['priority'] 	  = 3;
@@ -626,6 +869,33 @@ class Front {
 	    $fields['shipping']['shipping_address_2']['priority']  = 9;
 	    $fields['shipping']['shipping_address_1']['priority']  = 10;
 	    $fields['shipping']['shipping_postcode']['priority']   = 11;
+=======
+	    $fields['billing']['billing_first_name']['priority'] 	= 1;
+	    $fields['billing']['billing_last_name']['priority'] 	= 2;
+	    $fields['billing']['billing_company']['priority'] 		= 3;
+	    $fields['billing']['billing_country']['priority'] 		= 4;
+	    $fields['billing']['billing_state']['priority'] 		= 5;
+	    $fields['billing']['billing_city']['priority'] 			= 6;
+	    $fields['billing']['billing_city2']['priority'] 		= 7;
+	    $fields['billing']['billing_district']['priority'] 		= 8;
+	    $fields['billing']['billing_address_2']['priority'] 	= 9;
+	    $fields['billing']['billing_address_1']['priority'] 	= 10;
+	    $fields['billing']['billing_postcode']['priority'] 		= 11;
+	    $fields['billing']['billing_email']['priority'] 		= 12;
+	    $fields['billing']['billing_phone']['priority'] 		= 13;
+
+	    $fields['shipping']['shipping_first_name']['priority'] 	= 1;
+	    $fields['shipping']['shipping_last_name']['priority'] 	= 2;
+	    $fields['shipping']['shipping_company']['priority'] 	= 3;
+	    $fields['shipping']['shipping_country']['priority'] 	= 4;
+	    $fields['shipping']['shipping_state']['priority'] 		= 5;
+	    $fields['shipping']['shipping_city']['priority'] 		= 6;
+	    $fields['shipping']['shipping_city2']['priority'] 		= 7;
+	    $fields['shipping']['shipping_district']['priority'] 	= 8;
+	    $fields['shipping']['shipping_address_2']['priority'] 	= 9;
+	    $fields['shipping']['shipping_address_1']['priority'] 	= 10;
+	    $fields['shipping']['shipping_postcode']['priority'] 	= 11;
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 
 		return $fields;
 	}
@@ -643,6 +913,7 @@ class Front {
 
 		// Custom fields for city
 		$fields['city2'] = array(
+<<<<<<< HEAD
 	        'label'		   => $fields['city']['label'],
 		    'type'         => 'select',
 	        'required'     => true,
@@ -650,10 +921,20 @@ class Front {
 	        'autocomplete' => 'address-level2',
 			'placeholder'  => __( 'Select an option...', 'scod-shipping' ),
 	        'class'		   => array( 'address-field', 'form-row-wide', 'hidden' ),
+=======
+	        'label'		  	=> $fields['city']['label'],
+		    'type'         	=> 'select',
+	        'required'     	=> true,
+	        'options'      	=> array( '' => '' ),
+	        'autocomplete' 	=> 'address-level2',
+			'placeholder'	=> __( 'Select an option...', 'scod-shipping' ),
+	        'class'		   	=> array( 'address-field', 'form-row-wide', 'hidden' ),
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 	    );
 
 		// Custom field for District
 	    $fields['district'] = array(
+<<<<<<< HEAD
 	        'label'        => __( 'District', 'scod-shipping' ),
 		    'type'		   => 'select',
 		    'required'     => true,
@@ -669,6 +950,23 @@ class Front {
 	    $fields['district']['priority']  = 7;
 	    $fields['address_1']['priority'] = 8;
 	    $fields['postcode']['priority']  = 9;
+=======
+	        'label'     	=> __( 'District', 'scod-shipping' ),
+		    'type'			=> 'select',
+		    'required'  	=> true,
+	    	'options'		=> array( '' => '' ),
+			'placeholder'	=> __( 'Select an option...', 'scod-shipping' ),
+    		'class'     	=> array( 'form-row-wide', 'address-field', 'hidden' ),
+	    );
+
+		$fields['state']['priority'] 		= 5;
+	    $fields['city']['priority'] 		= 6;
+	    $fields['city2']['priority'] 		= 6;
+	    $fields['address_2']['priority'] 	= 7; //custom district
+	    $fields['district']['priority'] 	= 7;
+	    $fields['address_1']['priority'] 	= 8;
+	    $fields['postcode']['priority'] 	= 9;
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 
 	    return $fields;
 	}
@@ -852,6 +1150,7 @@ class Front {
 
 			// Default params
 			$order_params = array(
+<<<<<<< HEAD
 				'store_id'		  => $store_id,
 				'secret_key'	  => $store_secret_key,
 				'buyer_name'	  => $order->get_billing_first_name() .' '. $order->get_billing_last_name(),
@@ -864,6 +1163,20 @@ class Front {
 				'shipping_status' => 'pending',
 				'notes'			  => $order->get_customer_note(),
 				'order'			  => $order
+=======
+				'store_id'			=> $store_id,
+				'secret_key'		=> $store_secret_key,
+				'buyer_name'		=> $order->get_billing_first_name() .' '. $order->get_billing_last_name(),
+				'buyer_email'		=> $order->get_billing_email(),
+				'buyer_phone'		=> $order->get_billing_phone(),
+				'courier_name'		=> $courier_name,
+				'invoice_number'	=> $order->get_order_number(),
+				'invoice_total' 	=> $order->get_total(),
+				'shipping_fee'		=> $order->get_total_shipping(),
+				'shipping_status'	=> 'pending',
+				'notes'				=> $order->get_customer_note(),
+				'order'				=> $order
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
 			);
 
 			// Send data to API
@@ -883,4 +1196,139 @@ class Front {
 			error_log( 'Done processing order ID '. $order_id );
 	    }
 	}
+<<<<<<< HEAD
 }
+=======
+
+	/**
+	 * WooCommerce action to add actions when pickup proces request.
+	 *
+	 * @since    1.0.0
+	 */
+	// Order status - `pickup-shipping`
+	function add_actions_processing_pickup_order($order_id) {
+		if ( ! $order_id ) return;
+
+	    // Get an instance of the WC_Order object
+        $order = wc_get_order( $order_id );
+
+		// Check payment method
+		if( $order->get_payment_method() != 'cod' ) {
+			return;
+		}
+
+		$status = "pickup";
+		update_post_meta( $order_id, '_sejoli_shipping_number', 0);
+		$shipNumber = get_post_meta( $order_id, '_sejoli_shipping_number', true );
+
+		// Send data to API
+		$api_scod = new API_SCOD();
+		$update_order = $api_scod->post_update_order( $order_id, $status, $shipNumber );
+
+		if( ! is_wp_error( $update_order ) ) {
+			// Flag the action as done (to avoid repetitions on reload for example)
+			// $order->update_meta_data( '_sync_order_action_scod_done', true );
+			if( $order->save() ) {
+				error_log( 'Sync order success ..' );
+			}
+		} else {
+			error_log( 'Sync order error .. ' );
+		}
+	}
+
+	/**
+	 * WooCommerce action to add actions when airway bill proces request.
+	 *
+	 * @since    1.0.0
+	 */
+	// Order status - `in-shipping`
+	function add_actions_processing_in_shipping_order($order_id) {
+		if ( ! $order_id ) return;
+
+	    // Get an instance of the WC_Order object
+        $order = wc_get_order( $order_id );
+        $order_id  = $order->get_id();
+
+		// Check payment method
+		if( $order->get_payment_method() != 'cod' ) {
+			return;
+		}
+
+		$status = "on-the-way";
+		update_post_meta( $order_id, '_sejoli_shipping_number', sanitize_text_field( $_POST[ 'sejoli_shipping_number' ] ) );
+		$shipNumber = get_post_meta( $order_id, '_sejoli_shipping_number', true );
+
+		// Send data to API
+		$api_scod = new API_SCOD();
+		$update_order = $api_scod->post_update_order( $order_id, $status, $shipNumber );
+
+		if( ! is_wp_error( $update_order ) ) {
+			// Flag the action as done (to avoid repetitions on reload for example)
+			// $order->update_meta_data( '_sync_order_action_scod_done', true );
+			if( $order->save() ) {
+				error_log( 'Sync order success ..' );
+			}
+		} else {
+			error_log( 'Sync order error .. ' );
+		}
+	}
+
+	/**
+	 * WooCommerce action to generate airwaybill by request.
+	 *
+	 * @since    1.0.0
+	 */
+	public function generate_airwaybill() {
+		$params = wp_parse_args( $_POST, array(
+            'orderID'  		=> NULL,
+            'shipperName' 	=> NULL,
+            'shipperAddr1' 	=> NULL,
+            'shipperAddr2' 	=> NULL,
+            'shipperCity' 	=> NULL,
+            'shipperZip' 	=> NULL,
+            'shipperPhone' 	=> NULL,
+            'receiverName' 	=> NULL,
+            'receiverAddr1' => NULL,
+            'receiverAddr2' => NULL,
+            'receiverCity' 	=> NULL,
+            'receiverZip' 	=> NULL,
+            'receiverPhone' => NULL,
+            'qty' 			=> NULL,
+            'weight' 		=> NULL,
+            'goodsDesc' 	=> NULL,
+            'goodsValue' 	=> NULL,
+            'goodsType' 	=> NULL,
+            'origin' 		=> NULL,
+            'destination' 	=> NULL,
+            'service' 		=> NULL,
+            'codAmount' 	=> NULL,
+            'nonce' 		=> NULL
+        ));
+
+        $respond  = [
+            'valid'   => false,
+            'message' => NULL
+        ];
+
+        if( wp_verify_nonce( $params['nonce'], 'scods-generate-airwaybill') ) :
+
+            unset( $params['nonce'] );
+
+            $do_update = API_JNE::set_params()->get_airwaybill( $params['orderID'], $params['shipperName'], $params['shipperAddr1'], $params['shipperAddr2'], $params['shipperCity'], $params['shipperZip'], $params['shipperPhone'], $params['receiverName'], $params['receiverAddr1'], $params['receiverAddr2'], $params['receiverCity'], $params['receiverZip'], $params['receiverPhone'], $params['qty'], $params['weight'], $params['goodsDesc'], $params['goodsValue'], $params['goodsType'], $params['origin'], $params['destination'], $params['service'], $params['codAmount'] );
+
+            if ( ! is_wp_error( $do_update ) ) {
+
+                $respond['valid']  = true;
+
+            } else {
+
+                $respond['message'] = $do_update->get_error_message();
+            }
+
+        endif;
+
+        echo wp_send_json( $do_update[0]->cnote_no );
+	}
+
+}
+>>>>>>> ff9ca5dcf261d36bf81e01de765b63ed4cd631ee
