@@ -97,7 +97,6 @@ class SCOD_Shipping {
 	 * @access   private
 	 */
 	private function load_dependencies() {
-
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
@@ -109,7 +108,6 @@ class SCOD_Shipping {
 		 * of the plugin.
 		 */
 		require_once SCOD_SHIPPING_DIR . 'includes/class-scod-shipping-i18n.php';
-
 
 		/**
 		 * The class responsible for integrating with database
@@ -176,7 +174,6 @@ class SCOD_Shipping {
 		$this->loader = new SCOD_Shipping_Loader();
 
 		SCOD_Shipping\DBIntegration::connection();
-
 	}
 
 	/**
@@ -189,11 +186,8 @@ class SCOD_Shipping {
 	 * @access   private
 	 */
 	private function set_locale() {
-
 		$plugin_i18n = new SCOD_Shipping_i18n();
-
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
 	}
 
 	/**
@@ -204,7 +198,6 @@ class SCOD_Shipping {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-
 		$admin = new SCOD_Shipping\Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_styles' );
@@ -212,8 +205,40 @@ class SCOD_Shipping {
 		add_action( 'woocommerce_shipping_init', 'SCOD_Shipping\scod_shipping_init' );
 		$this->loader->add_filter( 'woocommerce_shipping_methods', $this, 'register_scod_method' );
 
-		$scod_api = new SCOD_Shipping\API\SCOD( $this->get_plugin_name(), $this->get_version() );
+		// Requesting Pickup
+		$this->loader->add_action( 'woocommerce_order_status_pickup-shipping', $admin, 'add_actions_processing_pickup_order');
 
+		// Requesting In-Shipping
+		$this->loader->add_action( 'woocommerce_order_status_in-shipping', $admin, 'add_actions_processing_in_shipping_order');
+
+		// Requesting Completed
+		// $this->loader->add_action( 'woocommerce_order_status_completed', $admin, 'add_actions_processing_completed_order');
+
+		// Store Address Custom Fields
+		$this->loader->add_filter('woocommerce_general_settings', $admin, 'general_settings_add_shop_phone_field');
+
+		// Custom Order Item Meta
+		$this->loader->add_action( 'woocommerce_after_order_itemmeta', $admin, 'show_weight_admin_order_item_meta', 10, 3 );
+
+		// Custom Order Status Woocommerce
+		$this->loader->add_filter( 'wc_order_statuses', $admin, 'add_custom_order_statuses' );
+
+		// Custom Order Meta Box
+		// https://stackoverflow.com/questions/37772912/woocommerce-add-custom-metabox-to-admin-order-page
+		$this->loader->add_action( 'add_meta_boxes', $admin, 'add_order_shipping_number_meta_boxes' );
+		$this->loader->add_action( 'save_post', $admin, 'save_wc_order_shipping_number_fields', 10, 1 );
+		$this->loader->add_action( 'woocommerce_admin_order_data_after_billing_address', $admin, 'shipping_number_field_display_admin_order_meta', 10, 1 );
+
+		// Ajax Generate Airwaybill
+		$this->loader->add_action( 'wp_ajax_scods-generate-airwaybill', 	   $admin, 'generate_airwaybill', 1);
+		$this->loader->add_action( 'wp_ajax_nopriv_scods-generate-airwaybill', $admin, 'generate_airwaybill',	1);
+
+		// Setting Cron Jobs Update Status Completed based on Shipping Status is Delivered
+		$this->loader->add_filter( 'cron_schedules', $admin, 'sejoli_update_status_cron_schedules' );
+		$this->loader->add_action( 'admin_init', $admin, 'schedule_update_order_to_complete_based_on_delivered_shipping' );
+		$this->loader->add_action( 'update_status_order_to_completed', $admin, 'update_status_order_to_completed_based_on_delivered_shipping' );
+
+		$scod_api = new SCOD_Shipping\API\SCOD( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_filter( 'http_request_args', $scod_api, 'disable_ssl_verify', 10, 2 ); //local dev purpose only
 	}
 
@@ -225,13 +250,21 @@ class SCOD_Shipping {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-
 		$public = new SCOD_Shipping\Front( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', 						$public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', 						$public, 'enqueue_scripts' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $public, 'enqueue_styles' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $public, 'enqueue_scripts' );
 		if( !is_admin() ){
-		$this->loader->add_filter( 'woocommerce_states', 						$public, 'checkout_state_dropdown' );
+			$this->loader->add_filter( 'woocommerce_states', $public, 'checkout_state_dropdown' );
+
+			// Custom Shipping Number Meta Box
+			$this->loader->add_action( 'woocommerce_order_details_after_order_table', $public, 'display_sejoli_shipping_number_in_order_view', 10, 1 );
+
+			// Disable Calculate Shipping Field
+			add_filter( 'woocommerce_shipping_calculator_enable_country', '__return_true' );
+			add_filter( 'woocommerce_shipping_calculator_enable_city', '__return_false' );
+			add_filter( 'woocommerce_shipping_calculator_enable_state', '__return_false' );
+			add_filter( 'woocommerce_shipping_calculator_enable_postcode', '__return_false' );
 		}
 		$this->loader->add_filter( 'woocommerce_checkout_fields', 				$public, 'scod_checkout_fields' );
 		$this->loader->add_filter( 'woocommerce_default_address_fields', 		$public, 'override_locale_fields' );
@@ -244,6 +277,24 @@ class SCOD_Shipping {
 		$this->loader->add_action( 'wp_ajax_scods-get-district-by-city', 		$public, 'get_district_by_city',	1);
 		$this->loader->add_action( 'wp_ajax_nopriv_scods-get-district-by-city',	$public, 'get_district_by_city',	1);
 		$this->loader->add_action( 'woocommerce_thankyou',						$public, 'send_order_data_to_api',	10, 1 );
+		
+		// Formatted Billing and Shipping Address
+		$this->loader->add_filter( 'woocommerce_order_formatted_billing_address', 		  $public, 'woo_custom_order_formatted_billing_address', 10, 2 );
+		$this->loader->add_filter( 'woocommerce_order_formatted_shipping_address', 	      $public, 'woo_custom_order_formatted_shipping_address', 10, 2 );
+		$this->loader->add_filter( 'woocommerce_my_account_my_address_formatted_address', $public, 'filter_woocommerce_my_account_my_address_formatted_address', 10, 3 ); 
+
+		// Add New Package Destination Woocommerce
+		$this->loader->add_action( 'wp_footer', 						 $public, 'checkout_send_custom_package_via_ajax_js' );
+		$this->loader->add_action( 'wp_ajax_city2', 					 $public, 'set_city2_to_wc_session' );
+		$this->loader->add_action( 'wp_ajax_nopriv_city2', 				 $public, 'set_city2_to_wc_session' );
+		$this->loader->add_filter( 'woocommerce_checkout_get_value', 	 $public, 'update_city2_checkout_fields_values', 10, 2 );
+		$this->loader->add_filter( 'woocommerce_cart_shipping_packages', $public, 'add_city2_to_destination_shipping_package' );
+		$this->loader->add_action( 'woocommerce_checkout_order_created', $public, 'remove_city2_custom_wc_session_variable' );
+		$this->loader->add_action( 'wp_ajax_district', 					 $public, 'set_district_to_wc_session' );
+		$this->loader->add_action( 'wp_ajax_nopriv_district', 			 $public, 'set_district_to_wc_session' );
+		$this->loader->add_filter( 'woocommerce_checkout_get_value', 	 $public, 'update_district_checkout_fields_values', 10, 2 );
+		$this->loader->add_filter( 'woocommerce_cart_shipping_packages', $public, 'add_district_to_destination_shipping_package' );
+		$this->loader->add_action( 'woocommerce_checkout_order_created', $public, 'remove_district_custom_wc_session_variable' );
 	}
 
 	/**
@@ -294,7 +345,6 @@ class SCOD_Shipping {
 	 * @param array $methods Registered shipping methods.
 	 */
 	public function register_scod_method( $methods ) {
-
 	    $methods[ 'scod-shipping' ] = new \SCOD_Shipping\Shipping_Method();
 	    return $methods;
 	}

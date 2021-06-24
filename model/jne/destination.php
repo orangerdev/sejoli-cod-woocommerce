@@ -25,7 +25,7 @@ class Destination extends Eloquent
      * @var array
      */
 	protected $fillable = [
-	   'city_id', 'district_id', 'code'
+	   'city_id', 'district_id', 'city_name', 'district_name', 'code'
 	];
 
     /**

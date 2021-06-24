@@ -33,7 +33,6 @@ use SCOD_Shipping\API\SCOD as API_SCOD;
 function scod_shipping_init() {
 
 	class Shipping_Method extends \WC_Shipping_Method {
-
 		/**
 		 * Woongkir_API API Class Object
 		 *
@@ -63,13 +62,12 @@ function scod_shipping_init() {
 	     * @param integer $instance_id default: 0
 	     */
 	    public function __construct( $instance_id = 0 ) {
-
-			$this->api                	= new API_SCOD();
-	        $this->id 					= 'scod-shipping';
-	        $this->instance_id 			= absint( $instance_id );
-	        $this->title         		= __( 'Sejoli COD Shipping', 'scod-shipping' );
-	        $this->method_title         = __( 'Sejoli COD Shipping', 'scod-shipping' );
-	        $this->method_description 	= __( 'Sejoli COD for WooCommerce shipping method', 'scod-shipping' );
+			$this->api                = new API_SCOD();
+	        $this->id 				  = 'scod-shipping';
+	        $this->instance_id 		  = absint( $instance_id );
+	        $this->title         	  = __( 'Sejoli COD Shipping', 'scod-shipping' );
+	        $this->method_title       = __( 'Sejoli COD Shipping', 'scod-shipping' );
+	        $this->method_description = __( 'Sejoli COD for WooCommerce shipping method', 'scod-shipping' );
 			$this->init();
 	    }
 
@@ -79,7 +77,6 @@ function scod_shipping_init() {
 		 * @since 1.0.0
 		 */
 		public function init() {
-
 			$this->init_form_fields();
 			$this->init_settings();
 
@@ -92,9 +89,7 @@ function scod_shipping_init() {
 		 * @since 1.0.0
 		 */
 		public function init_form_fields() {
-
 			if ( ! $this->validate_supported_country( WC()->countries->get_base_country() ) ) {
-
 				$this->instance_form_fields = array(
 					'title' => array(
 						'title'       => __( 'Plugin Unavailable', 'scod-shipping' ),
@@ -176,9 +171,8 @@ function scod_shipping_init() {
 		 * @return array
 		 */
 		private function generate_origin_dropdown() {
-
 			$option_default = array( '' => __( '--- Pilih Origin ---' ) );
-			$option_cities = JNE_Origin::pluck( 'name', 'id' )->toArray();
+			$option_cities  = JNE_Origin::pluck( 'name', 'id' )->toArray();
 			return $option_default + $option_cities;
 		}
 
@@ -190,7 +184,6 @@ function scod_shipping_init() {
 		 * @since 1.0.0
 		 */
 		public function validate_supported_country( string $country_code ) {
-
 			$supported_countries = $this->available_countries;
 			return \in_array( $country_code, $supported_countries );
 		}
@@ -205,12 +198,12 @@ function scod_shipping_init() {
 		 */
 		public function validate_scod_username_field( $key, $value ) {
 			error_log( 'Validating scod account ..' );
-			$error_msg = wp_sprintf( __( '%s is not valid. Please use a valid account.', 'scod-shipping' ), 'Username or password' );
-			$posted = $this->get_post_data();
+			$error_msg 		  = wp_sprintf( __( '%s is not valid. Please use a valid account.', 'scod-shipping' ), 'Username or password' );
+			$posted 		  = $this->get_post_data();
 			$current_username = $this->get_option( 'scod_username' );
 			$current_password = $this->get_option( 'scod_password' );
-			$username = $posted[ $this->get_field_key( 'scod_username' ) ];
-			$password = $posted[ $this->get_field_key( 'scod_password' ) ];
+			$username 		  = $posted[ $this->get_field_key( 'scod_username' ) ];
+			$password 		  = $posted[ $this->get_field_key( 'scod_password' ) ];
 
 			if( $current_password != $password || $current_username != $username ) {
 
@@ -238,12 +231,12 @@ function scod_shipping_init() {
 		 */
 		public function validate_store_secret_key_field( $key, $value ) {
 			error_log( 'Validating scod store account ..' );
-			$error_msg = wp_sprintf( __( '%s is not valid. Please use a valid account.', 'scod-shipping' ), 'Store ID or Store secret key' );
-			$posted = $this->get_post_data();
-			$current_store_id = $this->get_option( 'store_id' );
+			$error_msg 				  = wp_sprintf( __( '%s is not valid. Please use a valid account.', 'scod-shipping' ), 'Store ID or Store secret key' );
+			$posted    				  = $this->get_post_data();
+			$current_store_id 		  = $this->get_option( 'store_id' );
 			$current_store_secret_key = $this->get_option( 'store_secret_key' );
-			$store_id = $posted[ $this->get_field_key( 'store_id' ) ];
-			$store_secret_key = $posted[ $this->get_field_key( 'store_secret_key' ) ];
+			$store_id 				  = $posted[ $this->get_field_key( 'store_id' ) ];
+			$store_secret_key 		  = $posted[ $this->get_field_key( 'store_secret_key' ) ];
 
 			if( $current_store_id != $store_id || $current_store_secret_key != $store_secret_key ) {
 
@@ -298,14 +291,16 @@ function scod_shipping_init() {
 		 *
 		 * @return 	(Object|false) returns an object on true, or false if fail
 		 */
-		private function get_origin_info() {
-
+		public function get_origin_info() {
 			$origin_option = $this->get_option( 'shipping_origin' );
 			if( ! $origin_option ) {
 				return false;
 			}
 
 			$origin = JNE_Origin::find( $origin_option );
+			// echo 'ahayy';
+			// print_r($origin_option);
+
 			if( ! $origin ) {
 				return false;
 			}
@@ -322,15 +317,15 @@ function scod_shipping_init() {
 		 *
 		 * @return 	(Object|false) returns an object on true, or false if fail
 		 */
-		private function get_destination_info( array $destination ) {
+		public function get_destination_info( array $destination ) {
 			if( ! $this->validate_supported_country( $destination['country'] ) ) {
 				return false;
 			}
 
 			$location_data = array(
-				'state'			=> NULL,
-				'city'			=> NULL,
-				'district'		=> NULL
+				'state'	   => NULL,
+				'city'	   => NULL,
+				'district' => NULL
 			);
 
 			if( $destination['state'] ) {
@@ -359,22 +354,61 @@ function scod_shipping_init() {
 
 			$get_dest = DB::table( (new JNE_Destination)->getTableName() );
 
-			if( empty( $location_data['city'] ) ) {
-				$get_dest = $get_dest->whereNull( 'city_id' );
-			} else {
-				$get_dest = $get_dest->where( 'city_id', $location_data['city']->ID );
-			}
+			// if( empty( $location_data['city'] ) ) {
+			// 	$get_dest = $get_dest->whereNull( 'city_id' );
+			// } else {
+			// 	$get_dest = $get_dest->where( 'city_id', $location_data['city']->ID );
+			// }
+
+			// if( empty( $location_data['district'] ) ) {
+			// 	$get_dest = $get_dest->whereNull( 'district_id' );
+			// } else {
+			// 	$get_dest = $get_dest->where( 'district_id', $location_data['district']->ID );
+			// }
+
+			// if( empty( $location_data['city'] ) ) {
+			// 	$get_dest = $get_dest->whereNull( 'city_name' );
+			// } else {
+			// 	$get_dest = $get_dest->Where('city_name', 'like', '%' . $location_data['city']->name);
+			// }
 
 			if( empty( $location_data['district'] ) ) {
-				$get_dest = $get_dest->whereNull( 'district_id' );
+				$get_dest = $get_dest->whereNull( 'district_name' );
 			} else {
-				$get_dest = $get_dest->where( 'district_id', $location_data['district']->ID );
+				$get_dest = $get_dest->Where('district_name', 'like', '%' . strtoupper($location_data['district']->name));
 			}
+			
+			// $file = SCOD_SHIPPING_DIR . 'database/jne/data/jne_destination.json';
+			// $data = file_get_contents( $file ); 
+	  //       $jsonData = json_decode($data);
 
+	  //       $getDistrictName = strtoupper($location_data['district']->name);
+
+	  //       $datades = null;
+	  //       foreach( $jsonData as $id => $row ) {
+	  //       	if ($getDistrictName == $row->district_name) {
+		 //            $datades = array(
+		 //                'ID'            => $row->ID,
+		 //                'city_id'       => $row->city_id,
+		 //                'district_id'   => $row->district_id,
+		 //                'city_name'     => $row->city_name,
+		 //                'district_name' => $row->district_name,
+		 //                'code'          => $row->code
+		 //            );
+	  //       	}
+	  //       }
+			
+			// if($datades == null){
+			// 	$getDestination = $datades;	
+			// } else {
+			// 	$getDestination = (object)$datades;	
+			// }
+
+			// if( $destination = $getDestination ) {
 			if( $destination = $get_dest->first() ) {
 				return $destination;
 			}
-
+			
 			return false;
 		}
 
@@ -389,7 +423,6 @@ function scod_shipping_init() {
 		 * @return 	(Object|false) 	returns an object on true, or false if fail
 		 */
 		private function get_tariff_info( $origin, $destination ) {
-
 			$get_tariff = JNE_Tariff::where( 'jne_origin_id', $origin->ID )
 							->where( 'jne_destination_id', $destination->ID )
 							->first();
@@ -422,10 +455,9 @@ function scod_shipping_init() {
 		 * @return 	(Double|false) 	returns double type number, or false if fail
 		 */
 		private function get_cart_weight() {
-
 			$scod_weight_unit = 'kg';
-			$cart_weight = WC()->cart->get_cart_contents_weight();
-			$wc_weight_unit = get_option( 'woocommerce_weight_unit' );
+			$cart_weight 	  = WC()->cart->get_cart_contents_weight();
+			$wc_weight_unit   = get_option( 'woocommerce_weight_unit' );
 
    			if( $wc_weight_unit != $scod_weight_unit && $cart_weight > 0 ) {
    				$cart_weight = wc_get_weight( $cart_weight, $scod_weight_unit, $wc_weight_unit );
@@ -452,15 +484,12 @@ function scod_shipping_init() {
 	     * @return 	boolean|rate returns false if fail, add rate to wc if available
 	     */
 	    public function calculate_shipping( $package = array() ) {
-	    	// error_log( __METHOD__ . ' package '. print_r( $package, true ) );
-
-			$origin = $this->get_origin_info();
+			$origin 	 = $this->get_origin_info();
+			$destination = $this->get_destination_info( $package['destination'] );
 
 			if( ! $origin ) {
 	        	return false;
 	        }
-
-			$destination = $this->get_destination_info( $package['destination'] );
 
 			if( ! $destination ) {
 	        	return false;
@@ -494,6 +523,6 @@ function scod_shipping_init() {
 	       	}
 
 	    }
-	}
 
+	}
 }
