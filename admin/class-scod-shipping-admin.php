@@ -124,11 +124,36 @@ class Admin {
 	}
 
 	/**
+	 * Register Custom Order Status
+	 * Hook via init
+	 * @since    1.0.0
+	 */
+	// Add to list of Register Custom WC Order statuses
+	function register_new_order_statuses() {
+	    register_post_status( 'wc-pickup-shipping', array(
+	        'label'                     => __( 'Pickup', 'scod-shipping' ),
+	        'public'                    => true,
+	        'exclude_from_search'       => false,
+	        'show_in_admin_all_list'    => true,
+	        'show_in_admin_status_list' => true,
+	        'label_count'               => ''
+	    ) );
+	    register_post_status( 'wc-in-shipping', array(
+	        'label'                     => __( 'In-Shipping', 'scod-shipping' ),
+	        'public'                    => true,
+	        'exclude_from_search'       => false,
+	        'show_in_admin_all_list'    => true,
+	        'show_in_admin_status_list' => true,
+	        'label_count'               => ''
+	    ) );
+	}
+
+	/**
 	 * Custom Order Status
 	 * Hook via wc_order_statuses
 	 * @since    1.0.0
 	 */
-	// Add to list of WC Order statuses
+	// Add to list of Custom WC Order statuses
 	public function add_custom_order_statuses( $order_statuses ) {
 	    $new_order_statuses = array();
 	 
@@ -244,7 +269,6 @@ class Admin {
 		}
 
 		$status = "on-the-way";
-		update_post_meta( $order_id, '_sejoli_shipping_number', sanitize_text_field( $_POST[ 'sejoli_shipping_number' ] ) );
 		$shipNumber = get_post_meta( $order_id, '_sejoli_shipping_number', true );
 
 		// Send data to API
@@ -281,7 +305,6 @@ class Admin {
 		}
 
 		$status = "completed";
-		// update_post_meta( $order_id, '_sejoli_shipping_number', sanitize_text_field( $_POST[ 'sejoli_shipping_number' ] ) );
 		$shipNumber = get_post_meta( $order_id, '_sejoli_shipping_number', true );
 
 		// Send data to API
@@ -459,8 +482,7 @@ class Admin {
 	    $text  = !empty( $value ) ? esc_attr( $value ) : '';
 
 	    $trace_tracking = API_JNE::set_params()->get_tracking( $text );
-	    // print_r($trace_tracking->history);
-	    // echo $this->update_status_order_to_completed_based_on_delivered_shipping();
+
 	   	if($value){
 	   		echo '<h4>'.__('Number Resi:', 'scod-shipping').'</h4>';
 	    	echo '<div class="shipping-number" style="font-size:20px;">'.$text.'</div>';
@@ -493,42 +515,6 @@ class Admin {
 				   		echo '<td>'.$history->desc.'</td>';
 				   	echo '</tr>';
 			   	}
-		   	// echo '<tr>';
-		   	// 	echo '<th>'.__('Date', 'scod-shipping').'</th>';
-		   	// 	echo '<th>'.__('Status', 'scod-shipping').'</th>';
-		   	// echo '</tr>';
-		   	// echo '<tr>';
-		   	// 	echo '<td>02-09-2019 23:25</td>';
-		   	// 	echo '<td>RECEIVED AT SORTING CENTER [JAKARTA]</td>';
-		   	// echo '</tr>';
-		   	// echo '<tr>';
-		   	// 	echo '<td>02-09-2019 23:3</td>';
-		   	// 	echo '<td>SHIPMENT RECEIVED BY JNE COUNTER OFFICER AT [JAKARTA]</td>';
-		   	// echo '</tr>';
-		   	// echo '<tr>';
-		   	// 	echo '<td>03-09-2019 03:14</td>';
-		   	// 	echo '<td>PROCESSED AT SORTING CENTER [JAKARTA]</td>';
-		   	// echo '</tr>';
-		   	// echo '<tr>';
-		   	// 	echo '<td>03-09-2019 05:50</td>';
-		   	// 	echo '<td>DEPARTED FROM TRANSIT [GATEWAY JAKARTA]</td>';
-		   	// echo '</tr>';
-		   	// echo '<tr>';
-		   	// 	echo '<td>03-09-2019 06:29</td>';
-		   	// 	echo '<td>RECEIVED AT ORIGIN GATEWAY [GATEWAY JAKARTA]</td>';
-		   	// echo '</tr>';
-		   	// echo '<tr>';
-		   	// 	echo '<td>03-09-2019 21:13</td>';
-		   	// 	echo '<td>RECEIVED AT WAREHOUSE [PONTIANAK]</td>';
-		   	// echo '</tr>';
-		   	// echo '<tr>';
-		   	// 	echo '<td>04-09-2019 02:23</td>';
-		   	// 	echo '<td>WITH DELIVERY COURIER [PONTIANAK]</td>';
-		   	// echo '</tr>';
-		   	// echo '<tr>';
-		   	// 	echo '<td>04-09-2019 13:46</td>';
-		   	// 	echo '<td>DELIVERED TO [PAK TATANG | 04-09-2019 13:46 | PONTIANAK ]</td>';
-		   	// echo '</tr>';
 		   	echo '</table>';
 	   	} else {
 	   		if ($order_status == 'pickup-shipping' || $order_status == 'processing') {
@@ -578,7 +564,8 @@ class Admin {
     // Save the data of the Meta field
     public function save_wc_order_shipping_number_fields( $post_id ) {
 	    // Only for shop order
-	    if ( 'shop_order' != $_POST[ 'post_type' ] )
+	    $setPostType = isset($_POST['post_type']) ? $_POST['post_type'] : '';
+	    if ( 'shop_order' != $setPostType )
 	        return $post_id;
 
 	    // Check if our nonce is set (and our cutom field)
@@ -704,6 +691,11 @@ class Admin {
         echo wp_send_json( $numberResi );
 	}
 
+	/**
+	 * Create Updating Status Order to Complete Based on Shipping Status is Delivered Cron Job
+	 *
+	 * @since    1.0.0
+	 */
 	function sejoli_update_status_cron_schedules($schedules)
 	{
 	    $schedules['once_every_2m'] = array(
@@ -713,6 +705,11 @@ class Admin {
 	    return $schedules;
 	}
 
+	/**
+	 * Set Schedule Event for Updating Status Order to Complete Based on Shipping Status is Delivered Cron Job
+	 *
+	 * @since    1.0.0
+	 */
 	function schedule_update_order_to_complete_based_on_delivered_shipping($order_id) {
 	  	// Schedule an action if it's not already scheduled
 		if ( ! wp_next_scheduled( 'update_status_order_to_completed' ) ) {
@@ -720,32 +717,40 @@ class Admin {
 		}
 	}
 
-	function update_status_order_to_completed_based_on_delivered_shipping()
-	{
-		global $post;
-		$order 		= wc_get_order( 91 );
-    	$order_id 	= 91;
+	/**
+	 * Create Updating Status Order to Complete Based on Shipping Status is Delivered Functiona
+	 *
+	 * @since    1.0.0
+	 */
+	function update_status_order_to_completed_based_on_delivered_shipping() {
+		global $wpdb;
+		$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}posts WHERE post_type LIKE 'shop_order' AND post_status LIKE 'wc-in-shipping'");
+		
+		// Loop through each order post object
+		foreach( $results as $result ){
+		    $order_id = $result->ID; // The Order ID
+		    // Get an instance of the WC_Order Object
+		    $order = wc_get_order( $result->ID );
+		    $shipping_number = get_post_meta( $order_id, '_sejoli_shipping_number', true );
 
-	    $shipping_number = get_post_meta( $order_id, '_sejoli_shipping_number', true );
+		    $trace_tracking = API_JNE::set_params()->get_tracking( $shipping_number );
 
-	    $trace_tracking = API_JNE::set_params()->get_tracking( $shipping_number );
+		    // if($trace_tracking->cnote->pod_status == "DELIVERED" && $order_status == "in-shipping"){
+		    if($trace_tracking->cnote->pod_status == "DELIVERED"){
+		    	// Send update status data to API
+		        $status 	  = "completed";
+				$api_scod 	  = new API_SCOD();
+				$update_order = $api_scod->post_update_order( $order_id, $status, $shipping_number );
 
-	    if($trace_tracking->cnote->pod_status == "DELIVERED"){
-	    	// Send update status data to API
-	        $status 	  = "completed";
-			$api_scod 	  = new API_SCOD();
-			$update_order = $api_scod->post_update_order( $order_id, $status, $shipping_number );
-
-			// print_r($update_order); exit;
-			if( ! is_wp_error( $update_order ) ) {
-				// Flag the action as done (to avoid repetitions on reload for example)
-				if( $order->save() ) {
-					error_log( 'Sync order success ..' );
+				if( ! is_wp_error( $update_order ) ) {
+					// Flag the action as done (to avoid repetitions on reload for example)
+					if( $order->save() ) {
+						error_log( 'Sync order success ..' );
+					}
 				}
-			}
 
-			// $this->add_actions_processing_completed_order($order_id);
-        	$order->update_status( 'completed', 'order_note' );
-	    }
+	        	$order->update_status( 'completed', 'order_note' );
+		    }
+		}
 	}
 }

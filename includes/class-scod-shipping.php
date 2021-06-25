@@ -212,7 +212,7 @@ class SCOD_Shipping {
 		$this->loader->add_action( 'woocommerce_order_status_in-shipping', $admin, 'add_actions_processing_in_shipping_order');
 
 		// Requesting Completed
-		// $this->loader->add_action( 'woocommerce_order_status_completed', $admin, 'add_actions_processing_completed_order');
+		$this->loader->add_action( 'woocommerce_order_status_completed', $admin, 'add_actions_processing_completed_order');
 
 		// Store Address Custom Fields
 		$this->loader->add_filter('woocommerce_general_settings', $admin, 'general_settings_add_shop_phone_field');
@@ -221,6 +221,7 @@ class SCOD_Shipping {
 		$this->loader->add_action( 'woocommerce_after_order_itemmeta', $admin, 'show_weight_admin_order_item_meta', 10, 3 );
 
 		// Custom Order Status Woocommerce
+		$this->loader->add_action( 'init', $admin, 'register_new_order_statuses' );
 		$this->loader->add_filter( 'wc_order_statuses', $admin, 'add_custom_order_statuses' );
 
 		// Custom Order Meta Box
@@ -232,7 +233,6 @@ class SCOD_Shipping {
 		// Ajax Generate Airwaybill
 		$this->loader->add_action( 'wp_ajax_scods-generate-airwaybill', 	   $admin, 'generate_airwaybill', 1);
 		$this->loader->add_action( 'wp_ajax_nopriv_scods-generate-airwaybill', $admin, 'generate_airwaybill',	1);
-
 		// Setting Cron Jobs Update Status Completed based on Shipping Status is Delivered
 		$this->loader->add_filter( 'cron_schedules', $admin, 'sejoli_update_status_cron_schedules' );
 		$this->loader->add_action( 'admin_init', $admin, 'schedule_update_order_to_complete_based_on_delivered_shipping' );
