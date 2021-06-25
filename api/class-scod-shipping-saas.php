@@ -33,7 +33,7 @@ class SCOD {
 
 	/**
 	 * Base URL.
-	 *
+	 *66666666
 	 * @since 1.0.0
 	 */
 	private $base_url;
@@ -160,9 +160,9 @@ class SCOD {
 	public function do_request() {
 		error_log( 'Doing request ..' );
 		$params = array(
-			'method' 	=> $this->method,
-			'timeout' 	=> $this->timeout,
-			'body' 		=> $this->body
+			'method'  => $this->method,
+			'timeout' => $this->timeout,
+			'body' 	  => $this->body
 		);
 
 		if( $token = $this->get_token() ) {
@@ -180,13 +180,13 @@ class SCOD {
 	public function validate_token( $token ) {
 		error_log( 'Validating token ..' );
 		$params = array(
-			'method' 	=> 'POST',
-			'timeout' 	=> $this->timeout,
-			'headers'	=> $this->set_token_headers( $token ),
+			'method'  => 'POST',
+			'timeout' => $this->timeout,
+			'headers' => $this->set_token_headers( $token ),
 		);
 		
-		$endpoint 		= 'wp-json/jwt-auth/v1/token/validate';
-		$get_response	= wp_remote_request( $this->get_endpoint_url( $endpoint ), $params );
+		$endpoint	  = 'wp-json/jwt-auth/v1/token/validate';
+		$get_response = wp_remote_request( $this->get_endpoint_url( $endpoint ), $params );
 
 		if ( ! is_wp_error( $get_response ) ) {
 			$response_body = json_decode( $get_response['body'] );
@@ -211,7 +211,7 @@ class SCOD {
 			$this->endpoint 	= 'wp-json/jwt-auth/v1/token';
 			$this->method 		= 'POST';
 
-			$options			= array(
+			$options = array(
 				'username'	=> $username,
 				'password'	=> $password,
 			);
@@ -253,11 +253,11 @@ class SCOD {
 		error_log( 'Getting store data ..' );
 		try {
 
-			$this->endpoint 	= 'wp-json/scod/v1/stores/' . $store_id .'?key=' .$store_secret_key;
-			$this->method 		= 'GET';
-			$this->body			= NULL;
+			$this->endpoint = 'wp-json/scod/v1/stores/' . $store_id .'?key=' .$store_secret_key;
+			$this->method 	= 'GET';
+			$this->body		= NULL;
 
-			$get_response 		= $this->do_request();
+			$get_response 	= $this->do_request();
 
 			if ( ! is_wp_error( $get_response ) ) :
 
@@ -288,23 +288,48 @@ class SCOD {
 		error_log( 'Creating new order data ..' );
 		try {
 
-			$this->endpoint 	= 'wp-json/scod/v1/orders';
-			$this->method 		= 'POST';
+			$this->endpoint = 'wp-json/scod/v1/orders';
+			$this->method 	= 'POST';
 
 			$body_params = wp_parse_args( $params, array(
-				'store_id'			=> NULL,
-				'store_secret'		=> NULL,
-				'buyer_name'		=> NULL,
-				'buyer_email'		=> NULL,
-				'buyer_phone'		=> NULL,
-				'courier_name'		=> NULL,
-				'invoice_number'	=> NULL,
-				'invoice_total' 	=> NULL,
-				'shipping_fee'		=> NULL,
-				'shipping_number'	=> NULL,
-				'shipping_status'	=> NULL,
-				'notes'				=> NULL,
-				'order'				=> NULL
+				'store_id'		  => NULL,
+				'store_secret'	  => NULL,
+				'buyer_name'	  => NULL,
+				'buyer_email'	  => NULL,
+				'buyer_phone'	  => NULL,
+				'courier_name'	  => NULL,
+				'invoice_number'  => NULL,
+				'shipper_name'    => NULL,
+		        'shipper_addr1'   => NULL,
+		        'shipper_addr2'   => NULL,
+		        'shipper_city'    => NULL,
+		        'shipper_region'  => NULL,
+		        'shipper_zip'     => NULL,
+		        'shipper_phone'   => NULL,
+		        'receiver_name'   => NULL,
+		        'receiver_addr1'  => NULL,
+		        'receiver_addr2'  => NULL,
+		        'receiver_city'   => NULL,
+		        'receiver_region' => NULL,
+		        'receiver_zip'    => NULL,
+		        'receiver_phone'  => NULL,
+		        'qty'             => NULL,
+		        'weight'          => NULL,
+		        'goods_desc'      => NULL,
+		        'goods_value'     => NULL,
+		        'goods_type'      => NULL,
+		        'insurance'       => NULL,
+		        'origin'          => NULL,
+		        'destination'     => NULL,
+		        'service'         => NULL,
+		        'codflag'         => NULL,
+		        'codamount'       => NULL,
+				'invoice_total'   => NULL,
+				'shipping_fee'	  => NULL,
+				'shipping_number' => NULL,
+				'shipping_status' => NULL,
+				'notes'			  => NULL,
+				'order'			  => NULL
 			));
 
 			if( \is_null( $body_params['store_id'] ) || \is_null( $body_params['secret_key'] ) ) {
@@ -352,8 +377,8 @@ class SCOD {
 			}
 
 			unset( $body_params['order'] );
-			$set_body 		= $this->set_body_params( $body_params );
-			$get_response 	= $this->do_request();
+			$set_body 	  = $this->set_body_params( $body_params );
+			$get_response = $this->do_request();
 
 			if ( ! is_wp_error( $get_response ) ) :
 				$body = json_decode( $get_response['body'] );
@@ -373,6 +398,40 @@ class SCOD {
 					return new \WP_Error( 'duplicate_order_data', $conflict_msg );
 				}
 				
+				if( isset( $body->data->status ) && ( $body->data->status != 200 ) ) :
+					return new \WP_Error( 'invalid_api_response', $body->message );
+				endif;
+
+				return $body;
+			else :
+				return $get_response;
+			endif;
+
+		} catch ( Exception $e ) {
+			return new \WP_Error( 'invalid_api_response', wp_sprintf( __( '<strong>Error from SCOD API</strong>: %s', 'scod-shipping' ), $e->getMessage() ) );
+		}
+	}
+
+	/**
+     * API to create new order data.
+     *
+     * @since   1.0.0
+     *
+     * @return 	(array|WP_Error) The response array or a WP_Error on failure
+     */
+	public function post_update_order( $order_id, $status, $shipNumber ) {
+		error_log( 'Updating order data ..' );
+		try {
+
+			$this->endpoint = 'wp-json/scod/v1/orders/update/' . $order_id. '/' .$status. '/' .$shipNumber;
+			$this->method 	= 'PUT';
+			$this->body		= NULL;
+
+			$get_response 	= $this->do_request();
+
+			if ( ! is_wp_error( $get_response ) ) :
+
+				$body = json_decode( $get_response['body'] );
 				if( isset( $body->data->status ) && ( $body->data->status != 200 ) ) :
 					return new \WP_Error( 'invalid_api_response', $body->message );
 				endif;

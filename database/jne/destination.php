@@ -30,6 +30,8 @@ Class Destination extends \SCOD_Shipping\Database
                 $table->increments  ('ID');
                 $table->integer     ('city_id')->nullable();
                 $table->integer     ('district_id')->nullable();
+                $table->string      ('city_name');
+                $table->string      ('district_name');
                 $table->string      ('code');
 
             });

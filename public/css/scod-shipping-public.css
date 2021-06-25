@@ -2,7 +2,12 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
-#billing_city_field.hidden, #billing_city2_field.hidden,
-#shipping_city_field.hidden, #shipping_city2_field.hidden {
+form.checkout #billing_city_field.hidden, form.checkout #billing_city2_field.hidden,
+form.checkout #shipping_city_field.hidden, form.checkout #shipping_city2_field.hidden,
+form.checkout #billing_address_2_field.hidden, form.checkout #shipping_address_2_field.hidden,
+.woocommerce-address-fields #billing_city_field.hidden, .woocommerce-address-fields #billing_city2_field.hidden,
+.woocommerce-address-fields #shipping_city_field.hidden, .woocommerce-address-fields #shipping_city2_field.hidden,
+.woocommerce-address-fields #billing_address_2_field.hidden, .woocommerce-address-fields #shipping_address_2_field.hidden {
 	display: none !important;
 }
+
