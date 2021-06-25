@@ -806,9 +806,9 @@ class Admin {
 	 */
 	function sejoli_update_status_cron_schedules($schedules)
 	{
-	    $schedules['once_every_2m'] = array(
-	    	'interval' => 120, 
-	    	'display' => 'Once every 2 minutes'
+	    $schedules['once_every_5m'] = array(
+	    	'interval' => 300, 
+	    	'display' => 'Once every 5 minutes'
 	    );
 	    return $schedules;
 	}
