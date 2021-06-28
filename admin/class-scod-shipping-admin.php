@@ -804,7 +804,7 @@ class Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	function sejoli_update_status_cron_schedules($schedules)
+	public function sejoli_update_status_cron_schedules($schedules)
 	{
 	    $schedules['once_every_5m'] = array(
 	    	'interval' => 300, 
@@ -818,7 +818,7 @@ class Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	function schedule_update_order_to_complete_based_on_delivered_shipping($order_id) {
+	public function schedule_update_order_to_complete_based_on_delivered_shipping($order_id) {
 	  	// Schedule an action if it's not already scheduled
 		if ( ! wp_next_scheduled( 'update_status_order_to_completed' ) ) {
 		    wp_schedule_event( time(), 'once_every_5m', 'update_status_order_to_completed' );
@@ -830,7 +830,7 @@ class Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	function update_status_order_to_completed_based_on_delivered_shipping() {
+	public function update_status_order_to_completed_based_on_delivered_shipping() {
 		global $wpdb;
 		$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}posts WHERE post_type LIKE 'shop_order' AND post_status LIKE 'wc-in-shipping'");
 		
