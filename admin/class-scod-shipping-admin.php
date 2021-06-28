@@ -821,7 +821,7 @@ class Admin {
 	function schedule_update_order_to_complete_based_on_delivered_shipping($order_id) {
 	  	// Schedule an action if it's not already scheduled
 		if ( ! wp_next_scheduled( 'update_status_order_to_completed' ) ) {
-		    wp_schedule_event( time(), 'once_every_2m', 'update_status_order_to_completed' );
+		    wp_schedule_event( time(), 'once_every_5m', 'update_status_order_to_completed' );
 		}
 	}
 
