@@ -665,9 +665,9 @@ class Admin {
 	   		if ($order_status == 'pickup-shipping' || $order_status == 'processing') {
 
 	    		echo '<h4>'.__('Number Resi:', 'scod-shipping').'</h4>';
-		   		echo '<input type="text" class="input-text" name="sejoli_shipping_number" id="sejoli_shipping_number" value="' . $text . '" style="width:100%; margin-bottom: 15px;" />';
+		   		echo '<input type="hidden" class="input-text" name="sejoli_shipping_number" id="sejoli_shipping_number" value="' . $text . '" style="width:100%; margin-bottom: 15px;" />';
 	    		echo '<input type="hidden" name="sejoli_shipping_number_nonce" value="' . wp_create_nonce() . '">';
-		    	// echo '<div id="shipping-number" style="font-size:20px;">'.$text.'</div>';
+		    	echo '<div id="shipping-number" style="font-size:20px;">'.$text.'</div>';
 		    	
 		    	echo __("Input your number resi", "scod-shipping")."<br>";
 		    	echo __("or", "scod-shipping")."<br>";
