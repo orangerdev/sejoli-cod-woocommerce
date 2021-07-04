@@ -205,6 +205,9 @@ class SCOD_Shipping {
 		add_action( 'woocommerce_shipping_init', 'SCOD_Shipping\scod_shipping_init' );
 		$this->loader->add_filter( 'woocommerce_shipping_methods', $this, 'register_scod_method' );
 
+		// Requesting Processing
+		$this->loader->add_action( 'woocommerce_order_status_processing', $admin, 'add_actions_processing_order');
+
 		// Requesting Pickup
 		$this->loader->add_action( 'woocommerce_order_status_pickup-shipping', $admin, 'add_actions_processing_pickup_order');
 

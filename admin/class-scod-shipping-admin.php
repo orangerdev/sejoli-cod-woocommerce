@@ -214,6 +214,43 @@ class Admin {
 	} 
 
 	/**
+	 * WooCommerce action to add actions when processing request.
+	 *
+	 * @since    1.0.0
+	 */
+	// Order status - `processing`
+	function add_actions_processing_order($order_id) {
+		if ( ! $order_id ) return;
+
+	    // Get an instance of the WC_Order object
+        $order 	  = wc_get_order( $order_id );
+        $order_id = $order->get_id();
+
+		// Check payment method
+		if( $order->get_payment_method() != 'cod' ) {
+			return;
+		}
+
+		$status = "pending";
+		update_post_meta( $order_id, '_sejoli_shipping_number', 0);
+		$shipNumber = get_post_meta( $order_id, '_sejoli_shipping_number', true );
+
+		// Send data to API
+		$api_scod 	  = new API_SCOD();
+		$update_order = $api_scod->post_update_order( $order_id, $status, $shipNumber );
+
+		if( ! is_wp_error( $update_order ) ) {
+			// Flag the action as done (to avoid repetitions on reload for example)
+			// $order->update_meta_data( '_sync_order_action_scod_done', true );
+			if( $order->save() ) {
+				error_log( 'Sync order success ..' );
+			}
+		} else {
+			error_log( 'Sync order error .. ' );
+		}
+	}
+
+	/**
 	 * WooCommerce action to add actions when pickup proces request.
 	 *
 	 * @since    1.0.0
@@ -626,11 +663,15 @@ class Admin {
 		   	echo '</table>';
 	   	} else {
 	   		if ($order_status == 'pickup-shipping' || $order_status == 'processing') {
-		   		echo '<input type="hidden" class="input-text" name="sejoli_shipping_number" id="sejoli_shipping_number" value="' . $text . '" style="width:100%" />';
-	    		echo '<input type="hidden" name="sejoli_shipping_number_nonce" value="' . wp_create_nonce() . '">';
 
 	    		echo '<h4>'.__('Number Resi:', 'scod-shipping').'</h4>';
-		    	echo '<div id="shipping-number" style="font-size:20px;">'.$text.'</div>';
+		   		echo '<input type="text" class="input-text" name="sejoli_shipping_number" id="sejoli_shipping_number" value="' . $text . '" style="width:100%; margin-bottom: 15px;" />';
+	    		echo '<input type="hidden" name="sejoli_shipping_number_nonce" value="' . wp_create_nonce() . '">';
+		    	// echo '<div id="shipping-number" style="font-size:20px;">'.$text.'</div>';
+		    	
+		    	echo __("Input your number resi", "scod-shipping")."<br>";
+		    	echo __("or", "scod-shipping")."<br>";
+		    	echo __("Request pickup automatically on this button", "scod-shipping")."<br><br>";
 
 		   		echo '<a href="#"
 		   		data-id="'.$post->ID.'"
