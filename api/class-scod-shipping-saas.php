@@ -293,7 +293,7 @@ class SCOD {
 
 			$body_params = wp_parse_args( $params, array(
 				'store_id'		  => NULL,
-				'store_secret'	  => NULL,
+				'secret_key'	  => NULL,
 				'buyer_name'	  => NULL,
 				'buyer_email'	  => NULL,
 				'buyer_phone'	  => NULL,

@@ -1130,7 +1130,6 @@ class Front {
 			// Send data to API
 			$api_scod 	  = new API_SCOD();
 			$create_order = $api_scod->post_create_order( $order_params );
-
 			if( ! is_wp_error( $create_order ) ) {
 				// Flag the action as done (to avoid repetitions on reload for example)
 				$order->update_meta_data( '_sync_order_action_scod_done', true );
