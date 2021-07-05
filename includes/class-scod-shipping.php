@@ -208,9 +208,6 @@ class SCOD_Shipping {
 		// Requesting Processing
 		$this->loader->add_action( 'woocommerce_order_status_processing', $admin, 'add_actions_processing_order');
 
-		// Requesting Pickup
-		$this->loader->add_action( 'woocommerce_order_status_pickup-shipping', $admin, 'add_actions_processing_pickup_order');
-
 		// Requesting In-Shipping
 		$this->loader->add_action( 'woocommerce_order_status_in-shipping', $admin, 'add_actions_processing_in_shipping_order');
 
