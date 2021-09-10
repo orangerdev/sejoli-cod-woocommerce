@@ -29,8 +29,8 @@ class JNE extends \SCOD_Shipping\API {
      * @since   1.0.0
      */
 	public static function set_sandbox_data() {
-		$username 	= 'TESTAPI';
-		$api_key 	= '25c898a9faea1a100859ecd9ef674548';
+		$username 	= 'APITEST';
+		$api_key 	= '28c894a9fleala200867ecd9ef674536';
 
 		self::$body = array(
 			'username' => $username,
@@ -44,7 +44,13 @@ class JNE extends \SCOD_Shipping\API {
      * @since   1.0.0
      */
 	public function set_live_data() {
+		$username 	= 'SEJOLI';
+		$api_key 	= '4cde0a5db48339928b72b3dcba16b0ae';
 
+		self::$body = array(
+			'username' => $username,
+			'api_key'  => $api_key
+		);
 
 	}
 
