@@ -1070,7 +1070,7 @@ class Front {
 			    $item_name    	= $item->get_name(); // Name of the product
 			    $quantity     	+= $item->get_quantity();  
 			    $product_weight = $product->get_weight();
-			    $total_weight 	= ( $quantity * $product_weight );
+			    $total_weight 	= ( floatval($quantity) * floatval($product_weight) );
 			endforeach;
 
 			// Check Payment Method COD or NOT
