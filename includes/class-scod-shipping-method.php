@@ -310,8 +310,6 @@ function scod_shipping_init() {
 			}
 
 			$origin = JNE_Origin::find( $origin_option );
-			// echo 'ahayy';
-			// print_r($origin_option);
 
 			if( ! $origin ) {
 				return false;
@@ -493,7 +491,7 @@ function scod_shipping_init() {
 		 *
 	     * @param 	array $package default: array()
 	     *
-	     * @return 	boolean|rate returns false if fail, add rate to wc if available
+	     * @return 	boolean|rate return///s /false if fail, add rate to wc if available
 	     */
 	    public function calculate_shipping( $package = array() ) {
 			$origin 	 = $this->get_origin_info();
@@ -525,17 +523,30 @@ function scod_shipping_init() {
 
 					if( \in_array( $rate->service_code, $this->get_jne_services() ) ) {
 
+						$chosen_shipping_method = WC()->session->get('chosen_shipping_methods');
+						$chosen_payment_method  = WC()->session->get('chosen_payment_method');
+
+						error_log(print_r($chosen_payment_method, true));
+
 						$option_biaya_markup = $this->get_option( 'jne_biaya_markup' );
 
 						$percentage = 0.04;
 						$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
 					 	
-					 	if($option_biaya_markup === 'yes') {
-					        $this->add_rate( array(
-								'id'    => $tariff->getRateID( $this->id, $rate ),
-								'label' => $tariff->getLabel( $rate ),
-								'cost' 	=> ($rate->price + $percentage_fee) * $cart_weight
-							));
+						if($option_biaya_markup === 'yes') {
+							if($chosen_payment_method === 'cod') {
+						        $this->add_rate( array(
+									'id'    => $tariff->getRateID( $this->id, $rate ),
+									'label' => $tariff->getLabel( $rate ),
+									'cost' 	=> ($rate->price + $percentage_fee) * $cart_weight
+								));
+							} else {
+								$this->add_rate( array(
+									'id'    => $tariff->getRateID( $this->id, $rate ),
+									'label' => $tariff->getLabel( $rate ),
+									'cost' 	=> $rate->price * $cart_weight
+								));
+							}
 					 	} else {
 					 		$this->add_rate( array(
 								'id'    => $tariff->getRateID( $this->id, $rate ),

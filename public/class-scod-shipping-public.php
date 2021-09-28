@@ -1164,45 +1164,69 @@ class Front {
 		}
 	 
 		$chosen_shipping_method = WC()->session->get('chosen_shipping_methods');
-	 	
-		if (strpos( $chosen_shipping_method[0], 'scod-shipping_jne_reg19' ) !== false ||
-			strpos( $chosen_shipping_method[0], 'scod-shipping_jne_oke19' ) !== false ||
-			strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtrbt250' ) !== false ||
-			strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtrlt150' ) !== false ||
-			strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr250' ) !== false ||
-			strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr18' ) !== false) {
-			
-			foreach ( WC()->cart->get_shipping_packages() as $package_id => $package ) {
-			    // Check if a shipping for the current package exist
-			    if ( WC()->session->__isset( 'shipping_for_package_'.$package_id ) ) {
-			        // Loop through shipping rates for the current package
-			        
-			    	// $shipping_instance_id = [];
-			        foreach ( WC()->session->get( 'shipping_for_package_'.$package_id )['rates'] as $shipping_rate_id => $shipping_rate ) {
-			            $shipping_method_id   = $shipping_rate->get_method_id(); // The shipping method slug
-			            $shipping_instance_id = $shipping_rate->get_instance_id(); // The instance ID
-			        }
-			    }
-			}
-
-			if( $shipping_instance_id ) {
-				// $instanceValues = array_values($shipping_instance_id);
-				$shipping_class      = new Shipping_Method( $shipping_instance_id );
-				$label_biaya_markup  = $shipping_class->get_option( 'jne_label_markup_cod' );
-				$option_biaya_markup = $shipping_class->get_option( 'jne_biaya_markup' );
-
-			    // error_log(print_r(array_values($instanceValues) , true));
+		$chosen_payment_method  = WC()->session->get('chosen_payment_method');
+	 			
+	 	if($chosen_payment_method === 'cod') {
+			if (strpos( $chosen_shipping_method[0], 'scod-shipping_jne_reg19' ) !== false ||
+				strpos( $chosen_shipping_method[0], 'scod-shipping_jne_oke19' ) !== false ||
+				strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtrbt250' ) !== false ||
+				strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtrlt150' ) !== false ||
+				strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr250' ) !== false ||
+				strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr18' ) !== false) {
 				
-				$percentage = 0.04;
-				// $percentage_fee = (WC()->cart->get_cart_contents_total() + WC()->cart->get_shipping_total()) * $percentage;
-				$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
-			 	
-			 	if($option_biaya_markup === 'no') {
-					WC()->cart->add_fee($label_biaya_markup, $percentage_fee);
-			 	} else {
-			 		return false;
-			 	}
+				foreach ( WC()->cart->get_shipping_packages() as $package_id => $package ) {
+				    // Check if a shipping for the current package exist
+				    if ( WC()->session->__isset( 'shipping_for_package_'.$package_id ) ) {
+				        // Loop through shipping rates for the current package
+				        
+				    	// $shipping_instance_id = [];
+				        foreach ( WC()->session->get( 'shipping_for_package_'.$package_id )['rates'] as $shipping_rate_id => $shipping_rate ) {
+				            $shipping_method_id   = $shipping_rate->get_method_id(); // The shipping method slug
+				            $shipping_instance_id = $shipping_rate->get_instance_id(); // The instance ID
+				        }
+				    }
+				}
+
+				if( $shipping_instance_id ) {
+					// $instanceValues = array_values($shipping_instance_id);
+					$shipping_class      = new Shipping_Method( $shipping_instance_id );
+					$label_biaya_markup  = $shipping_class->get_option( 'jne_label_markup_cod' );
+					$option_biaya_markup = $shipping_class->get_option( 'jne_biaya_markup' );
+
+				    // error_log(print_r(array_values($instanceValues) , true));
+					
+					$percentage = 0.04;
+					// $percentage_fee = (WC()->cart->get_cart_contents_total() + WC()->cart->get_shipping_total()) * $percentage;
+					$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
+				 	
+				 	if($option_biaya_markup === 'no') {
+						WC()->cart->add_fee($label_biaya_markup, $percentage_fee);
+				 	} else {
+				 		return false;
+				 	}
+				}
+
 			}
 		}
 	}
+
+	/**
+	 * Adding Markup Price COD Payment Ajax
+	 * Hook via woocommerce_review_order_before_payment
+	 * Reference: https://awhitepixel.com/blog/woocommerce-checkout-add-custom-fees/
+	 * @since    1.0.0
+	 */
+	public function adding_markup_price_cod_payment_ajax() {
+?>
+	    <script type="text/javascript">
+	        (function($){
+	            $('form.checkout').on('change', 'input[name^="payment_method"]', function() {
+	                $('body').trigger('update_checkout');
+	            });
+	        })(jQuery);
+	    </script>
+<?php
+	}
+
+
 }
