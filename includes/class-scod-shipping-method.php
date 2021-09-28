@@ -158,6 +158,18 @@ function scod_shipping_init() {
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
+        		'jne_label_markup_cod' => array(
+        			'title' 		=> __( 'Label Biaya Markup COD JNE', 'scod-shipping' ),
+        			'type' 			=> 'text',
+        			'description' 	=> '',
+        			'default' 		=> __( 'Biaya COD', 'scod-shipping' ),
+        		),
+        		'jne_biaya_markup' => array(
+        			'title' 		=> __( 'Biaya COD JNE Termasuk ke Ongkir?', 'scod-shipping' ),
+        			'label'			=> __( 'Aktifkan', 'scod-shipping' ),
+        			'type' 			=> 'checkbox',
+					'default'		=> 'no',
+        		),
 			);
 
 			$this->instance_form_fields = $settings;
@@ -513,11 +525,25 @@ function scod_shipping_init() {
 
 					if( \in_array( $rate->service_code, $this->get_jne_services() ) ) {
 
-				        $this->add_rate( array(
-							'id'    => $tariff->getRateID( $this->id, $rate ),
-							'label' => $tariff->getLabel( $rate ),
-							'cost' 	=> $rate->price * $cart_weight
-						));
+						$option_biaya_markup = $this->get_option( 'jne_biaya_markup' );
+
+						$percentage = 0.04;
+						$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
+					 	
+					 	if($option_biaya_markup === 'yes') {
+					        $this->add_rate( array(
+								'id'    => $tariff->getRateID( $this->id, $rate ),
+								'label' => $tariff->getLabel( $rate ),
+								'cost' 	=> ($rate->price + $percentage_fee) * $cart_weight
+							));
+					 	} else {
+					 		$this->add_rate( array(
+								'id'    => $tariff->getRateID( $this->id, $rate ),
+								'label' => $tariff->getLabel( $rate ),
+								'cost' 	=> $rate->price * $cart_weight
+							));
+					 	}
+
 					}
 	        	}
 	       	}

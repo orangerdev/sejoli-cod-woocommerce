@@ -240,8 +240,9 @@ class SCOD_Shipping {
 		$this->loader->add_action( 'woocommerce_admin_order_data_after_billing_address', $admin, 'shipping_number_field_display_admin_order_meta', 10, 1 );
 
 		// Ajax Generate Airwaybill
-		$this->loader->add_action( 'wp_ajax_scods-generate-airwaybill', 	   $admin, 'generate_airwaybill', 1);
+		$this->loader->add_action( 'wp_ajax_scods-generate-airwaybill', $admin, 'generate_airwaybill', 1);
 		$this->loader->add_action( 'wp_ajax_nopriv_scods-generate-airwaybill', $admin, 'generate_airwaybill',	1);
+		
 		// Setting Cron Jobs Update Status Completed based on Shipping Status is Delivered
 		$this->loader->add_filter( 'cron_schedules', $admin, 'sejoli_update_status_cron_schedules' );
 		$this->loader->add_action( 'admin_init', $admin, 'schedule_update_order_to_complete_based_on_delivered_shipping' );
@@ -263,6 +264,7 @@ class SCOD_Shipping {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $public, 'enqueue_scripts' );
+		
 		if( !is_admin() ){
 			$this->loader->add_filter( 'woocommerce_states', $public, 'checkout_state_dropdown' );
 
@@ -275,6 +277,7 @@ class SCOD_Shipping {
 			add_filter( 'woocommerce_shipping_calculator_enable_state', '__return_false' );
 			add_filter( 'woocommerce_shipping_calculator_enable_postcode', '__return_false' );
 		}
+
 		$this->loader->add_filter( 'woocommerce_checkout_fields', 				$public, 'scod_checkout_fields' );
 		$this->loader->add_filter( 'woocommerce_default_address_fields', 		$public, 'override_locale_fields' );
 		$this->loader->add_filter( 'woocommerce_after_checkout_billing_form', 	$public, 'checkout_country_hidden_fields_replacement' );
@@ -307,6 +310,9 @@ class SCOD_Shipping {
 
 		// Shortcode
 		$this->loader->add_action( 'init', $public, 'sejoli_init_tracking_shipment_shortcode' );
+
+		// Markup COD
+		$this->loader->add_action( 'woocommerce_cart_calculate_fees', $public, 'adding_markup_price_cod' );
 	}
 
 	/**

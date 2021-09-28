@@ -535,7 +535,6 @@ class Front {
 			}
 
 	        $trace_tracking = API_JNE::set_params()->get_tracking( $shipping_number );
-	    	// print_r($trace_tracking->history);
 	    	
 	    	echo '<h6>'.__('Number Resi:', 'scod-shipping').'</h6>';
 	    	echo '<div class="shipping-number" style="font-size:20px;">'.$shipping_number.'</div>';
@@ -688,6 +687,7 @@ class Front {
 
     /**
 	 * Display Shipment Tracking Form Shortcode
+	 * Hook via init
 	 * 
 	 * @since    1.0.0
 	 */
@@ -885,6 +885,7 @@ class Front {
 
 	/**
 	 * WooCommerce checkout disable COD payment if JNE YES shipping is selected.
+	 * Hook via woocommerce_available_payment_gateways
 	 *
 	 * @since    1.0.0
 	 */
@@ -910,6 +911,7 @@ class Front {
 
 	/**
 	 * WooCommerce checkout disable JNE YES if COD payment is selected.
+	 * Hook via woocommerce_package_rates
 	 *
 	 * @since    1.0.0
 	 */
@@ -933,6 +935,7 @@ class Front {
 
 	/**
 	 * WooCommerce action to send newly created order data to API.
+	 * Hook via woocommerce_thankyou
 	 *
 	 * @since    1.0.0
 	 */
@@ -1015,11 +1018,11 @@ class Front {
 				endif;
 			}
 
-			if($shipping_name == "JNE - REG (1-2 days)") {
+			if($shipping_name === "JNE - REG (1-2 days)") {
 				$shipping_service = "REG";
-			} elseif($shipping_name == "JNE - OKE (2-3 days)") {
+			} elseif($shipping_name === "JNE - OKE (2-3 days)") {
 				$shipping_service = "OKE";
-			} elseif($shipping_name == "JNE - YES (1 day)") {
+			} elseif($shipping_name === "JNE - YES (1 day)") {
 				$shipping_service = "YES";
 			} else {
 				$shipping_service = "JTR";
@@ -1077,7 +1080,12 @@ class Front {
 			$order_payment_method = $order_data['payment_method'];
 	        if($order_payment_method == "cod"){
 	        	$codflag   = "YES";
-	        	$codamount = $order_total;
+	        	if($shipping_name === "JNE - REG (1-2 days)" || $shipping_name === "JNE - OKE (2-3 days)" || $shipping_name === "JNE - JTR>250 (3-4 days)" || $shipping_name === "JNE - JTR<150 (3-4 days)" || $shipping_name === "JNE - JTR250 (3-4 days)" || $shipping_name === "JNE - JTR (3-4 days)") {
+		        	$percentage = 0.04;
+					$codamount = $order_total * $percentage;
+				} else {
+					$codamount = 0;
+				}
 	        } else {
 	        	$codflag   = "N";
 	        	$codamount = 0;
@@ -1119,7 +1127,7 @@ class Front {
 		        'destination'     => $destination->code,
 		        'service'         => $shipping_service,
 		        'codflag'         => $codflag,
-		        'codamount'       => $order_total,
+		        'codamount'       => $codamount,
 				'invoice_total'   => $order->get_total(),
 				'shipping_fee'	  => $order->get_total_shipping(),
 				'shipping_status' => 'pending',
@@ -1142,5 +1150,59 @@ class Front {
 			
 			error_log( 'Done processing order ID '. $order_id );
 	    }
+	}
+
+	/**
+	 * Adding Markup Price COD
+	 * Hook via woocommerce_cart_calculate_fees
+	 * Reference: https://awhitepixel.com/blog/woocommerce-checkout-add-custom-fees/
+	 * @since    1.0.0
+	 */
+	public function adding_markup_price_cod() {
+		if (!is_admin() && !defined('DOING_AJAX')) {
+			return;
+		}
+	 
+		$chosen_shipping_method = WC()->session->get('chosen_shipping_methods');
+	 	
+		if (strpos( $chosen_shipping_method[0], 'scod-shipping_jne_reg19' ) !== false ||
+			strpos( $chosen_shipping_method[0], 'scod-shipping_jne_oke19' ) !== false ||
+			strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtrbt250' ) !== false ||
+			strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtrlt150' ) !== false ||
+			strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr250' ) !== false ||
+			strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr18' ) !== false) {
+			
+			foreach ( WC()->cart->get_shipping_packages() as $package_id => $package ) {
+			    // Check if a shipping for the current package exist
+			    if ( WC()->session->__isset( 'shipping_for_package_'.$package_id ) ) {
+			        // Loop through shipping rates for the current package
+			        
+			    	// $shipping_instance_id = [];
+			        foreach ( WC()->session->get( 'shipping_for_package_'.$package_id )['rates'] as $shipping_rate_id => $shipping_rate ) {
+			            $shipping_method_id   = $shipping_rate->get_method_id(); // The shipping method slug
+			            $shipping_instance_id = $shipping_rate->get_instance_id(); // The instance ID
+			        }
+			    }
+			}
+
+			if( $shipping_instance_id ) {
+				// $instanceValues = array_values($shipping_instance_id);
+				$shipping_class      = new Shipping_Method( $shipping_instance_id );
+				$label_biaya_markup  = $shipping_class->get_option( 'jne_label_markup_cod' );
+				$option_biaya_markup = $shipping_class->get_option( 'jne_biaya_markup' );
+
+			    // error_log(print_r(array_values($instanceValues) , true));
+				
+				$percentage = 0.04;
+				// $percentage_fee = (WC()->cart->get_cart_contents_total() + WC()->cart->get_shipping_total()) * $percentage;
+				$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
+			 	
+			 	if($option_biaya_markup === 'no') {
+					WC()->cart->add_fee($label_biaya_markup, $percentage_fee);
+			 	} else {
+			 		return false;
+			 	}
+			}
+		}
 	}
 }
