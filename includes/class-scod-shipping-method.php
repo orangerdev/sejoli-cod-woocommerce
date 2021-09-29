@@ -523,14 +523,10 @@ function scod_shipping_init() {
 
 					if( \in_array( $rate->service_code, $this->get_jne_services() ) ) {
 
-						$chosen_shipping_method = WC()->session->get('chosen_shipping_methods');
 						$chosen_payment_method  = WC()->session->get('chosen_payment_method');
+						$option_biaya_markup    = $this->get_option( 'jne_biaya_markup' );
 
-						error_log(print_r($chosen_payment_method, true));
-
-						$option_biaya_markup = $this->get_option( 'jne_biaya_markup' );
-
-						$percentage = 0.04;
+						$percentage     = 0.04;
 						$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
 					 	
 						if($option_biaya_markup === 'yes') {

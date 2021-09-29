@@ -1179,7 +1179,6 @@ class Front {
 				    if ( WC()->session->__isset( 'shipping_for_package_'.$package_id ) ) {
 				        // Loop through shipping rates for the current package
 				        
-				    	// $shipping_instance_id = [];
 				        foreach ( WC()->session->get( 'shipping_for_package_'.$package_id )['rates'] as $shipping_rate_id => $shipping_rate ) {
 				            $shipping_method_id   = $shipping_rate->get_method_id(); // The shipping method slug
 				            $shipping_instance_id = $shipping_rate->get_instance_id(); // The instance ID
@@ -1188,15 +1187,11 @@ class Front {
 				}
 
 				if( $shipping_instance_id ) {
-					// $instanceValues = array_values($shipping_instance_id);
 					$shipping_class      = new Shipping_Method( $shipping_instance_id );
 					$label_biaya_markup  = $shipping_class->get_option( 'jne_label_markup_cod' );
 					$option_biaya_markup = $shipping_class->get_option( 'jne_biaya_markup' );
-
-				    // error_log(print_r(array_values($instanceValues) , true));
 					
 					$percentage = 0.04;
-					// $percentage_fee = (WC()->cart->get_cart_contents_total() + WC()->cart->get_shipping_total()) * $percentage;
 					$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
 				 	
 				 	if($option_biaya_markup === 'no') {
