@@ -158,6 +158,18 @@ function scod_shipping_init() {
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
+        		'jne_label_markup_cod' => array(
+        			'title' 		=> __( 'Label Biaya Markup COD JNE', 'scod-shipping' ),
+        			'type' 			=> 'text',
+        			'description' 	=> '',
+        			'default' 		=> __( 'Biaya COD', 'scod-shipping' ),
+        		),
+        		'jne_biaya_markup' => array(
+        			'title' 		=> __( 'Biaya COD JNE Termasuk ke Ongkir?', 'scod-shipping' ),
+        			'label'			=> __( 'Aktifkan', 'scod-shipping' ),
+        			'type' 			=> 'checkbox',
+					'default'		=> 'no',
+        		),
 			);
 
 			$this->instance_form_fields = $settings;
@@ -298,8 +310,6 @@ function scod_shipping_init() {
 			}
 
 			$origin = JNE_Origin::find( $origin_option );
-			// echo 'ahayy';
-			// print_r($origin_option);
 
 			if( ! $origin ) {
 				return false;
@@ -481,7 +491,7 @@ function scod_shipping_init() {
 		 *
 	     * @param 	array $package default: array()
 	     *
-	     * @return 	boolean|rate returns false if fail, add rate to wc if available
+	     * @return 	boolean|rate return///s /false if fail, add rate to wc if available
 	     */
 	    public function calculate_shipping( $package = array() ) {
 			$origin 	 = $this->get_origin_info();
@@ -513,11 +523,34 @@ function scod_shipping_init() {
 
 					if( \in_array( $rate->service_code, $this->get_jne_services() ) ) {
 
-				        $this->add_rate( array(
-							'id'    => $tariff->getRateID( $this->id, $rate ),
-							'label' => $tariff->getLabel( $rate ),
-							'cost' 	=> $rate->price * $cart_weight
-						));
+						$chosen_payment_method  = WC()->session->get('chosen_payment_method');
+						$option_biaya_markup    = $this->get_option( 'jne_biaya_markup' );
+
+						$percentage     = 0.04;
+						$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
+					 	
+						if($option_biaya_markup === 'yes') {
+							if($chosen_payment_method === 'cod') {
+						        $this->add_rate( array(
+									'id'    => $tariff->getRateID( $this->id, $rate ),
+									'label' => $tariff->getLabel( $rate ),
+									'cost' 	=> ($rate->price + $percentage_fee) * $cart_weight
+								));
+							} else {
+								$this->add_rate( array(
+									'id'    => $tariff->getRateID( $this->id, $rate ),
+									'label' => $tariff->getLabel( $rate ),
+									'cost' 	=> $rate->price * $cart_weight
+								));
+							}
+					 	} else {
+					 		$this->add_rate( array(
+								'id'    => $tariff->getRateID( $this->id, $rate ),
+								'label' => $tariff->getLabel( $rate ),
+								'cost' 	=> $rate->price * $cart_weight
+							));
+					 	}
+
 					}
 	        	}
 	       	}

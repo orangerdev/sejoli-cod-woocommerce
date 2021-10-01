@@ -205,7 +205,8 @@ class Admin {
 	} 
 
 	/**
-	 * WooCommerce action to add actions when processing request.
+	 * WooCommerce action to add actions when processing request
+	 * Hook via woocommerce_order_status_processing
 	 *
 	 * @since    1.0.0
 	 */
@@ -242,7 +243,8 @@ class Admin {
 	}
 
 	/**
-	 * WooCommerce action to add actions when airway bill proces request.
+	 * WooCommerce action to add actions when airway bill proces request
+	 * Hook via woocommerce_order_status_in-shipping
 	 *
 	 * @since    1.0.0
 	 */
@@ -281,7 +283,8 @@ class Admin {
 	}
 
 	/**
-	 * WooCommerce action to add actions when order status is completed.
+	 * WooCommerce action to add actions when order status is completed
+	 * Hook via woocommerce_order_status_completed
 	 *
 	 * @since    1.0.0
 	 */
@@ -320,7 +323,8 @@ class Admin {
 	}
 
 	/**
-	 * WooCommerce action to add actions when cancelled proces request.
+	 * WooCommerce action to add actions when cancelled proces request
+	 * Hook via woocommerce_order_status_cancelled
 	 *
 	 * @since    1.0.0
 	 */
@@ -358,7 +362,8 @@ class Admin {
 	}
 
 	/**
-	 * WooCommerce action to add actions when failed proces request.
+	 * WooCommerce action to add actions when failed proces request
+	 * Hook via woocommerce_order_status_failed
 	 *
 	 * @since    1.0.0
 	 */
@@ -395,7 +400,8 @@ class Admin {
 	}
 
 	/**
-	 * WooCommerce action to add actions when on-hold proces request.
+	 * WooCommerce action to add actions when on-hold proces request
+	 * Hook via woocommerce_order_status_on-hold
 	 *
 	 * @since    1.0.0
 	 */
@@ -717,7 +723,8 @@ class Admin {
 	}
 
 	/**
-	 * WooCommerce action to generate airwaybill by request.
+	 * WooCommerce action to generate airwaybill by request
+	 * Hook via wp_ajax_scods-generate-airwaybill
 	 *
 	 * @since    1.0.0
 	 */
@@ -806,6 +813,7 @@ class Admin {
 
 	/**
 	 * Create Updating Status Order to Complete Based on Shipping Status is Delivered Cron Job
+	 * Hook via cron_schedules
 	 *
 	 * @since    1.0.0
 	 */
@@ -820,6 +828,7 @@ class Admin {
 
 	/**
 	 * Set Schedule Event for Updating Status Order to Complete Based on Shipping Status is Delivered Cron Job
+	 * Hook via admin_init
 	 *
 	 * @since    1.0.0
 	 */
@@ -832,6 +841,7 @@ class Admin {
 
 	/**
 	 * Create Updating Status Order to Complete Based on Shipping Status is Delivered Functiona
+	 * Hook via update_status_order_to_completed
 	 *
 	 * @since    1.0.0
 	 */
