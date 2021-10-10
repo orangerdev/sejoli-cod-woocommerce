@@ -29,8 +29,8 @@ class JNE extends \SCOD_Shipping\API {
      * @since   1.0.0
      */
 	public static function set_sandbox_data() {
-		$username 	= 'APITEST';
-		$api_key 	= '28c894a9fleala200867ecd9ef674536';
+		$username 	= 'TESTAPI';
+		$api_key 	= '25c898a9faea1a100859ecd9ef674548';
 
 		self::$body = array(
 			'username' => $username,
@@ -43,7 +43,7 @@ class JNE extends \SCOD_Shipping\API {
      *
      * @since   1.0.0
      */
-	public function set_live_data() {
+	public static function set_live_data() {
 		$username 	= 'SEJOLI';
 		$api_key 	= '4cde0a5db48339928b72b3dcba16b0ae';
 
@@ -51,7 +51,6 @@ class JNE extends \SCOD_Shipping\API {
 			'username' => $username,
 			'api_key'  => $api_key
 		);
-
 	}
 
 	/**
@@ -61,7 +60,7 @@ class JNE extends \SCOD_Shipping\API {
      *
      * @return 	(static) return an instance of static class
      */
-	public static function set_params( $is_sandbox = true ) {
+	public static function set_params( $is_sandbox = false ) {
 		self::$headers = [
 			'Content-Type' => 'application/x-www-form-urlencoded',
 			'Accept' 	   => 'application/json'

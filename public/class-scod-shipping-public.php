@@ -1016,6 +1016,10 @@ class Front {
 				if( \str_contains( strtolower( $shipping_name ), 'jne' ) ):
 					$courier_name = 'jne';
 				endif;
+
+				if( \str_contains( strtolower( $shipping_name ), 'sicepat' ) ):
+					$courier_name = 'SiCepat';
+				endif;
 			}
 
 			if($shipping_name === "JNE - REG (1-2 days)") {
@@ -1083,6 +1087,9 @@ class Front {
 	        	if($shipping_name === "JNE - REG (1-2 days)" || $shipping_name === "JNE - OKE (2-3 days)" || $shipping_name === "JNE - JTR>250 (3-4 days)" || $shipping_name === "JNE - JTR<150 (3-4 days)" || $shipping_name === "JNE - JTR250 (3-4 days)" || $shipping_name === "JNE - JTR (3-4 days)") {
 		        	$percentage = 0.04;
 					$codamount = $order_total * $percentage;
+				} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)" || $shipping_name === "SICEPAT - GOKIL (2 - 3 hari)") {
+		        	$percentage = 0.04;
+					$codamount = $order_total * $percentage;
 				} else {
 					$codamount = 0;
 				}
@@ -1138,6 +1145,9 @@ class Front {
 			// Send data to API
 			$api_scod 	  = new API_SCOD();
 			$create_order = $api_scod->post_create_order( $order_params );
+
+			error_log(print_r($order_params, true));
+
 			if( ! is_wp_error( $create_order ) ) {
 				// Flag the action as done (to avoid repetitions on reload for example)
 				$order->update_meta_data( '_sync_order_action_scod_done', true );
@@ -1190,6 +1200,38 @@ class Front {
 					$shipping_class      = new Shipping_Method( $shipping_instance_id );
 					$label_biaya_markup  = $shipping_class->get_option( 'jne_label_markup_cod' );
 					$option_biaya_markup = $shipping_class->get_option( 'jne_biaya_markup' );
+					
+					$percentage = 0.04;
+					$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
+				 	
+				 	if($option_biaya_markup === 'no') {
+						WC()->cart->add_fee($label_biaya_markup, $percentage_fee);
+				 	} else {
+				 		return false;
+				 	}
+				}
+
+			}
+
+			if (strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_gokil' ) !== false ||
+				strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_reg' ) !== false) {
+				
+				foreach ( WC()->cart->get_shipping_packages() as $package_id => $package ) {
+				    // Check if a shipping for the current package exist
+				    if ( WC()->session->__isset( 'shipping_for_package_'.$package_id ) ) {
+				        // Loop through shipping rates for the current package
+				        
+				        foreach ( WC()->session->get( 'shipping_for_package_'.$package_id )['rates'] as $shipping_rate_id => $shipping_rate ) {
+				            $shipping_method_id   = $shipping_rate->get_method_id(); // The shipping method slug
+				            $shipping_instance_id = $shipping_rate->get_instance_id(); // The instance ID
+				        }
+				    }
+				}
+
+				if( $shipping_instance_id ) {
+					$shipping_class      = new Shipping_Method( $shipping_instance_id );
+					$label_biaya_markup  = $shipping_class->get_option( 'sicepat_label_markup_cod' );
+					$option_biaya_markup = $shipping_class->get_option( 'sicepat_biaya_markup' );
 					
 					$percentage = 0.04;
 					$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;

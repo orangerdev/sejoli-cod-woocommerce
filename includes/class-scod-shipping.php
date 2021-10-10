@@ -125,6 +125,9 @@ class SCOD_Shipping {
 		require_once SCOD_SHIPPING_DIR . 'database/jne/origin.php';
 		require_once SCOD_SHIPPING_DIR . 'database/jne/destination.php';
 		require_once SCOD_SHIPPING_DIR . 'database/jne/tariff.php';
+		require_once SCOD_SHIPPING_DIR . 'database/sicepat/origin.php';
+		require_once SCOD_SHIPPING_DIR . 'database/sicepat/destination.php';
+		require_once SCOD_SHIPPING_DIR . 'database/sicepat/tariff.php';
 
 		/**
 		 * The class responsible for database seed.
@@ -141,6 +144,9 @@ class SCOD_Shipping {
 		require_once SCOD_SHIPPING_DIR . 'model/jne/origin.php';
 		require_once SCOD_SHIPPING_DIR . 'model/jne/destination.php';
 		require_once SCOD_SHIPPING_DIR . 'model/jne/tariff.php';
+		require_once SCOD_SHIPPING_DIR . 'model/sicepat/origin.php';
+		require_once SCOD_SHIPPING_DIR . 'model/sicepat/destination.php';
+		require_once SCOD_SHIPPING_DIR . 'model/sicepat/tariff.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -157,6 +163,7 @@ class SCOD_Shipping {
 		 */
 		require_once SCOD_SHIPPING_DIR . 'includes/class-scod-shipping-api.php';
 		require_once SCOD_SHIPPING_DIR . 'api/class-scod-shipping-jne.php';
+		require_once SCOD_SHIPPING_DIR . 'api/class-scod-shipping-sicepat.php';
 		require_once SCOD_SHIPPING_DIR . 'api/class-scod-shipping-saas.php';
 
 		/**
