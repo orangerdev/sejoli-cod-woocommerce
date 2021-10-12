@@ -190,9 +190,18 @@ function scod_shipping_init() {
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
+        		'sicepat_service_best' => array(
+        			'label'			=> __( 'BEST', 'scod-shipping' ),
+        			'type' 			=> 'checkbox',
+					'default'		=> 'yes',
+        		),
         		'sicepat_service_gokil' => array(
-					'title' 		=> __( 'SiCepat Services', 'scod-shipping' ),
-        			'label'			=> __( 'Gokil', 'scod-shipping' ),
+        			'label'			=> __( 'GOKIL', 'scod-shipping' ),
+        			'type' 			=> 'checkbox',
+					'default'		=> 'yes',
+        		),
+        		'sicepat_service_kepo' => array(
+        			'label'			=> __( 'KEPO', 'scod-shipping' ),
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
@@ -203,6 +212,16 @@ function scod_shipping_init() {
         		),
         		'sicepat_service_reg' => array(
         			'label'			=> __( 'Regular (COD Available)', 'scod-shipping' ),
+        			'type' 			=> 'checkbox',
+					'default'		=> 'yes',
+        		),
+        		'sicepat_service_sds' => array(
+        			'label'			=> __( 'SDS', 'scod-shipping' ),
+        			'type' 			=> 'checkbox',
+					'default'		=> 'yes',
+        		),
+        		'sicepat_service_siunt' => array(
+        			'label'			=> __( 'SIUNT', 'scod-shipping' ),
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
@@ -232,8 +251,8 @@ function scod_shipping_init() {
 		 */
 		private function generate_origin_dropdown() {
 			$option_default = array( '' => __( '--- Pilih Origin ---' ) );
-			$option_cities  = JNE_Origin::pluck( 'name', 'id' )->toArray();
-			// $option_cities  = City::pluck( 'name', 'id' )->toArray();
+			// $option_cities  = JNE_Origin::pluck( 'name', 'id' )->toArray();
+			$option_cities  = City::pluck( 'name', 'id' )->toArray();
 			return $option_default + $option_cities;
 		}
 
@@ -325,19 +344,19 @@ function scod_shipping_init() {
 		private function get_jne_services() {
 			$services = array();
 
-			if( $this->get_option('jne_service_yes') == 'yes' ) {
+			if( $this->get_option('jne_service_yes') === 'yes' ) {
 				$services[] = 'YES19';
 			}
 
-			if( $this->get_option('jne_service_oke') == 'yes' ) {
+			if( $this->get_option('jne_service_oke') === 'yes' ) {
 				$services[] = 'OKE19';
 			}
 
-			if( $this->get_option('jne_service_reg') == 'yes' ) {
+			if( $this->get_option('jne_service_reg') === 'yes' ) {
 				$services[] = 'REG19';
 			}
 
-			if( $this->get_option('jne_service_jtr') == 'yes' ) {
+			if( $this->get_option('jne_service_jtr') === 'yes' ) {
 				$codes = array( 'JTR18', 'JTR250', 'JTR<150', 'JTR>250' );
 				$services = array_merge( $services, $codes );
 			}
@@ -355,20 +374,36 @@ function scod_shipping_init() {
 		private function get_sicepat_services() {
 			$services = array();
 
-			if( $this->get_option('sicepat_service_cargo') == 'yes' ) {
+			if( $this->get_option('sicepat_service_cargo') === 'yes' ) {
 				$services[] = 'CARGO';
 			}
 
-			if( $this->get_option('sicepat_service_gokil') == 'yes' ) {
+			if( $this->get_option('sicepat_service_best') === 'yes' ) {
+				$services[] = 'BEST';
+			}
+
+			if( $this->get_option('sicepat_service_gokil') === 'yes' ) {
 				$services[] = 'GOKIL';
 			}
 
-			if( $this->get_option('sicepat_service_halu') == 'yes' ) {
+			if( $this->get_option('sicepat_service_kepo') === 'yes' ) {
+				$services[] = 'KEPO';
+			}
+
+			if( $this->get_option('sicepat_service_halu') === 'yes' ) {
 				$services[] = 'HALU';
 			}
 
-			if( $this->get_option('sicepat_service_reg') == 'yes' ) {
+			if( $this->get_option('sicepat_service_reg') === 'yes' ) {
 				$services[] = 'REG';
+			}
+
+			if( $this->get_option('sicepat_service_sds') === 'yes' ) {
+				$services[] = 'SDS';
+			}
+
+			if( $this->get_option('sicepat_service_siunt') === 'yes' ) {
+				$services[] = 'SIUNT';
 			}
 
 			return $services;
@@ -383,11 +418,20 @@ function scod_shipping_init() {
 		 */
 		public function get_origin_info() {
 			$origin_option = $this->get_option( 'shipping_origin' );
-			if( ! $origin_option ) {
+
+			// $getSetOriginName = DB::table( 'scod_shipping_jne_origin' )
+	  //               ->where( 'ID', $origin_option )
+	  //               ->get();
+
+	        $getOriginCode = DB::table( 'scod_shipping_jne_origin' )
+	                ->where( 'city_id', $origin_option )
+	                ->get();        
+
+			if( ! $getOriginCode ) {
 				return false;
 			}
 
-			$origin = JNE_Origin::find( $origin_option );
+			$origin = $getOriginCode[0];
 
 			if( ! $origin ) {
 				return false;
@@ -406,15 +450,15 @@ function scod_shipping_init() {
 		public function get_sicepat_origin_info() {
 			$origin_option = $this->get_option( 'shipping_origin' );
 
-			$getSetOriginName = DB::table( 'scod_shipping_jne_origin' )
-	                ->where( 'ID', $origin_option )
-	                ->get();
+			// $getSetOriginName = DB::table( 'scod_shipping_jne_origin' )
+	  //               ->where( 'ID', $origin_option )
+	  //               ->get();
 
 	        $getOriginCode = DB::table( 'scod_shipping_sicepat_origin' )
-	                ->where( 'origin_name', $getSetOriginName[0]->name )
+	                ->where( 'city_id', $origin_option )
 	                ->get();        
 
-			if( ! $getSetOriginName ) {
+			if( ! $getOriginCode ) {
 				return false;
 			}
 
@@ -549,7 +593,7 @@ function scod_shipping_init() {
 			}
 
 			$get_dest = DB::table( (new SICEPAT_Destination)->getTableName() );
-			
+
 			if( empty( $location_data['city'] ) ) {
 				$get_dest = $get_dest->whereNull( 'city_id' );
 			} else {
@@ -761,7 +805,6 @@ function scod_shipping_init() {
 	        }
 
 			$sicepat_tariff = $this->get_sicepat_tariff_info( $sicepat_origin, $sicepat_destination );
-			error_log(print_r($sicepat_tariff, true));
 
 			if( ! $sicepat_tariff ) {
 	        	return false;
