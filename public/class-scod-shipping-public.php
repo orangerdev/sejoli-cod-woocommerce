@@ -1022,11 +1022,11 @@ class Front {
 				endif;
 			}
 
-			if($shipping_name === "JNE - REG (1-2 days)") {
+			if($shipping_name === "JNE - REG (1-2 hari)") {
 				$shipping_service = "REG";
-			} elseif($shipping_name === "JNE - OKE (2-3 days)") {
+			} elseif($shipping_name === "JNE - OKE (2-3 hari)") {
 				$shipping_service = "OKE";
-			} elseif($shipping_name === "JNE - YES (1 day)") {
+			} elseif($shipping_name === "JNE - YES (1 hari)") {
 				$shipping_service = "YES";
 			} else {
 				$shipping_service = "JTR";
@@ -1076,7 +1076,7 @@ class Front {
 				$packages['destination']['city2'] 	  = $order_shipping_city;
 				$packages['destination']['district']  = $order_shipping_district;
 
-				if($shipping_name === "JNE - REG (1-2 days)" || $shipping_name === "JNE - OKE (2-3 days)" || $shipping_name === "JNE - JTR>250 (3-4 days)" || $shipping_name === "JNE - JTR<150 (3-4 days)" || $shipping_name === "JNE - JTR250 (3-4 days)" || $shipping_name === "JNE - JTR (3-4 days)") {
+				if($shipping_name === "JNE - REG (1-2 hari)" || $shipping_name === "JNE - OKE (2-3 hari)" || $shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
 		        	$getOrigin = $shipping_class->get_origin_info()->code;
 					$destination = $shipping_class->get_destination_info( $packages['destination'] )->code;
 				} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)" || $shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - BEST (1 hari)" || $shipping_name === "SICEPAT - KEPO (1 - 2 hari)" || $shipping_name === "SICEPAT - SDS (1 hari)"  || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
@@ -1107,7 +1107,7 @@ class Front {
 			$order_payment_method = $order_data['payment_method'];
 	        if($order_payment_method == "cod"){
 	        	$codflag   = "YES";
-	        	if($shipping_name === "JNE - REG (1-2 days)" || $shipping_name === "JNE - OKE (2-3 days)" || $shipping_name === "JNE - JTR>250 (3-4 days)" || $shipping_name === "JNE - JTR<150 (3-4 days)" || $shipping_name === "JNE - JTR250 (3-4 days)" || $shipping_name === "JNE - JTR (3-4 days)") {
+	        	if($shipping_name === "JNE - REG (1-2 hari)" || $shipping_name === "JNE - OKE (2-3 hari)" || $shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
 		        	$percentage = 0.04;
 					$codamount = $order_total * $percentage;
 				} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)" || $shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - BEST (1 hari)" || $shipping_name === "SICEPAT - KEPO (1 - 2 hari)" || $shipping_name === "SICEPAT - SDS (1 hari)"  || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {

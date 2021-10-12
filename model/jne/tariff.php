@@ -100,13 +100,13 @@ class Tariff extends Eloquent
                 $label .= $rate->etd_from;
 
                 if( $rate->times == 'D' ) {
-                    $label .= ' day';
+                    $label .= ' hari';
                 }
             } else {
                 $label .= $rate->etd_from . '-' . $rate->etd_thru;
 
                 if( $rate->times == 'D' ) {
-                    $label .= ' days';
+                    $label .= ' hari';
                 }
             }
 
