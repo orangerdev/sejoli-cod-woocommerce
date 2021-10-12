@@ -1032,6 +1032,22 @@ class Front {
 				$shipping_service = "JTR";
 			}
 
+			if($shipping_name === "SICEPAT - BEST (1 hari)") {
+				$shipping_service = "BEST";
+			} elseif($shipping_name === "SICEPAT - GOKIL (2 - 3 hari)") {
+				$shipping_service = "GOKIL";
+			} elseif($shipping_name === "SICEPAT - KEPO (1 - 2 hari)") {
+				$shipping_service = "KEPO";
+			} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)") {
+				$shipping_service = "REG";
+			} elseif($shipping_name === "SICEPAT - SDS (1 hari)") {
+				$shipping_service = "SDS";
+			} elseif($shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
+				$shipping_service = "SIUNT";
+			} else {
+				$shipping_service = "Cargo";
+			}
+
 			// Check selected shipping
 			if( $shipping_method_id != 'scod-shipping' ) {
 				return;
@@ -1047,8 +1063,8 @@ class Front {
 				$store_secret_key = $shipping_class->get_option( 'store_secret_key' );
 
 				$shipping_origin  = $shipping_class->get_option( 'shipping_origin' );
-				$getOrigin 		  = $shipping_class->get_origin_info();
-				$packages 		  = WC()->shipping->get_packages();
+
+				$packages = WC()->shipping->get_packages();
 
 				$packages['destination']['country']   = $store_country;
 				$packages['destination']['state'] 	  = $order_shipping_state;
@@ -1059,8 +1075,15 @@ class Front {
 				$packages['destination']['address_2'] = $order_shipping_district;
 				$packages['destination']['city2'] 	  = $order_shipping_city;
 				$packages['destination']['district']  = $order_shipping_district;
+
+				if($shipping_name === "JNE - REG (1-2 days)" || $shipping_name === "JNE - OKE (2-3 days)" || $shipping_name === "JNE - JTR>250 (3-4 days)" || $shipping_name === "JNE - JTR<150 (3-4 days)" || $shipping_name === "JNE - JTR250 (3-4 days)" || $shipping_name === "JNE - JTR (3-4 days)") {
+		        	$getOrigin = $shipping_class->get_origin_info()->code;
+					$destination = $shipping_class->get_destination_info( $packages['destination'] )->code;
+				} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)" || $shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - BEST (1 hari)" || $shipping_name === "SICEPAT - KEPO (1 - 2 hari)" || $shipping_name === "SICEPAT - SDS (1 hari)"  || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
+		        	$getOrigin = $shipping_class->get_sicepat_origin_info()->origin_code;
+					$destination = $shipping_class->get_sicepat_destination_info( $packages['destination'] )->destination_code;
+				}
 				
-				$destination = $shipping_class->get_destination_info( $packages['destination'] );
 			}
 
 			// Iterating through each WC_Order_Item_Product objects
@@ -1087,7 +1110,7 @@ class Front {
 	        	if($shipping_name === "JNE - REG (1-2 days)" || $shipping_name === "JNE - OKE (2-3 days)" || $shipping_name === "JNE - JTR>250 (3-4 days)" || $shipping_name === "JNE - JTR<150 (3-4 days)" || $shipping_name === "JNE - JTR250 (3-4 days)" || $shipping_name === "JNE - JTR (3-4 days)") {
 		        	$percentage = 0.04;
 					$codamount = $order_total * $percentage;
-				} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)" || $shipping_name === "SICEPAT - GOKIL (2 - 3 hari)") {
+				} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)" || $shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - BEST (1 hari)" || $shipping_name === "SICEPAT - KEPO (1 - 2 hari)" || $shipping_name === "SICEPAT - SDS (1 hari)"  || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
 		        	$percentage = 0.04;
 					$codamount = $order_total * $percentage;
 				} else {
@@ -1130,8 +1153,8 @@ class Front {
 		        'goods_value'     => $quantity,
 		        'goods_type'      => '1',
 		        'insurance'       => $insurance,
-		        'origin'          => $getOrigin->code,
-		        'destination'     => $destination->code,
+		        'origin'          => $getOrigin,
+		        'destination'     => $destination,
 		        'service'         => $shipping_service,
 		        'codflag'         => $codflag,
 		        'codamount'       => $codamount,
@@ -1214,7 +1237,11 @@ class Front {
 			}
 
 			if (strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_gokil' ) !== false ||
-				strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_reg' ) !== false) {
+				strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_reg' ) !== false ||
+				strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_kepo' ) !== false ||
+				strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_sds' ) !== false ||
+				strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_siunt' ) !== false ||
+				strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_best' ) !== false)  {
 				
 				foreach ( WC()->cart->get_shipping_packages() as $package_id => $package ) {
 				    // Check if a shipping for the current package exist
