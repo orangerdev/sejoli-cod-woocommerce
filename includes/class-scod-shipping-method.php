@@ -196,7 +196,7 @@ function scod_shipping_init() {
 					'default'		=> 'yes',
         		),
         		'sicepat_service_gokil' => array(
-        			'label'			=> __( 'GOKIL', 'scod-shipping' ),
+        			'label'			=> __( 'GOKIL (COD Available)', 'scod-shipping' ),
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
@@ -206,12 +206,12 @@ function scod_shipping_init() {
 					'default'		=> 'yes',
         		),
         		'sicepat_service_halu' => array(
-        			'label'			=> __( 'Halu (COD Available) ', 'scod-shipping' ),
+        			'label'			=> __( 'Halu', 'scod-shipping' ),
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
         		'sicepat_service_reg' => array(
-        			'label'			=> __( 'Regular (COD Available)', 'scod-shipping' ),
+        			'label'			=> __( 'Regular', 'scod-shipping' ),
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
@@ -221,7 +221,7 @@ function scod_shipping_init() {
 					'default'		=> 'yes',
         		),
         		'sicepat_service_siunt' => array(
-        			'label'			=> __( 'SIUNT', 'scod-shipping' ),
+        			'label'			=> __( 'SI UNTUNG (COD Available)', 'scod-shipping' ),
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
@@ -761,19 +761,27 @@ function scod_shipping_init() {
 
 					if( \in_array( $rate->service_code, $this->get_jne_services() ) ) {
 
-						$chosen_payment_method = WC()->session->get( 'chosen_payment_method' );
-						$option_biaya_markup   = $this->get_option( 'jne_biaya_markup' );
+						$chosen_shipping_method = WC()->session->get('chosen_shipping_methods');
+						$chosen_payment_method  = WC()->session->get( 'chosen_payment_method' );
+						$option_biaya_markup    = $this->get_option( 'jne_biaya_markup' );
 
 						$percentage     = 0.04;
 						$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
 					 	
 						if($option_biaya_markup === 'yes') {
 							if($chosen_payment_method === 'cod') {
-						        $this->add_rate( array(
-									'id'    => $tariff->getRateID( $this->id, $rate ),
-									'label' => $tariff->getLabel( $rate ),
-									'cost' 	=> ($rate->price + $percentage_fee) * $cart_weight
-								));
+						        if (strpos( $chosen_shipping_method[0], 'scod-shipping_jne_reg19' ) !== false ||
+									strpos( $chosen_shipping_method[0], 'scod-shipping_jne_oke19' ) !== false ||
+									strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtrbt250' ) !== false ||
+									strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtrlt150' ) !== false ||
+									strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr250' ) !== false ||
+									strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr18' ) !== false) {
+								        $this->add_rate( array(
+											'id'    => $tariff->getRateID( $this->id, $rate ),
+											'label' => $tariff->getLabel( $rate ),
+											'cost' 	=> ($rate->price + $percentage_fee) * $cart_weight
+										));
+								}
 							} else {
 								$this->add_rate( array(
 									'id'    => $tariff->getRateID( $this->id, $rate ),
@@ -822,19 +830,23 @@ function scod_shipping_init() {
 
 					if( \in_array( $rate->service, $this->get_sicepat_services() ) ) {
 
-						$chosen_payment_method = WC()->session->get( 'chosen_payment_method' );
-						$option_biaya_markup   = $this->get_option( 'sicepat_biaya_markup' );
+						$chosen_shipping_method = WC()->session->get('chosen_shipping_methods');
+						$chosen_payment_method  = WC()->session->get( 'chosen_payment_method' );
+						$option_biaya_markup    = $this->get_option( 'sicepat_biaya_markup' );
 
 						$percentage     = 0.04;
 						$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
 					 	
 						if($option_biaya_markup === 'yes') {
 							if($chosen_payment_method === 'cod') {
-						        $this->add_rate( array(
-									'id'    => $sicepat_tariff->getRateID( $this->id, $rate ),
-									'label' => $sicepat_tariff->getLabel( $rate ),
-									'cost' 	=> ($rate->tariff + $percentage_fee) * $cart_weight
-								));
+						        if (strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_gokil' ) !== false ||
+									strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_siunt' ) !== false)  {
+								        $this->add_rate( array(
+											'id'    => $sicepat_tariff->getRateID( $this->id, $rate ),
+											'label' => $sicepat_tariff->getLabel( $rate ),
+											'cost' 	=> ($rate->tariff + $percentage_fee) * $cart_weight
+										));
+								}
 							} else {
 								$this->add_rate( array(
 									'id'    => $sicepat_tariff->getRateID( $this->id, $rate ),

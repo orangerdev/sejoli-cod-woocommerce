@@ -249,6 +249,8 @@ class SCOD_Shipping {
 		// Ajax Generate Airwaybill
 		$this->loader->add_action( 'wp_ajax_scods-generate-airwaybill', $admin, 'generate_airwaybill', 1);
 		$this->loader->add_action( 'wp_ajax_nopriv_scods-generate-airwaybill', $admin, 'generate_airwaybill',	1);
+		$this->loader->add_action( 'wp_ajax_scods-generate-airwaybill-sicepat', $admin, 'generate_airwaybill_sicepat', 1);
+		$this->loader->add_action( 'wp_ajax_nopriv_scods-generate-airwaybill-sicepat', $admin, 'generate_airwaybill_sicepat',	1);
 		
 		// Setting Cron Jobs Update Status Completed based on Shipping Status is Delivered
 		$this->loader->add_filter( 'cron_schedules', $admin, 'sejoli_update_status_cron_schedules' );

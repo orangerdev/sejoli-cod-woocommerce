@@ -895,7 +895,12 @@ class Front {
 			$chosen_shipping_methods = WC()->session->get( 'chosen_shipping_methods' );
 
 			if( ! empty( $chosen_shipping_methods ) ) :
-				if( $chosen_shipping_methods[0] == 'scod-shipping_jne_yes19' ) :
+				if( $chosen_shipping_methods[0] === 'scod-shipping_jne_yes19' ||
+					$chosen_shipping_methods[0] === 'scod-shipping_sicepat_reg' ||
+					$chosen_shipping_methods[0] === 'scod-shipping_sicepat_kepo' ||
+					$chosen_shipping_methods[0] === 'scod-shipping_sicepat_sds' ||
+					$chosen_shipping_methods[0] === 'scod-shipping_sicepat_best' ||
+					$chosen_shipping_methods[0] === 'scod-shipping_sicepat_cargo' ) :
 
 					if( isset( $available_gateways['cod'] ) ) :
 						unset( $available_gateways['cod'] );
@@ -919,11 +924,30 @@ class Front {
 		if( isset( WC()->session ) ):
 
 			$chosen_payment_method = WC()->session->get( 'chosen_payment_method' );
-
-			if( $chosen_payment_method == 'cod' ) :
+			if( $chosen_payment_method === 'cod' ) :
 
 				if( isset( $rates['scod-shipping_jne_yes19'] ) ) :
 					unset( $rates['scod-shipping_jne_yes19'] );
+				endif;
+
+				if( isset( $rates['scod-shipping_sicepat_reg'] ) ) :
+					unset( $rates['scod-shipping_sicepat_reg'] );
+				endif;
+
+				if( isset( $rates['scod-shipping_sicepat_kepo'] ) ) :
+					unset( $rates['scod-shipping_sicepat_kepo'] );
+				endif;
+
+				if( isset( $rates['scod-shipping_sicepat_sds'] ) ) :
+					unset( $rates['scod-shipping_sicepat_sds'] );
+				endif;
+
+				if( isset( $rates['scod-shipping_sicepat_best'] ) ) :
+					unset( $rates['scod-shipping_sicepat_best'] );
+				endif;
+
+				if( isset( $rates['scod-shipping_sicepat_cargo'] ) ) :
+					unset( $rates['scod-shipping_sicepat_cargo'] );
 				endif;
 
 			endif;
@@ -1077,10 +1101,10 @@ class Front {
 				$packages['destination']['district']  = $order_shipping_district;
 
 				if($shipping_name === "JNE - REG (1-2 hari)" || $shipping_name === "JNE - OKE (2-3 hari)" || $shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
-		        	$getOrigin = $shipping_class->get_origin_info()->code;
+		        	$getOrigin   = $shipping_class->get_origin_info()->code;
 					$destination = $shipping_class->get_destination_info( $packages['destination'] )->code;
 				} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)" || $shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - BEST (1 hari)" || $shipping_name === "SICEPAT - KEPO (1 - 2 hari)" || $shipping_name === "SICEPAT - SDS (1 hari)"  || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
-		        	$getOrigin = $shipping_class->get_sicepat_origin_info()->origin_code;
+		        	$getOrigin   = $shipping_class->get_sicepat_origin_info()->origin_code;
 					$destination = $shipping_class->get_sicepat_destination_info( $packages['destination'] )->destination_code;
 				}
 				
@@ -1108,11 +1132,9 @@ class Front {
 	        if($order_payment_method == "cod"){
 	        	$codflag   = "YES";
 	        	if($shipping_name === "JNE - REG (1-2 hari)" || $shipping_name === "JNE - OKE (2-3 hari)" || $shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
-		        	$percentage = 0.04;
-					$codamount = $order_total * $percentage;
+					$codamount = $order->get_total() + $order->get_total_shipping();
 				} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)" || $shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - BEST (1 hari)" || $shipping_name === "SICEPAT - KEPO (1 - 2 hari)" || $shipping_name === "SICEPAT - SDS (1 hari)"  || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
-		        	$percentage = 0.04;
-					$codamount = $order_total * $percentage;
+					$codamount = $order->get_total() + $order->get_total_shipping();
 				} else {
 					$codamount = 0;
 				}
@@ -1168,8 +1190,6 @@ class Front {
 			// Send data to API
 			$api_scod 	  = new API_SCOD();
 			$create_order = $api_scod->post_create_order( $order_params );
-
-			error_log(print_r($order_params, true));
 
 			if( ! is_wp_error( $create_order ) ) {
 				// Flag the action as done (to avoid repetitions on reload for example)
@@ -1237,11 +1257,7 @@ class Front {
 			}
 
 			if (strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_gokil' ) !== false ||
-				strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_reg' ) !== false ||
-				strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_kepo' ) !== false ||
-				strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_sds' ) !== false ||
-				strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_siunt' ) !== false ||
-				strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_best' ) !== false)  {
+				strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_siunt' ) !== false)  {
 				
 				foreach ( WC()->cart->get_shipping_packages() as $package_id => $package ) {
 				    // Check if a shipping for the current package exist

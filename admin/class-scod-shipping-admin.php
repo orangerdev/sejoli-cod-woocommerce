@@ -9,6 +9,9 @@ use SCOD_Shipping\API\SCOD as API_SCOD;
 use SCOD_Shipping\API\JNE as API_JNE;
 use SCOD_Shipping\Model\JNE\Origin as JNE_Origin;
 use SCOD_Shipping\Model\JNE\Destination as JNE_Destination;
+use SCOD_Shipping\API\SiCepat as API_SICEPAT;
+use SCOD_Shipping\Model\SiCepat\Origin as SICEPAT_Origin;
+use SCOD_Shipping\Model\SiCepat\Destination as SICEPAT_Destination;
 use SCOD_Shipping\Shipping_Method;
 // use SCOD_Shipping\scod_shipping_init\Shipping_Method;
 
@@ -117,6 +120,13 @@ class Admin {
 					), admin_url('admin-ajax.php')
 				),
 				'nonce'	=> wp_create_nonce('scods-generate-airwaybill')
+			),
+			'generate_airwaybill_sicepat' => array(
+				'ajaxurl'	=> add_query_arg(array(
+						'action' => 'scods-generate-airwaybill-sicepat'
+					), admin_url('admin-ajax.php')
+				),
+				'nonce'	=> wp_create_nonce('scods-generate-airwaybill-sicepat')
 			)
         ));
 
@@ -178,7 +188,7 @@ class Admin {
 	        if($values['id'] == 'woocommerce_store_postcode'){
 	            $new_settings[$key] = array(
 	                'title'    => __('Phone Number', 'scod-shipping'),
-	                'desc'     => __('Optional phone number of your store.', 'scod-shipping'),
+	                'desc'     => __('Phone number of your store.', 'scod-shipping'),
 	                'id'       => 'woocommerce_store_phone', // <= The field ID (important)
 	                'default'  => '',
 	                'type'     => 'text',
@@ -466,13 +476,13 @@ class Admin {
 	    $order 		  = wc_get_order( $post->ID );
 	    $order_status = $order->get_status(); // The Order Status
 	    $order_data   = $order->get_data(); // The Order Data
-
 	    // Get Store Information
 		$store_address   = get_option( 'woocommerce_store_address' );
 		$store_address_2 = get_option( 'woocommerce_store_address_2' );
 		$store_city      = get_option( 'woocommerce_store_city' );
 		$store_postcode  = get_option( 'woocommerce_store_postcode' );
 		$store_phone 	 = get_option( 'woocommerce_store_phone' );
+		$store_email 	 = get_option( 'woocommerce_email_from_address' );
 
 		// The store country/state
 		$store_raw_country = get_option( 'woocommerce_default_country' );
@@ -539,6 +549,22 @@ class Admin {
 			$shipping_service = "JTR";
 		}
 
+		if($shipping_name === "SICEPAT - BEST (1 hari)") {
+			$shipping_service = "BEST";
+		} elseif($shipping_name === "SICEPAT - GOKIL (2 - 3 hari)") {
+			$shipping_service = "GOKIL";
+		} elseif($shipping_name === "SICEPAT - KEPO (1 - 2 hari)") {
+			$shipping_service = "KEPO";
+		} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)") {
+			$shipping_service = "REG";
+		} elseif($shipping_name === "SICEPAT - SDS (1 hari)") {
+			$shipping_service = "SDS";
+		} elseif($shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
+			$shipping_service = "SIUNT";
+		} else {
+			$shipping_service = "Cargo";
+		}
+
 		// Check selected shipping
 		if( $shipping_method_id != 'scod-shipping' ) {
 			return;
@@ -547,7 +573,6 @@ class Admin {
 		$shipping_class_names = WC()->shipping->get_shipping_method_class_names();
 		$method_instance 	  = new $shipping_class_names['scod-shipping']( $shipping_instance_id );
 		$shipping_origin 	  = $method_instance->get_option( 'shipping_origin' );
-		$getOrigin 			  = $method_instance->get_origin_info();
 		$packages 			  = WC()->shipping->get_packages();
 
 		$packages['destination']['country']   = $store_country;
@@ -559,9 +584,15 @@ class Admin {
 		$packages['destination']['address_2'] = $order_shipping_district;
 		$packages['destination']['city2'] 	  = $order_shipping_city;
 		$packages['destination']['district']  = $order_shipping_district;
-		
-		$destination = $method_instance->get_destination_info( $packages['destination'] );
 
+		if($shipping_name === "JNE - YES (1 hari)" ||$shipping_name === "JNE - REG (1-2 hari)" || $shipping_name === "JNE - OKE (2-3 hari)" || $shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
+        	$getOrigin   = $method_instance->get_origin_info()->code;
+			$destination = $method_instance->get_destination_info( $packages['destination'] )->code;
+		} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)" || $shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - BEST (1 hari)" || $shipping_name === "SICEPAT - KEPO (1 - 2 hari)" || $shipping_name === "SICEPAT - SDS (1 hari)"  || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
+        	$getOrigin   = $method_instance->get_sicepat_origin_info()->origin_code;
+			$destination = $method_instance->get_sicepat_destination_info( $packages['destination'] )->destination_code;
+		}
+		
 		// Iterating through each WC_Order_Item_Product objects
 		// https://stackoverflow.com/questions/39401393/how-to-get-woocommerce-order-details
 		$quantity = 0;
@@ -571,19 +602,21 @@ class Admin {
 		    $item_id = $item->get_id();
 
 		    ## Using WC_Order_Item_Product methods ##
-		    $product      	= $item->get_product(); // Get the WC_Product object
-		    $item_type    	= $item->get_type(); // Type of the order item ("line_item")
-		    $item_name    	= $item->get_name(); // Name of the product
-		    $quantity     	+= $item->get_quantity();  
-		    $product_weight = $product->get_weight();
-		    $total_weight 	= ( $quantity * $product_weight );
+		    $product      	  = $item->get_product(); // Get the WC_Product object
+		    $product_id       = $item->get_product_id(); 
+		    $product_category = wp_get_post_terms( $product_id, 'product_cat', array( 'fields' => 'names' ) );
+		    $item_type    	  = $item->get_type(); // Type of the order item ("line_item")
+		    $item_name    	  = $item->get_name(); // Name of the product
+		    $quantity     	  += $item->get_quantity();  
+		    $product_weight   = $product->get_weight();
+		    $total_weight 	  = ( $quantity * $product_weight );
 		endforeach;
 
 		// Check Payment Method COD or NOT
 		$order_payment_method = $order_data['payment_method'];
         if($order_payment_method == "cod"){
         	$codflag   = "YES";
-        	$codamount = $order_total;
+        	$codamount = $order->get_total() + $order->get_total_shipping();
         } else {
         	$codflag   = "N";
         	$codamount = 0;
@@ -593,86 +626,175 @@ class Admin {
 		$insurance = "N";
 
 		// SHipping Number Metabox Field
-	    $value = get_post_meta( $post->ID, '_sejoli_shipping_number', true );
-	    $text  = !empty( $value ) ? esc_attr( $value ) : '';
+	    $shipping_number = get_post_meta( $post->ID, '_sejoli_shipping_number', true );
+	    $number_awb      = !empty( $shipping_number ) ? esc_attr( $shipping_number ) : '';
 
-	    $trace_tracking = API_JNE::set_params()->get_tracking( $text );
+	    if( \str_contains( strtolower( $shipping_name ), 'jne' ) ):
+			$trace_tracking = API_JNE::set_params()->get_tracking( $number_awb );
 
-	   	if($value){
-	   		echo '<h4>'.__('Number Resi:', 'scod-shipping').'</h4>';
-	    	echo '<div class="shipping-number" style="font-size:20px;">'.$text.'</div>';
+		   	if($shipping_number){
+		   		echo '<h4>'.__('Number Resi:', 'scod-shipping').'</h4>';
+		    	echo '<div class="shipping-number" style="font-size:20px;">'.$number_awb.'</div>';
 
-		   	echo '<h4>'.__('Shipping Details:', 'scod-shipping').'</h4>';
-		   	echo '<table style="text-align: left;">';
-		   	echo '<tr>';
-		   		echo '<th>'.__('Courier:', 'scod-shipping').'</th>';
-		   		echo '<td>'.$shipping_name.'</td>';
-		   	echo '</tr>';
-		   	echo '<tr>';
-		   		echo '<th>'.__('Receiver:', 'scod-shipping').'</th>';
-		   		echo '<td>'.$trace_tracking->cnote->cnote_receiver_name.' - ('.$trace_tracking->cnote->keterangan.')</td>';
-		   	echo '</tr>';
-		   	echo '<tr>';
-		   		echo '<th>'.__('Last Status:', 'scod-shipping').'</th>';
-		   		echo '<td>'.$trace_tracking->cnote->pod_status.'</td>';
-		   	echo '</tr>';
-		   	echo '</table>';
+			   	echo '<h4>'.__('Shipping Details:', 'scod-shipping').'</h4>';
+			   	echo '<table style="text-align: left;">';
+			   	echo '<tr>';
+			   		echo '<th>'.__('Courier:', 'scod-shipping').'</th>';
+			   		echo '<td>'.$shipping_name.'</td>';
+			   	echo '</tr>';
+			   	echo '<tr>';
+			   		echo '<th>'.__('Receiver:', 'scod-shipping').'</th>';
+			   		echo '<td>'.$trace_tracking->cnote->cnote_receiver_name.' - ('.$trace_tracking->cnote->keterangan.')</td>';
+			   	echo '</tr>';
+			   	echo '<tr>';
+			   		echo '<th>'.__('Last Status:', 'scod-shipping').'</th>';
+			   		echo '<td>'.$trace_tracking->cnote->pod_status.'</td>';
+			   	echo '</tr>';
+			   	echo '</table>';
 
-		   	echo '<h4>'.__('Tracking History:', 'scod-shipping').'</h4>';
-		   		echo '<table style="text-align: left;">';
-		   		echo '<tr>';
-			   		echo '<th>'.__('Date', 'scod-shipping').'</th>';
-			   		echo '<th>'.__('Status', 'scod-shipping').'</th>';
-			   	echo '</tr>';	
-			   	foreach ($trace_tracking->history as $history) {
-					echo '<tr>';
-				   		echo '<td>'.$history->date.'</td>';
-				   		echo '<td>'.$history->desc.'</td>';
-				   	echo '</tr>';
+			   	echo '<h4>'.__('Tracking History:', 'scod-shipping').'</h4>';
+			   		echo '<table style="text-align: left;">';
+			   		echo '<tr>';
+				   		echo '<th>'.__('Date', 'scod-shipping').'</th>';
+				   		echo '<th>'.__('Status', 'scod-shipping').'</th>';
+				   	echo '</tr>';	
+				   	foreach ($trace_tracking->history as $history) {
+						echo '<tr>';
+					   		echo '<td>'.$history->date.'</td>';
+					   		echo '<td>'.$history->desc.'</td>';
+					   	echo '</tr>';
+				   	}
+			   	echo '</table>';
+		   	} else {
+		   		if ($order_status == 'processing') {
+
+		    		echo '<h4>'.__('Number Resi:', 'scod-shipping').'</h4>';
+			   		echo '<input type="hidden" class="input-text" name="sejoli_shipping_number" id="sejoli_shipping_number" value="' . $number_awb . '" style="width:100%; margin-bottom: 15px;" />';
+		    		echo '<input type="hidden" name="sejoli_shipping_number_nonce" value="' . wp_create_nonce() . '">';
+			    	echo '<div id="shipping-number" style="font-size:20px;">'.$number_awb.'</div>';
+			    	
+			    	// echo __("Input your number resi", "scod-shipping")."<br>";
+			    	// echo __("or", "scod-shipping")."<br>";
+			    	// echo __("Request pickup automatically on this button", "scod-shipping")."<br><br>";
+
+			   		echo '<a href="#"
+			   		data-id="'.$post->ID.'"
+			   		data-shipper-name="'.get_bloginfo('name').'"
+			   		data-shipper-addr1="'.$store_address.'"
+			   		data-shipper-addr2="'.$store_address_2.'"
+			   		data-shipper-city="'.$getStoreCityState.'"
+			   		data-shipper-region="'.$getStoreState.'"
+			   		data-shipper-zip="'.$store_postcode.'"
+			   		data-shipper-phone="'.$store_phone.'"
+			   		data-receiver-name="'.$order_shipping_fullname.'"
+			   		data-receiver-addr1="'.$order_shipping_address.'"
+			   		data-receiver-addr2="'.$getDistrict.'"
+			   		data-receiver-city="'.$getCityState.'"
+			   		data-receiver-region="'.$getState.'"
+			   		data-receiver-zip="'.$order_shipping_postcode.'"
+			   		data-receiver-phone="'.$order_billing_phone.'"
+			   		data-qty="'.$quantity.'"
+			   		data-weight="'.$total_weight.'"
+			   		data-goodsdesc="'.$item_name.'"
+			   		data-goodsvalue="'.$quantity.'"
+			   		data-goodstype="1"
+			   		data-insurance="'.$insurance.'"
+			   		data-origin="'.$getOrigin.'"
+			   		data-destination="'.$destination.'"
+			   		data-service="'.$shipping_service.'"
+			   		data-codflag="'.$codflag.'"
+			   		data-codamount="'.$order_total.'"
+			   		class="button button-primary generate-airwaybill">'.__("Request Pickup", "scod-shipping").'</a>';
 			   	}
-		   	echo '</table>';
-	   	} else {
-	   		if ($order_status == 'processing') {
-
-	    		echo '<h4>'.__('Number Resi:', 'scod-shipping').'</h4>';
-		   		echo '<input type="hidden" class="input-text" name="sejoli_shipping_number" id="sejoli_shipping_number" value="' . $text . '" style="width:100%; margin-bottom: 15px;" />';
-	    		echo '<input type="hidden" name="sejoli_shipping_number_nonce" value="' . wp_create_nonce() . '">';
-		    	echo '<div id="shipping-number" style="font-size:20px;">'.$text.'</div>';
-		    	
-		    	// echo __("Input your number resi", "scod-shipping")."<br>";
-		    	// echo __("or", "scod-shipping")."<br>";
-		    	// echo __("Request pickup automatically on this button", "scod-shipping")."<br><br>";
-
-		   		echo '<a href="#"
-		   		data-id="'.$post->ID.'"
-		   		data-shipper-name="'.get_bloginfo('name').'"
-		   		data-shipper-addr1="'.$store_address.'"
-		   		data-shipper-addr2="'.$store_address_2.'"
-		   		data-shipper-city="'.$getStoreCityState.'"
-		   		data-shipper-region="'.$getStoreState.'"
-		   		data-shipper-zip="'.$store_postcode.'"
-		   		data-shipper-phone="'.$store_phone.'"
-		   		data-receiver-name="'.$order_shipping_fullname.'"
-		   		data-receiver-addr1="'.$order_shipping_address.'"
-		   		data-receiver-addr2="'.$getDistrict.'"
-		   		data-receiver-city="'.$getCityState.'"
-		   		data-receiver-region="'.$getState.'"
-		   		data-receiver-zip="'.$order_shipping_postcode.'"
-		   		data-receiver-phone="'.$order_billing_phone.'"
-		   		data-qty="'.$quantity.'"
-		   		data-weight="'.$total_weight.'"
-		   		data-goodsdesc="'.$item_name.'"
-		   		data-goodsvalue="'.$quantity.'"
-		   		data-goodstype="1"
-		   		data-insurance="'.$insurance.'"
-		   		data-origin="'.$getOrigin->code.'"
-		   		data-destination="'.$destination->code.'"
-		   		data-service="'.$shipping_service.'"
-		   		data-codflag="'.$codflag.'"
-		   		data-codamount="'.$order_total.'"
-		   		class="button button-primary generate-airwaybill">'.__("Request Pickup", "scod-shipping").'</a>';
 		   	}
-	   	}
+		endif;
+
+		if( \str_contains( strtolower( $shipping_name ), 'sicepat' ) ):
+			$trace_tracking = API_SICEPAT::set_params()->get_tracking( $number_awb );
+
+		   	if($shipping_number){
+		   		echo '<h4>'.__('Number Resi:', 'scod-shipping').'</h4>';
+		    	echo '<div class="shipping-number" style="font-size:20px;">'.$number_awb.'</div>';
+
+			   	echo '<h4>'.__('Shipping Details:', 'scod-shipping').'</h4>';
+			   	echo '<table style="text-align: left;">';
+			   	echo '<tr>';
+			   		echo '<th>'.__('Courier:', 'scod-shipping').'</th>';
+			   		echo '<td>'.$shipping_name.'</td>';
+			   	echo '</tr>';
+			   	echo '<tr>';
+			   		echo '<th>'.__('Receiver:', 'scod-shipping').'</th>';
+			   		echo '<td>'.$trace_tracking->receiver_name.'</td>';
+			   	echo '</tr>';
+			   	echo '<tr>';
+			   		echo '<th>'.__('Last Status:', 'scod-shipping').'</th>';
+			   		echo '<td>'.$trace_tracking->last_status->status.' - '.$trace_tracking->last_status->receiver_name.'</td>';
+			   	echo '</tr>';
+			   	echo '</table>';
+
+			   	echo '<h4>'.__('Tracking History:', 'scod-shipping').'</h4>';
+			   		echo '<table style="text-align: left;">';
+			   		echo '<tr>';
+				   		echo '<th>'.__('Date', 'scod-shipping').'</th>';
+				   		echo '<th>'.__('Status', 'scod-shipping').'</th>';
+				   		echo '<th>'.__('Description', 'scod-shipping').'</th>';
+				   	echo '</tr>';	
+				   	foreach ($trace_tracking->track_history as $history) {
+						echo '<tr>';
+					   		echo '<td>'.$history->date_time.'</td>';
+					   		echo '<td>'.$history->status.'</td>';
+					   		echo '<td>'.(isset($history->city) ? $history->city : '-').'</td>';
+					   	echo '</tr>';
+				   	}
+			   	echo '</table>';
+		   	} else {
+		   		if ($order_status == 'processing') {
+
+		    		echo '<h4>'.__('Number Resi:', 'scod-shipping').'</h4>';
+			   		echo '<input type="hidden" class="input-text" name="sejoli_shipping_number" id="sejoli_shipping_number" value="' . $number_awb . '" style="width:100%; margin-bottom: 15px;" />';
+		    		echo '<input type="hidden" name="sejoli_shipping_number_nonce" value="' . wp_create_nonce() . '">';
+			    	echo '<div id="shipping-number" style="font-size:20px;">'.$number_awb.'</div>';
+			    	
+			    	// echo __("Input your number resi", "scod-shipping")."<br>";
+			    	// echo __("or", "scod-shipping")."<br>";
+			    	// echo __("Request pickup automatically on this button", "scod-shipping")."<br><br>";
+
+			   		echo '<a href="#"
+			   		data-id="'.$post->ID.'"
+			   		data-pickup_merchant_name="'.get_bloginfo('name').'"
+			   		data-pickup_address="'.$store_address.'"
+			   		data-pickup_city="'.$getStoreCityState.'"
+			   		data-pickup_merchant_phone="'.$store_phone.'"
+			   		data-pickup_merchant_email="'.$store_email.'"
+			   		data-origin_code="'.$getOrigin.'"
+			   		data-delivery_type="'.$shipping_service.'"
+			   		data-shipper-zip="'.$store_postcode.'"
+			   		data-parcel_category="'.$product_category[0].'"
+			   		data-parcel_content="'.$item_name.'"
+			   		data-parcel_qty="'.$quantity.'"
+			   		data-parcel_value="'.$order_total.'"
+			   		data-cod_value="'.$order_total.'"
+			   		data-total_weight="'.$total_weight.'"
+			   		data-shipper_name="'.get_bloginfo('name').'"
+			   		data-shipper_address="'.$store_address.'"
+			   		data-shipper_province="'.$getStoreState.'"
+			   		data-shipper_city="'.$getStoreCityState.'"
+			   		data-shipper_district="'.$store_address_2.'"
+			   		data-shipper_zip="'.$store_postcode.'"
+			   		data-shipper_phone="'.$store_phone.'"
+			   		data-recipient_name="'.$order_shipping_fullname.'"
+			   		data-recipient_address="'.$order_shipping_address.'"
+			   		data-recipient_province="'.$getState.'"
+			   		data-recipient_city="'.$getCityState.'"
+			   		data-recipient_district="'.$getDistrict.'"
+			   		data-recipient_zip="'.$order_shipping_postcode.'"
+			   		data-recipient_phone="'.$order_billing_phone.'"
+			   		data-destination_code="'.$destination.'"
+			   		class="button button-primary generate-airwaybill-sicepat">'.__("Request Pickup", "scod-shipping").'</a>';
+			   	}
+		   	}
+		endif;
+	
     }
 
     /**
@@ -812,6 +934,97 @@ class Admin {
 	}
 
 	/**
+	 * WooCommerce action to generate airwaybill sicepat by request
+	 * Hook via wp_ajax_scods-generate-airwaybill-sicepat
+	 *
+	 * @since    1.0.0
+	 */
+	public function generate_airwaybill_sicepat($order_id) {
+		$params = wp_parse_args( $_POST, array(
+			'orderID'  		 	    => NULL,
+            'pickup_merchant_name'  => NULL,
+            'pickup_address' 	    => NULL,
+            'pickup_city' 	 		=> NULL,
+            'pickup_merchant_phone' => NULL,
+            'pickup_merchant_email' => NULL,
+            'origin_code' 	 		=> NULL,
+            'delivery_type' 	 	=> NULL,
+            'parcel_category'  		=> NULL,
+            'parcel_content'  		=> NULL,
+            'parcel_qty' 	 		=> NULL,
+            'parcel_value' 			=> NULL,
+            'cod_value' 	 		=> NULL,
+            'total_weight'  		=> NULL,
+            'shipper_name' 			=> NULL,
+            'shipper_address' 		=> NULL,
+            'shipper_province' 	 	=> NULL,
+            'shipper_city' 	 		=> NULL,
+            'shipper_district' 	 	=> NULL,
+            'shipper_zip'		 	=> NULL,
+            'shipper_phone' 		=> NULL,
+            'recipient_name' 		=> NULL,
+            'recipient_address' 	=> NULL,
+            'recipient_province' 	=> NULL,
+            'recipient_city' 	 	=> NULL,
+            'recipient_district' 	=> NULL,
+            'recipient_zip'		 	=> NULL,
+            'recipient_phone' 		=> NULL,
+            'destination_code' 	 	=> NULL,
+            'nonce' 		 		=> NULL
+        ));		
+
+        $respond  = [
+            'valid'   => false,
+            'message' => NULL
+        ];
+
+        if( wp_verify_nonce( $params['nonce'], 'scods-generate-airwaybill-sicepat') ) :
+
+            unset( $params['nonce'] );
+
+            $do_update = API_SICEPAT::set_params()->get_airwaybill( $params );
+
+            if ( ! is_wp_error( $do_update ) ) {
+
+                $respond['valid']  = true;
+
+            } else {
+
+                $respond['message'] = $do_update->get_error_message();
+            }
+
+        endif;
+
+        $order 	  	= wc_get_order( $params['orderID'] );
+        $order_id 	= $order->get_id();
+        $numberResi = $do_update->request_number;
+
+		if ( $order_id > 0 ) {
+			if($numberResi){
+				update_post_meta( $order_id, '_sejoli_shipping_number', $numberResi );
+			} else {
+				update_post_meta( $order_id, '_sejoli_shipping_number', 0 );
+			}
+        }
+
+		// Send update status data to API
+        $status 	  = "on-the-way";
+		$api_scod 	  = new API_SCOD();
+		$update_order = $api_scod->post_update_order( $order_id, $status, $numberResi );
+
+		if( ! is_wp_error( $update_order ) ) {
+			// Flag the action as done (to avoid repetitions on reload for example)
+			if( $order->save() ) {
+				error_log( 'Sync order success ..' );
+			}
+		}
+
+		wp_update_post(['ID' => $order_id, 'post_status' => 'wc-in-shipping']);
+
+        echo wp_send_json( $numberResi );
+	}
+
+	/**
 	 * Create Updating Status Order to Complete Based on Shipping Status is Delivered Cron Job
 	 * Hook via cron_schedules
 	 *
@@ -821,7 +1034,7 @@ class Admin {
 	{
 	    $schedules['once_every_5m'] = array(
 	    	'interval' => 300, 
-	    	'display' => 'Once every 5 minutes'
+	    	'display'  => 'Once every 5 minutes'
 	    );
 	    return $schedules;
 	}
@@ -852,28 +1065,54 @@ class Admin {
 		// Loop through each order post object
 		foreach( $results as $result ){
 		    $order_id = $result->ID; // The Order ID
+
 		    // Get an instance of the WC_Order Object
 		    $order = wc_get_order( $result->ID );
 		    $shipping_number = get_post_meta( $order_id, '_sejoli_shipping_number', true );
+		    $trace_tracking_jne = API_JNE::set_params()->get_tracking( $shipping_number );
+		    $trace_tracking_sicepat = API_SICEPAT::set_params()->get_tracking( $shipping_number );
 
-		    $trace_tracking = API_JNE::set_params()->get_tracking( $shipping_number );
+		    // error_log(print_r($trace_tracking_sicepat, true));
 
-		    // if($trace_tracking->cnote->pod_status == "DELIVERED" && $order_status == "in-shipping"){
-		    if($trace_tracking->cnote->pod_status == "DELIVERED"){
-		    	// Send update status data to API
-		        $status 	  = "completed";
-				$api_scod 	  = new API_SCOD();
-				$update_order = $api_scod->post_update_order( $order_id, $status, $shipping_number );
+			$tracking_pod_status_jne = (isset($trace_tracking_jne->cnote->pod_status) ? $trace_tracking_jne->cnote->pod_status : false);
+		    if(false !== $tracking_pod_status_jne) :
+			    // if($trace_tracking_jne->cnote->pod_status == "DELIVERED" && $order_status == "in-shipping"){
+			    if($tracking_pod_status_jne == "DELIVERED"){
+			    	// Send update status data to API
+			        $status 	  = "completed";
+					$api_scod 	  = new API_SCOD();
+					$update_order = $api_scod->post_update_order( $order_id, $status, $shipping_number );
 
-				if( ! is_wp_error( $update_order ) ) {
-					// Flag the action as done (to avoid repetitions on reload for example)
-					if( $order->save() ) {
-						error_log( 'Sync order success ..' );
+					if( ! is_wp_error( $update_order ) ) {
+						// Flag the action as done (to avoid repetitions on reload for example)
+						if( $order->save() ) {
+							error_log( 'Sync order success ..' );
+						}
 					}
-				}
 
-	        	$order->update_status( 'completed', 'order_note' );
-		    }
+		        	$order->update_status( 'completed', 'order_note' );
+			    }
+			endif;
+
+			$tracking_pod_status_sicepat = (isset($trace_tracking_sicepat->last_status->status) ? $trace_tracking_sicepat->last_status->status : false);
+			if(false !== $tracking_pod_status_sicepat) :
+			    // if($trace_tracking_sicepat->last_status->status == "DELIVERED" && $order_status == "in-shipping"){
+			    if($tracking_pod_status_sicepat == "DELIVERED"){
+			    	// Send update status data to API
+			        $status 	  = "completed";
+					$api_scod 	  = new API_SCOD();
+					$update_order = $api_scod->post_update_order( $order_id, $status, $shipping_number );
+
+					if( ! is_wp_error( $update_order ) ) {
+						// Flag the action as done (to avoid repetitions on reload for example)
+						if( $order->save() ) {
+							error_log( 'Sync order success ..' );
+						}
+					}
+
+		        	$order->update_status( 'completed', 'order_note' );
+			    }
+			endif;
 		}
 	}
 }

@@ -254,43 +254,56 @@ class SICEPAT extends \SCOD_Shipping\API {
      *
      * @return 	(array|WP_Error) The response array or a WP_Error on failure
      */
-	public function get_airwaybill( int $order_id, string $shipper_name, string $shipper_addr1, string $shipper_addr2, string $shipper_city, string $shipper_region, int $shipper_zip, string $shipper_phone, string $receiver_name, string $receiver_addr1, string $receiver_addr2, string $receiver_city, string $receiver_region, int $receiver_zip, string $receiver_phone, int $qty, int $weight, string $goodsdesc, int $goodsvalue, int $goodstype, string $insurance, string $origin, string $destination, string $service, string $codflag, int $codamount ) {
+	public function get_airwaybill( $pickupParams ) {
 		try {
-			self::$endpoint 	= 'http://pickup.sicepat.com:8087/api/partner/requestpickuppackage';
-			self::$method 		= 'POST';
-			self::$body 		= array(
-				'reference_number'			 => 'SICEPAT-TEST-SCPT123',
-				'OLSHOP_CUST'			 => '10950700',
-				'OLSHOP_ORDERID'		 => $order_id,
-				'OLSHOP_SHIPPER_NAME'	 => $shipper_name,
-				'OLSHOP_SHIPPER_ADDR1'	 => $shipper_addr1,
-				'OLSHOP_SHIPPER_ADDR2'	 => $shipper_addr2,
-				'OLSHOP_SHIPPER_ADDR3'	 => null,
-				'OLSHOP_SHIPPER_CITY'	 => $shipper_city,
-				'OLSHOP_SHIPPER_REGION'	 => $shipper_region,
-				'OLSHOP_SHIPPER_ZIP'	 => $shipper_zip,
-				'OLSHOP_SHIPPER_PHONE'	 => $shipper_phone,
-				'OLSHOP_RECEIVER_NAME'	 => $receiver_name,
-				'OLSHOP_RECEIVER_ADDR1'	 => $receiver_addr1,
-				'OLSHOP_RECEIVER_ADDR2'	 => $receiver_addr2,
-				'OLSHOP_RECEIVER_ADDR3'	 => null,
-				'OLSHOP_RECEIVER_CITY'	 => $receiver_city,
-				'OLSHOP_RECEIVER_REGION' => $receiver_region,
-				'OLSHOP_RECEIVER_ZIP'	 => $receiver_zip,
-				'OLSHOP_RECEIVER_PHONE'	 => $receiver_phone,
-				'OLSHOP_QTY'			 => $qty,
-				'OLSHOP_WEIGHT'			 => $weight,
-				'OLSHOP_GOODSDESC'		 => $goodsdesc,
-				'OLSHOP_GOODSVALUE'		 => $goodsvalue,
-				'OLSHOP_GOODSTYPE'		 => $goodstype,
-				'OLSHOP_INST'			 => null,
-				'OLSHOP_INS_FLAG'		 => $insurance,
-				'OLSHOP_ORIG'			 => $origin,
-				'OLSHOP_DEST'			 => $destination,
-				'OLSHOP_SERVICE'		 => $service,
-				'OLSHOP_COD_FLAG'		 => $codflag,
-				'OLSHOP_COD_AMOUNT'		 => $codamount
+			self::$endpoint = 'http://pickup.sicepat.com:8087/api/partner/requestpickuppackage';
+			self::$method 	= 'POST';
+
+			$auth_key = 'DE7085E652524385971725E39E8805DE';
+	    	$pickupDataArray = array (
+	    		"auth_key"              => $auth_key,
+				"reference_number"      => "SICEPAT-TEST-SCPT".$pickupParams['orderID'],
+				"pickup_request_date"   => date('Y-m-d H:i:s'),
+				"pickup_merchant_name"  => $pickupParams['pickup_merchant_name'],
+				"pickup_address"        => $pickupParams['pickup_address'],
+				"pickup_city" 	        => $pickupParams['pickup_city'],
+				"pickup_merchant_phone" => $pickupParams['pickup_merchant_phone'],
+				"pickup_merchant_email" => $pickupParams['pickup_merchant_email'],
+				'PackageList' => [ array (
+					"receipt_number"      => "999888777666",
+					"origin_code"         => $pickupParams['origin_code'],
+					"delivery_type"       => $pickupParams['delivery_type'],
+					"parcel_category"     => $pickupParams['parcel_category'],
+					"parcel_content"      => $pickupParams['parcel_content'],
+					"parcel_qty"          => $pickupParams['parcel_qty'],
+					"parcel_uom"          => "Items",
+					"parcel_value"        => $pickupParams['parcel_value'],
+					"cod_value"           => $pickupParams['cod_value'],
+					"total_weight"        => $pickupParams['total_weight'],
+					"shipper_name"        => $pickupParams['shipper_name'],
+					"shipper_address"     => $pickupParams['shipper_address'],
+					"shipper_province"    => $pickupParams['shipper_province'],
+					"shipper_city"        => $pickupParams['shipper_city'],
+					"shipper_district"    => $pickupParams['shipper_district'],
+					"shipper_zip"         => $pickupParams['shipper_zip'],
+					"shipper_phone"       => $pickupParams['shipper_phone'],
+					"shipper_longitude"   => "00000000",
+					"shipper_latitude"    => "00000000",
+					"recipient_title"     => "Bapak/Ibu",
+					"recipient_name"      => $pickupParams['recipient_name'],
+					"recipient_address"   => $pickupParams['recipient_address'],
+					"recipient_province"  => $pickupParams['recipient_province'],
+					"recipient_city"      => $pickupParams['recipient_city'],
+					"recipient_district"  => $pickupParams['recipient_district'],
+					"recipient_zip" 	  => $pickupParams['recipient_zip'],
+					"recipient_phone"     => $pickupParams['recipient_phone'],
+					"recipient_longitude" => "00000000",
+					"recipient_latitude"  => "00000000",
+					"destination_code"    => $pickupParams['destination_code']
+				) ]
 			);
+
+			self::$body = $pickupDataArray;
 
 			$get_response = self::do_request();
 
@@ -299,10 +312,10 @@ class SICEPAT extends \SCOD_Shipping\API {
 				if ( self::verify_response_code( $get_response ) ) :
 
 					if( $data = self::get_valid_body_object( $get_response ) ) :
+						
+						if( isset( $data ) ) {
 
-						if( isset( $data->detail ) ) {
-
-							return $data->detail;
+							return $data;
 						}
 
 						return new \WP_Error( 'invalid_api_response', 'Invalid airwaybill data.' );
@@ -331,22 +344,22 @@ class SICEPAT extends \SCOD_Shipping\API {
      *
      * @return 	(array|WP_Error) The response array or a WP_Error on failure
      */
-	public function get_tracking(string $tracking_number) {
+	public function get_tracking( string $tracking_number ) {
 		try {
-			self::$endpoint = 'https://apitrek.sicepat.com/customer/waybill-refno/'.$tracking_number;
-			// self::$endpoint = 'https://apitrek.sicepat.com/customer/waybill-refno/4808012000000159';
+			self::$endpoint = 'https://apitrek.sicepat.com/customer/waybill';
 			self::$method 	= 'GET';
+			self::$body 	= array(
+				'waybill' => '002589984055' //$tracking_number // 002589984055
+			);
 
 			$get_response 	= self::do_request();
-			// print_r($get_response);
 
 			if ( ! is_wp_error( $get_response ) ) :
 
 				if ( self::verify_response_code( $get_response ) ) :
 
 					if( $data = self::get_valid_body_object( $get_response ) ) :
-						// return $data->detail;
-						return $data;
+						return $data->sicepat->result;
 					else:
 						return new \WP_Error( 'invalid_api_response', 'Invalid response body.' );
 					endif;
