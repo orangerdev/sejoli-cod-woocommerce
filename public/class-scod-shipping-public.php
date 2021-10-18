@@ -9,6 +9,9 @@ use SCOD_Shipping\API\SCOD as API_SCOD;
 use SCOD_Shipping\API\JNE as API_JNE;
 use SCOD_Shipping\Model\JNE\Origin as JNE_Origin;
 use SCOD_Shipping\Model\JNE\Destination as JNE_Destination;
+use SCOD_Shipping\API\SiCepat as API_SICEPAT;
+use SCOD_Shipping\Model\SiCepat\Origin as SICEPAT_Origin;
+use SCOD_Shipping\Model\SiCepat\Destination as SICEPAT_Destination;
 use SCOD_Shipping\Shipping_Method;
 
 /**
@@ -534,40 +537,79 @@ class Front {
 				$shipping_instance_id = $shipping_method->get_instance_id();
 			}
 
-	        $trace_tracking = API_JNE::set_params()->get_tracking( $shipping_number );
-	    	
-	    	echo '<h6>'.__('Number Resi:', 'scod-shipping').'</h6>';
-	    	echo '<div class="shipping-number" style="font-size:20px;">'.$shipping_number.'</div>';
+	        $trace_tracking_jne = API_JNE::set_params()->get_tracking( $shipping_number );
+	    	if(isset($trace_tracking_jne->history)):
+		    	echo '<h6>'.__('Number Resi:', 'scod-shipping').'</h6>';
+		    	echo '<div class="shipping-number" style="font-size:20px;">'.$shipping_number.'</div>';
 
-		   	echo '<h6>'.__('Shipping Details:', 'scod-shipping').'</h6>';
-		   	echo '<table style="text-align: left;">';
-		   	echo '<tr>';
-		   		echo '<th>'.__('Courier:', 'scod-shipping').'</th>';
-		   		echo '<td>'.$shipping_name.'</td>';
-		   	echo '</tr>';
-		   	echo '<tr>';
-		   		echo '<th>'.__('Receiver:', 'scod-shipping').'</th>';
-		   		echo '<td>'.$trace_tracking->cnote->cnote_receiver_name.' - ('.$trace_tracking->cnote->keterangan.')</td>';
-		   	echo '</tr>';
-		   	echo '<tr>';
-		   		echo '<th>'.__('Last Status:', 'scod-shipping').'</th>';
-		   		echo '<td>'.$trace_tracking->cnote->pod_status.'</td>';
-		   	echo '</tr>';
-		   	echo '</table>';
-
-		   	echo '<h6>'.__('Tracking History:', 'scod-shipping').'</h6>';
-		   		echo '<table style="text-align: left;">';
-		   		echo '<tr>';
-			   		echo '<th>'.__('Date', 'scod-shipping').'</th>';
-			   		echo '<th>'.__('Status', 'scod-shipping').'</th>';
-			   	echo '</tr>';	
-			   	foreach ($trace_tracking->history as $history) {
-					echo '<tr>';
-				   		echo '<td>'.$history->date.'</td>';
-				   		echo '<td>'.$history->desc.'</td>';
-				   	echo '</tr>';
-			   	}
+			   	echo '<h6>'.__('Shipping Details:', 'scod-shipping').'</h6>';
+			   	echo '<table style="text-align: left;">';
+			   	echo '<tr>';
+			   		echo '<th>'.__('Courier:', 'scod-shipping').'</th>';
+			   		echo '<td>'.$shipping_name.'</td>';
+			   	echo '</tr>';
+			   	echo '<tr>';
+			   		echo '<th>'.__('Receiver:', 'scod-shipping').'</th>';
+			   		echo '<td>'.$trace_tracking_jne->cnote->cnote_receiver_name.' - ('.$trace_tracking_jne->cnote->keterangan.')</td>';
+			   	echo '</tr>';
+			   	echo '<tr>';
+			   		echo '<th>'.__('Last Status:', 'scod-shipping').'</th>';
+			   		echo '<td>'.$trace_tracking_jne->cnote->pod_status.'</td>';
+			   	echo '</tr>';
 			   	echo '</table>';
+
+			   	echo '<h6>'.__('Tracking History:', 'scod-shipping').'</h6>';
+			   		echo '<table style="text-align: left;">';
+			   		echo '<tr>';
+				   		echo '<th>'.__('Date', 'scod-shipping').'</th>';
+				   		echo '<th>'.__('Status', 'scod-shipping').'</th>';
+				   	echo '</tr>';	
+				   	foreach ($trace_tracking_jne->history as $history) {
+						echo '<tr>';
+					   		echo '<td>'.$history->date.'</td>';
+					   		echo '<td>'.$history->desc.'</td>';
+					   	echo '</tr>';
+				   	}
+				   	echo '</table>';
+			endif;
+
+			$trace_tracking_sicepat = API_SICEPAT::set_params()->get_tracking( $shipping_number );
+	    	if(isset($trace_tracking_sicepat->track_history)):
+		    	echo '<h6>'.__('Number Resi:', 'scod-shipping').'</h6>';
+		    	echo '<div class="shipping-number" style="font-size:20px;">'.$shipping_number.'</div>';
+
+			   	echo '<h6>'.__('Shipping Details:', 'scod-shipping').'</h6>';
+			   	echo '<table style="text-align: left;">';
+			   	echo '<tr>';
+			   		echo '<th>'.__('Courier:', 'scod-shipping').'</th>';
+			   		echo '<td>'.$shipping_name.'</td>';
+			   	echo '</tr>';
+			   	echo '<tr>';
+			   		echo '<th>'.__('Receiver:', 'scod-shipping').'</th>';
+			   		echo '<td>'.$trace_tracking_sicepat->receiver_name.'</td>';
+			   	echo '</tr>';
+			   	echo '<tr>';
+			   		echo '<th>'.__('Last Status:', 'scod-shipping').'</th>';
+			   		echo '<td>'.$trace_tracking_sicepat->last_status->status.' - '.$trace_tracking_sicepat->last_status->receiver_name.'</td>';
+			   	echo '</tr>';
+			   	echo '</table>';
+
+			   	echo '<h6>'.__('Tracking History:', 'scod-shipping').'</h6>';
+			   		echo '<table style="text-align: left;">';
+			   		echo '<tr>';
+				   		echo '<th>'.__('Date', 'scod-shipping').'</th>';
+				   		echo '<th>'.__('Status', 'scod-shipping').'</th>';
+				   		echo '<th>'.__('Description', 'scod-shipping').'</th>';
+				   	echo '</tr>';	
+				   	foreach ($trace_tracking_sicepat->track_history as $history) {
+						echo '<tr>';
+					   		echo '<td>'.$history->date_time.'</td>';
+					   		echo '<td>'.$history->status.'</td>';
+					   		echo '<td>'.(isset($history->city) ? $history->city : '-').'</td>';
+					   	echo '</tr>';
+				   	}
+				   	echo '</table>';
+			endif;
 	    }
 	}
 
@@ -610,77 +652,134 @@ class Front {
 
             unset( $params['nonce'] );
 
-            $trace_tracking = API_JNE::set_params()->get_tracking( $params['shipmentNumber'] );
+            $trace_tracking_jne = API_JNE::set_params()->get_tracking( $params['shipmentNumber'] );
+            $trace_tracking_sicepat = API_SICEPAT::set_params()->get_tracking( $params['shipmentNumber'] );
 
-            if ( ! is_wp_error( $trace_tracking ) ) {
+            if ( ! is_wp_error( $trace_tracking_jne ) || ! is_wp_error( $trace_tracking_sicepat ) ) {
 
                 $respond['valid']  = true;
 
             } else {
 
-                $respond['message'] = $trace_tracking->get_error_message();
+                $respond['message'] = $trace_tracking_jne->get_error_message();
+                $respond['message'] = $trace_tracking_sicepat->get_error_message();
             }
 
         endif;
 
-        $html = '<h6>'.__('Number Resi:', 'scod-shipping').'</h6>';
+        if(isset($trace_tracking_jne->history)):
+	        $html = '<h6>'.__('Number Resi:', 'scod-shipping').'</h6>';
 	    	$html .= '<div class="shipping-number" style="font-size:26px;"><b>'.$params['shipmentNumber'].'</b></div>';
 
 		   	$html .= '<h6>'.__('Shipping Details:', 'scod-shipping').'</h6>';
 		   	$html .= '<table style="text-align: left;">';
 		   	$html .= '<tr>';
 		   		$html .= '<th>'.__('Courier:', 'scod-shipping').'</th>';
-		   		$html .= '<td>JNE - '.$trace_tracking->cnote->cnote_services_code.'</td>';
+		   		$html .= '<td>JNE - '.$trace_tracking_jne->cnote->cnote_services_code.'</td>';
 		   	$html .= '</tr>';
-		   	foreach ($trace_tracking->detail as $detail) {
-		   	$html .= '<tr>';
-		   		$html .= '<th>'.__('From:', 'scod-shipping').'</th>';
-		   		$html .= '<td>'.$detail->cnote_shipper_name.'</td>';
-		   	$html .= '</tr>';
-		   	$html .= '<tr>';
-		   		$html .= '<th>'.__('Shipper City:', 'scod-shipping').'</th>';
-		   		$html .= '<td>'.$detail->cnote_shipper_city.'</td>';
-		   	$html .= '</tr>';
-		   	$html .= '<tr>';
-		   		$html .= '<th>'.__('Shipper Address:', 'scod-shipping').'</th>';
-		   		$html .= '<td>'.$detail->cnote_shipper_addr1.' - '.$detail->cnote_shipper_addr2.'</td>';
-		   	$html .= '</tr>';
-		   	$html .= '<tr>';
-		   		$html .= '<th>'.__('To:', 'scod-shipping').'</th>';
-		   		$html .= '<td>'.$detail->cnote_receiver_name.'</td>';
-		   	$html .= '</tr>';
-		   	$html .= '<tr>';
-		   		$html .= '<th>'.__('Receiver City:', 'scod-shipping').'</th>';
-		   		$html .= '<td>'.$detail->cnote_receiver_city.'</td>';
-		   	$html .= '</tr>';
-		   	$html .= '<tr>';
-		   		$html .= '<th>'.__('Receiver Address:', 'scod-shipping').'</th>';
-		   		$html .= '<td>'.$detail->cnote_receiver_addr1.' - '.$detail->cnote_receiver_addr2.'</td>';
-		   	$html .= '</tr>';
+		   	foreach ($trace_tracking_jne->detail as $detail) {
+			   	$html .= '<tr>';
+			   		$html .= '<th>'.__('From:', 'scod-shipping').'</th>';
+			   		$html .= '<td>'.$detail->cnote_shipper_name.'</td>';
+			   	$html .= '</tr>';
+			   	$html .= '<tr>';
+			   		$html .= '<th>'.__('Shipper City:', 'scod-shipping').'</th>';
+			   		$html .= '<td>'.$detail->cnote_shipper_city.'</td>';
+			   	$html .= '</tr>';
+			   	$html .= '<tr>';
+			   		$html .= '<th>'.__('Shipper Address:', 'scod-shipping').'</th>';
+			   		$html .= '<td>'.$detail->cnote_shipper_addr1.' - '.$detail->cnote_shipper_addr2.'</td>';
+			   	$html .= '</tr>';
+			   	$html .= '<tr>';
+			   		$html .= '<th>'.__('To:', 'scod-shipping').'</th>';
+			   		$html .= '<td>'.$detail->cnote_receiver_name.'</td>';
+			   	$html .= '</tr>';
+			   	$html .= '<tr>';
+			   		$html .= '<th>'.__('Receiver City:', 'scod-shipping').'</th>';
+			   		$html .= '<td>'.$detail->cnote_receiver_city.'</td>';
+			   	$html .= '</tr>';
+			   	$html .= '<tr>';
+			   		$html .= '<th>'.__('Receiver Address:', 'scod-shipping').'</th>';
+			   		$html .= '<td>'.$detail->cnote_receiver_addr1.' - '.$detail->cnote_receiver_addr2.'</td>';
+			   	$html .= '</tr>';
 		   	}
 		   	$html .= '<tr>';
 		   		$html .= '<th>'.__('Receiver:', 'scod-shipping').'</th>';
-		   		$html .= '<td>'.$trace_tracking->cnote->cnote_receiver_name.' - ('.$trace_tracking->cnote->keterangan.')</td>';
+		   		$html .= '<td>'.$trace_tracking_jne->cnote->cnote_receiver_name.' - ('.$trace_tracking_jne->cnote->keterangan.')</td>';
 		   	$html .= '</tr>';
 		   	$html .= '<tr>';
 		   		$html .= '<th>'.__('Last Status:', 'scod-shipping').'</th>';
-		   		$html .= '<td>'.$trace_tracking->cnote->pod_status.'</td>';
+		   		$html .= '<td>'.$trace_tracking_jne->cnote->pod_status.'</td>';
 		   	$html .= '</tr>';
 		   	$html .= '</table>';
 
-        $html .= '<h6>'.__('Tracking History:', 'scod-shipping').'</h6>';
-		   		$html .= '<table style="text-align: left;">';
-		   		$html .= '<tr>';
-			   		$html .= '<th>'.__('Date', 'scod-shipping').'</th>';
-			   		$html .= '<th>'.__('Status', 'scod-shipping').'</th>';
-			   	$html .= '</tr>';	
-			   	foreach ($trace_tracking->history as $history) {
-					$html .= '<tr>';
-				   		$html .= '<td>'.$history->date.'</td>';
-				   		$html .= '<td>'.$history->desc.'</td>';
-				   	$html .= '</tr>';
-			   	}
-			   	$html .= '</table>';
+	        $html .= '<h6>'.__('Tracking History:', 'scod-shipping').'</h6>';
+	   		$html .= '<table style="text-align: left;">';
+	   		$html .= '<tr>';
+		   		$html .= '<th>'.__('Date', 'scod-shipping').'</th>';
+		   		$html .= '<th>'.__('Status', 'scod-shipping').'</th>';
+		   	$html .= '</tr>';	
+		   	foreach ($trace_tracking_jne->history as $history) {
+				$html .= '<tr>';
+			   		$html .= '<td>'.$history->date.'</td>';
+			   		$html .= '<td>'.$history->desc.'</td>';
+			   	$html .= '</tr>';
+		   	}
+		   	$html .= '</table>';
+		endif;
+
+		if(isset($trace_tracking_sicepat->track_history)):
+	        $html = '<h6>'.__('Number Resi:', 'scod-shipping').'</h6>';
+	    	$html .= '<div class="shipping-number" style="font-size:26px;"><b>'.$params['shipmentNumber'].'</b></div>';
+
+		   	$html .= '<h6>'.__('Shipping Details:', 'scod-shipping').'</h6>';
+		   	$html .= '<table style="text-align: left;">';
+		   	$html .= '<tr>';
+		   		$html .= '<th>'.__('Courier:', 'scod-shipping').'</th>';
+		   		$html .= '<td>SICEPAT - '.$trace_tracking_sicepat->service.'</td>';
+		   	$html .= '</tr>';
+		   	$html .= '<tr>';
+		   		$html .= '<th>'.__('From:', 'scod-shipping').'</th>';
+		   		$html .= '<td>'.$trace_tracking_sicepat->sender.'</td>';
+		   	$html .= '</tr>';
+		   	$html .= '<tr>';
+		   		$html .= '<th>'.__('Shipper Address:', 'scod-shipping').'</th>';
+		   		$html .= '<td>'.$trace_tracking_sicepat->sender_address.'</td>';
+		   	$html .= '</tr>';
+		   	$html .= '<tr>';
+		   		$html .= '<th>'.__('To:', 'scod-shipping').'</th>';
+		   		$html .= '<td>'.$trace_tracking_sicepat->receiver_name.'</td>';
+		   	$html .= '</tr>';
+		   	$html .= '<tr>';
+		   		$html .= '<th>'.__('Receiver Address:', 'scod-shipping').'</th>';
+		   		$html .= '<td>'.$trace_tracking_sicepat->receiver_address.'</td>';
+		   	$html .= '</tr>';
+		   	$html .= '<tr>';
+		   		$html .= '<th>'.__('Receiver:', 'scod-shipping').'</th>';
+		   		$html .= '<td>'.$trace_tracking_sicepat->POD_receiver.'</td>';
+		   	$html .= '</tr>';
+		   	$html .= '<tr>';
+		   		$html .= '<th>'.__('Last Status:', 'scod-shipping').'</th>';
+		   		$html .= '<td>'.$trace_tracking_sicepat->last_status->status.' - '.$trace_tracking_sicepat->last_status->receiver_name.'</td>';
+		   	$html .= '</tr>';
+		   	$html .= '</table>';
+
+	        $html .= '<h6>'.__('Tracking History:', 'scod-shipping').'</h6>';
+	   		$html .= '<table style="text-align: left;">';
+	   		$html .= '<tr>';
+		   		$html .= '<th>'.__('Date', 'scod-shipping').'</th>';
+		   		$html .= '<th>'.__('Status', 'scod-shipping').'</th>';
+		   		$html .= '<th>'.__('Description', 'scod-shipping').'</th>';
+		   	$html .= '</tr>';	
+		   	foreach ($trace_tracking_sicepat->track_history as $history) {
+				$html .= '<tr>';
+			   		$html .= '<td>'.$history->date_time.'</td>';
+			   		$html .= '<td>'.$history->status.'</td>';
+			   		$html .= '<td>'.(isset($history->city) ? $history->city : '-').'</td>';
+			   	$html .= '</tr>';
+		   	}
+		   	$html .= '</table>';
+		endif;
 
         echo wp_send_json( $html );
     }
@@ -693,8 +792,6 @@ class Front {
 	 */
 	public function sejoli_init_tracking_shipment_shortcode() {
 	    add_shortcode( 'sejoli_shipment_tracking', array( $this , 'sejoli_shipment_tracking_shortcode' ) );
-	    add_action('wp_ajax_nopriv_sejoli_shipment_tracking_result', array($this, 'sejoli_shipment_tracking_result'));
-        add_action('wp_ajax_sejoli_shipment_tracking_result', array($this, 'sejoli_shipment_tracking_result'));
 	}
 
 	/**
@@ -875,7 +972,6 @@ class Front {
 	            if ( $city && count( $city->districts ) > 0 ) :
 	        		$data = $city->districts()->pluck( 'name', 'ID' )->toArray();
 	            endif;
-
         	endif;
 
         endif;
@@ -893,7 +989,7 @@ class Front {
 		if( isset( WC()->session ) ):
 
 			$chosen_shipping_methods = WC()->session->get( 'chosen_shipping_methods' );
-
+			$total_order = WC()->cart->get_cart_contents_total();
 			if( ! empty( $chosen_shipping_methods ) ) :
 				if( $chosen_shipping_methods[0] === 'scod-shipping_jne_yes19' ||
 					$chosen_shipping_methods[0] === 'scod-shipping_sicepat_reg' ||
@@ -906,6 +1002,16 @@ class Front {
 						unset( $available_gateways['cod'] );
 					endif;
 
+				endif;
+
+				// Requirement COD SiCepat
+				if( $chosen_shipping_methods[0] === 'scod-shipping_sicepat_gokil' ||
+					$chosen_shipping_methods[0] === 'scod-shipping_sicepat_siunt' ) :
+					if($total_order < 5000.00 || $total_order > 15000000.00):
+						if( isset( $available_gateways['cod'] ) ) :
+							unset( $available_gateways['cod'] );
+						endif;
+					endif;
 				endif;
 			endif;
 
@@ -1100,7 +1206,7 @@ class Front {
 				$packages['destination']['city2'] 	  = $order_shipping_city;
 				$packages['destination']['district']  = $order_shipping_district;
 
-				if($shipping_name === "JNE - REG (1-2 hari)" || $shipping_name === "JNE - OKE (2-3 hari)" || $shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
+				if($shipping_name === "JNE - YES (1 hari)" || $shipping_name === "JNE - REG (1-2 hari)" || $shipping_name === "JNE - OKE (2-3 hari)" || $shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
 		        	$getOrigin   = $shipping_class->get_origin_info()->code;
 					$destination = $shipping_class->get_destination_info( $packages['destination'] )->code;
 				} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)" || $shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - BEST (1 hari)" || $shipping_name === "SICEPAT - KEPO (1 - 2 hari)" || $shipping_name === "SICEPAT - SDS (1 hari)"  || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
@@ -1112,7 +1218,7 @@ class Front {
 
 			// Iterating through each WC_Order_Item_Product objects
 			// https://stackoverflow.com/questions/39401393/how-to-get-woocommerce-order-details
-			$quantity = 0;
+			$quantity       = 0;
 			$product_weight = 0;
 			foreach ($order->get_items() as $item_key => $item ):
 			    // Item ID is directly accessible from the $item_key in the foreach loop or
@@ -1130,17 +1236,21 @@ class Front {
 			// Check Payment Method COD or NOT
 			$order_payment_method = $order_data['payment_method'];
 	        if($order_payment_method == "cod"){
-	        	$codflag   = "YES";
+	        	$codflag = "YES";
 	        	if($shipping_name === "JNE - REG (1-2 hari)" || $shipping_name === "JNE - OKE (2-3 hari)" || $shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
-					$codamount = $order->get_total() + $order->get_total_shipping();
-				} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)" || $shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - BEST (1 hari)" || $shipping_name === "SICEPAT - KEPO (1 - 2 hari)" || $shipping_name === "SICEPAT - SDS (1 hari)"  || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
-					$codamount = $order->get_total() + $order->get_total_shipping();
+					$codamount = $order->get_total();
+				} elseif($shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
+					if($order->get_total() >= 5000 || $order->get_total() <= 15000000){
+						$codamount = $order->get_total();
+					} else {
+						$codamount = '0';
+					}
 				} else {
-					$codamount = 0;
+					$codamount = '0';
 				}
 	        } else {
 	        	$codflag   = "N";
-	        	$codamount = 0;
+	        	$codamount = '0';
 	        }
 
 	        // Insurance YES or NO

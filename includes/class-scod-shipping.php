@@ -319,6 +319,8 @@ class SCOD_Shipping {
 
 		// Shortcode
 		$this->loader->add_action( 'init', $public, 'sejoli_init_tracking_shipment_shortcode' );
+		$this->loader->add_action( 'wp_ajax_nopriv_sejoli_shipment_tracking_result', $public, 'sejoli_shipment_tracking_result' );
+        $this->loader->add_action( 'wp_ajax_sejoli_shipment_tracking_result', $public, 'sejoli_shipment_tracking_result' );
 
 		// Markup COD
 		$this->loader->add_action( 'woocommerce_cart_calculate_fees', $public, 'adding_markup_price_cod' );

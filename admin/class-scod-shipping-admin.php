@@ -453,8 +453,7 @@ class Admin {
 	 * @since    1.0.0
 	 */
 	// Adding Meta container admin shop_order pages
-    public function add_order_shipping_number_meta_boxes()
-    {
+    public function add_order_shipping_number_meta_boxes() {
         add_meta_box(
 	       'sejoli_shipping_number',
 	       __('Shipping Information', 'scod-shipping'),
@@ -471,8 +470,7 @@ class Admin {
 	 */
     // Adding Meta field in the meta container admin shop_order pages
     // https://wordpress.stackexchange.com/questions/319346/woocommerce-get-physical-store-address
-    public function add_other_fields_for_shipping_number($post)
-    {
+    public function add_other_fields_for_shipping_number($post) {
 	    $order 		  = wc_get_order( $post->ID );
 	    $order_status = $order->get_status(); // The Order Status
 	    $order_data   = $order->get_data(); // The Order Data
@@ -585,7 +583,7 @@ class Admin {
 		$packages['destination']['city2'] 	  = $order_shipping_city;
 		$packages['destination']['district']  = $order_shipping_district;
 
-		if($shipping_name === "JNE - YES (1 hari)" ||$shipping_name === "JNE - REG (1-2 hari)" || $shipping_name === "JNE - OKE (2-3 hari)" || $shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
+		if($shipping_name === "JNE - YES (1 hari)" || $shipping_name === "JNE - REG (1-2 hari)" || $shipping_name === "JNE - OKE (2-3 hari)" || $shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
         	$getOrigin   = $method_instance->get_origin_info()->code;
 			$destination = $method_instance->get_destination_info( $packages['destination'] )->code;
 		} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)" || $shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - BEST (1 hari)" || $shipping_name === "SICEPAT - KEPO (1 - 2 hari)" || $shipping_name === "SICEPAT - SDS (1 hari)"  || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
@@ -595,7 +593,7 @@ class Admin {
 		
 		// Iterating through each WC_Order_Item_Product objects
 		// https://stackoverflow.com/questions/39401393/how-to-get-woocommerce-order-details
-		$quantity = 0;
+		$quantity       = 0;
 		$product_weight = 0;
 		foreach ($order->get_items() as $item_key => $item ):
 		    // Item ID is directly accessible from the $item_key in the foreach loop or
@@ -928,7 +926,7 @@ class Admin {
 			}
 		}
 
-		wp_update_post(['ID' => $order_id, 'post_status' => 'wc-in-shipping']);
+		wp_update_post( ['ID' => $order_id, 'post_status' => 'wc-in-shipping'] );
 
         echo wp_send_json( $numberResi );
 	}
@@ -939,7 +937,7 @@ class Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function generate_airwaybill_sicepat($order_id) {
+	public function generate_airwaybill_sicepat( $order_id ) {
 		$params = wp_parse_args( $_POST, array(
 			'orderID'  		 	    => NULL,
             'pickup_merchant_name'  => NULL,
@@ -1019,7 +1017,7 @@ class Admin {
 			}
 		}
 
-		wp_update_post(['ID' => $order_id, 'post_status' => 'wc-in-shipping']);
+		wp_update_post( ['ID' => $order_id, 'post_status' => 'wc-in-shipping'] );
 
         echo wp_send_json( $numberResi );
 	}
@@ -1030,8 +1028,7 @@ class Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function sejoli_update_status_cron_schedules($schedules)
-	{
+	public function sejoli_update_status_cron_schedules( $schedules ) {
 	    $schedules['once_every_5m'] = array(
 	    	'interval' => 300, 
 	    	'display'  => 'Once every 5 minutes'
@@ -1045,7 +1042,7 @@ class Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function schedule_update_order_to_complete_based_on_delivered_shipping($order_id) {
+	public function schedule_update_order_to_complete_based_on_delivered_shipping( $order_id ) {
 	  	// Schedule an action if it's not already scheduled
 		if ( ! wp_next_scheduled( 'update_status_order_to_completed' ) ) {
 		    wp_schedule_event( time(), 'once_every_5m', 'update_status_order_to_completed' );
@@ -1060,7 +1057,7 @@ class Admin {
 	 */
 	public function update_status_order_to_completed_based_on_delivered_shipping() {
 		global $wpdb;
-		$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}posts WHERE post_type LIKE 'shop_order' AND post_status LIKE 'wc-in-shipping'");
+		$results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}posts WHERE post_type LIKE 'shop_order' AND post_status LIKE 'wc-in-shipping'" );
 		
 		// Loop through each order post object
 		foreach( $results as $result ){
@@ -1072,12 +1069,10 @@ class Admin {
 		    $trace_tracking_jne = API_JNE::set_params()->get_tracking( $shipping_number );
 		    $trace_tracking_sicepat = API_SICEPAT::set_params()->get_tracking( $shipping_number );
 
-		    // error_log(print_r($trace_tracking_sicepat, true));
-
-			$tracking_pod_status_jne = (isset($trace_tracking_jne->cnote->pod_status) ? $trace_tracking_jne->cnote->pod_status : false);
-		    if(false !== $tracking_pod_status_jne) :
+			$tracking_pod_status_jne = ( isset($trace_tracking_jne->cnote->pod_status) ? $trace_tracking_jne->cnote->pod_status : false );
+		    if( false !== $tracking_pod_status_jne ) :
 			    // if($trace_tracking_jne->cnote->pod_status == "DELIVERED" && $order_status == "in-shipping"){
-			    if($tracking_pod_status_jne == "DELIVERED"){
+			    if( $tracking_pod_status_jne == "DELIVERED" ){
 			    	// Send update status data to API
 			        $status 	  = "completed";
 					$api_scod 	  = new API_SCOD();
@@ -1094,10 +1089,10 @@ class Admin {
 			    }
 			endif;
 
-			$tracking_pod_status_sicepat = (isset($trace_tracking_sicepat->last_status->status) ? $trace_tracking_sicepat->last_status->status : false);
+			$tracking_pod_status_sicepat = ( isset($trace_tracking_sicepat->last_status->status) ? $trace_tracking_sicepat->last_status->status : false );
 			if(false !== $tracking_pod_status_sicepat) :
 			    // if($trace_tracking_sicepat->last_status->status == "DELIVERED" && $order_status == "in-shipping"){
-			    if($tracking_pod_status_sicepat == "DELIVERED"){
+			    if( $tracking_pod_status_sicepat == "DELIVERED" ){
 			    	// Send update status data to API
 			        $status 	  = "completed";
 					$api_scod 	  = new API_SCOD();
