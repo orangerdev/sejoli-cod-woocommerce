@@ -766,7 +766,6 @@ class Admin {
 			   		data-pickup_merchant_email="'.$store_email.'"
 			   		data-origin_code="'.$getOrigin.'"
 			   		data-delivery_type="'.$shipping_service.'"
-			   		data-shipper-zip="'.$store_postcode.'"
 			   		data-parcel_category="'.$product_category[0].'"
 			   		data-parcel_content="'.$item_name.'"
 			   		data-parcel_qty="'.$quantity.'"

@@ -826,23 +826,23 @@ class Front {
 	    );
 
 		// Disabled default country select to prevent conflict with wc dynamic fields.
-		$fields['billing']['billing_country']['custom_attributes'] = array( 'disabled' => 'disabled' );
+		$fields['billing']['billing_country']['custom_attributes']   = array( 'disabled' => 'disabled' );
 		$fields['shipping']['shipping_country']['custom_attributes'] = array( 'disabled' => 'disabled' );
 
 	    // Sort fields
-	    $fields['billing']['billing_first_name']['priority']  = 1;
-	    $fields['billing']['billing_last_name']['priority']   = 2;
-	    $fields['billing']['billing_company']['priority'] 	  = 3;
-	    $fields['billing']['billing_country']['priority'] 	  = 4;
-	    $fields['billing']['billing_state']['priority'] 	  = 5;
-	    $fields['billing']['billing_city']['priority'] 		  = 6;
-	    $fields['billing']['billing_city2']['priority'] 	  = 7;
-	    $fields['billing']['billing_district']['priority'] 	  = 8;
-	    $fields['billing']['billing_address_2']['priority']   = 9;
-	    $fields['billing']['billing_address_1']['priority']   = 10;
-	    $fields['billing']['billing_postcode']['priority'] 	  = 11;
-	    $fields['billing']['billing_email']['priority'] 	  = 12;
-	    $fields['billing']['billing_phone']['priority'] 	  = 13;
+	    $fields['billing']['billing_first_name']['priority'] = 1;
+	    $fields['billing']['billing_last_name']['priority']  = 2;
+	    $fields['billing']['billing_company']['priority'] 	 = 3;
+	    $fields['billing']['billing_country']['priority'] 	 = 4;
+	    $fields['billing']['billing_state']['priority'] 	 = 5;
+	    $fields['billing']['billing_city']['priority'] 		 = 6;
+	    $fields['billing']['billing_city2']['priority'] 	 = 7;
+	    $fields['billing']['billing_district']['priority'] 	 = 8;
+	    $fields['billing']['billing_address_2']['priority']  = 9;
+	    $fields['billing']['billing_address_1']['priority']  = 10;
+	    $fields['billing']['billing_postcode']['priority'] 	 = 11;
+	    $fields['billing']['billing_email']['priority'] 	 = 12;
+	    $fields['billing']['billing_phone']['priority'] 	 = 13;
 
 	    $fields['shipping']['shipping_first_name']['priority'] = 1;
 	    $fields['shipping']['shipping_last_name']['priority']  = 2;
@@ -908,13 +908,12 @@ class Front {
 	 * @since    1.0.0
 	 */
 	public function checkout_country_hidden_fields_replacement( $fields ) {
-		$billing_country = WC()->customer->get_billing_country();
+		$billing_country  = WC()->customer->get_billing_country();
 		$shipping_country = WC()->customer->get_shipping_country();
 		?>
 		
 		<input type="hidden" name="billing_country" value="<?php echo $billing_country; ?>">
 		<input type="hidden" name="shipping_country" value="<?php echo $shipping_country; ?>">
-		
 		<?php
 	}
 
@@ -1077,7 +1076,7 @@ class Front {
 
 			// Get an instance of the WC_Order object
 	        $order = wc_get_order( $order_id );
-	    	$order_data   = $order->get_data(); // The Order Data
+	    	$order_data = $order->get_data(); // The Order Data
 
 			// Check payment method
 			if( $order->get_payment_method() != 'cod' ) {
@@ -1236,17 +1235,20 @@ class Front {
 			// Check Payment Method COD or NOT
 			$order_payment_method = $order_data['payment_method'];
 	        if($order_payment_method == "cod"){
-	        	$codflag = "YES";
 	        	if($shipping_name === "JNE - REG (1-2 hari)" || $shipping_name === "JNE - OKE (2-3 hari)" || $shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
 					$codamount = $order->get_total();
+					$codflag   = "YES";
 				} elseif($shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
 					if($order->get_total() >= 5000 || $order->get_total() <= 15000000){
 						$codamount = $order->get_total();
+						$codflag   = "YES";
 					} else {
 						$codamount = '0';
+						$codflag   = "N";
 					}
 				} else {
 					$codamount = '0';
+					$codflag   = "N";
 				}
 	        } else {
 	        	$codflag   = "N";
