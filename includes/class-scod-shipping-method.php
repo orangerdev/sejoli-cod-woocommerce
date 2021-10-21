@@ -836,7 +836,7 @@ function scod_shipping_init() {
 
 						$percentage     = 0.04;
 						$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
-						$total_order = WC()->cart->get_cart_contents_total();
+						$total_order    = WC()->cart->get_cart_contents_total();
 					 	
 						if($option_biaya_markup === 'yes') {
 							if($chosen_payment_method === 'cod') {

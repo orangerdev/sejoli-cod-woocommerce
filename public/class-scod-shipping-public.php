@@ -1075,7 +1075,7 @@ class Front {
 	    if( ! get_post_meta( $order_id, '_sync_order_action_scod_done', true ) ) {
 
 			// Get an instance of the WC_Order object
-	        $order = wc_get_order( $order_id );
+	        $order      = wc_get_order( $order_id );
 	    	$order_data = $order->get_data(); // The Order Data
 
 			// Check payment method
@@ -1084,7 +1084,7 @@ class Front {
 			}
 
 			// Get Store Information
-			$store_address   = get_option( 'w`oocommerce_store_address' );
+			$store_address   = get_option( 'woocommerce_store_address' );
 			$store_address_2 = get_option( 'woocommerce_store_address_2' );
 			$store_city      = get_option( 'woocommerce_store_city' );
 			$store_postcode  = get_option( 'woocommerce_store_postcode' );
@@ -1191,7 +1191,6 @@ class Front {
 				$shipping_class   = new Shipping_Method( $shipping_instance_id );
 				$store_id 		  = $shipping_class->get_option( 'store_id' );
 				$store_secret_key = $shipping_class->get_option( 'store_secret_key' );
-
 				$shipping_origin  = $shipping_class->get_option( 'shipping_origin' );
 
 				$packages = WC()->shipping->get_packages();
@@ -1361,7 +1360,7 @@ class Front {
 					$label_biaya_markup  = $shipping_class->get_option( 'jne_label_markup_cod' );
 					$option_biaya_markup = $shipping_class->get_option( 'jne_biaya_markup' );
 					
-					$percentage = 0.04;
+					$percentage     = 0.04;
 					$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
 				 	
 				 	if($option_biaya_markup === 'no') {
@@ -1393,7 +1392,7 @@ class Front {
 					$label_biaya_markup  = $shipping_class->get_option( 'sicepat_label_markup_cod' );
 					$option_biaya_markup = $shipping_class->get_option( 'sicepat_biaya_markup' );
 					
-					$percentage = 0.04;
+					$percentage     = 0.04;
 					$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
 				 	
 				 	if($option_biaya_markup === 'no') {
@@ -1424,6 +1423,4 @@ class Front {
 	    </script>
 <?php
 	}
-
-
 }
