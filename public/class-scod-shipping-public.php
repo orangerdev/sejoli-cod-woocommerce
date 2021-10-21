@@ -1158,11 +1158,9 @@ class Front {
 				$shipping_service = "OKE";
 			} elseif($shipping_name === "JNE - YES (1 hari)") {
 				$shipping_service = "YES";
-			} else {
+			} elseif($shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
 				$shipping_service = "JTR";
-			}
-
-			if($shipping_name === "SICEPAT - BEST (1 hari)") {
+			} elseif($shipping_name === "SICEPAT - BEST (1 hari)") {
 				$shipping_service = "BEST";
 			} elseif($shipping_name === "SICEPAT - GOKIL (2 - 3 hari)") {
 				$shipping_service = "GOKIL";
