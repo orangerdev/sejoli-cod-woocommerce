@@ -1084,11 +1084,12 @@ class Front {
 			}
 
 			// Get Store Information
-			$store_address   = get_option( 'woocommerce_store_address' );
+			$store_address   = get_option( 'w`oocommerce_store_address' );
 			$store_address_2 = get_option( 'woocommerce_store_address_2' );
 			$store_city      = get_option( 'woocommerce_store_city' );
 			$store_postcode  = get_option( 'woocommerce_store_postcode' );
 			$store_phone 	 = get_option( 'woocommerce_store_phone' );
+			$store_email 	 = get_option( 'woocommerce_email_from_address' );
 
 			// The store country/state
 			$store_raw_country = get_option( 'woocommerce_default_country' );
@@ -1224,12 +1225,14 @@ class Front {
 			    $item_id = $item->get_id();
 
 			    ## Using WC_Order_Item_Product methods ##
-			    $product      	= $item->get_product(); // Get the WC_Product object
-			    $item_type    	= $item->get_type(); // Type of the order item ("line_item")
-			    $item_name    	= $item->get_name(); // Name of the product
-			    $quantity     	+= $item->get_quantity();  
-			    $product_weight = $product->get_weight();
-			    $total_weight 	= ( floatval($quantity) * floatval($product_weight) );
+			    $product      	  = $item->get_product(); // Get the WC_Product object
+			    $product_id       = $item->get_product_id(); 
+		    	$product_category = wp_get_post_terms( $product_id, 'product_cat', array( 'fields' => 'names' ) );
+			    $item_type    	  = $item->get_type(); // Type of the order item ("line_item")
+			    $item_name    	  = $item->get_name(); // Name of the product
+			    $quantity     	  += $item->get_quantity();  
+			    $product_weight   = $product->get_weight();
+			    $total_weight 	  = ( floatval($quantity) * floatval($product_weight) );
 			endforeach;
 
 			// Check Payment Method COD or NOT
@@ -1274,6 +1277,7 @@ class Front {
 		        'shipper_region'  => $getStoreState,
 		        'shipper_zip'     => $store_postcode,
 		        'shipper_phone'   => $store_phone,
+		        'shipper_email'   => $store_email,
 		        'receiver_name'   => $order_shipping_fullname,
 		        'receiver_addr1'  => $order_shipping_address,
 		        'receiver_addr2'  => $getDistrict,
@@ -1284,6 +1288,7 @@ class Front {
 		        'qty'             => $quantity,
 		        'weight'          => $total_weight,
 		        'goods_desc'      => $item_name,
+		        'goods_category'  => $product_category[0],
 		        'goods_value'     => $quantity,
 		        'goods_type'      => '1',
 		        'insurance'       => $insurance,

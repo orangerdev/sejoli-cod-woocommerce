@@ -613,11 +613,24 @@ class Admin {
 		// Check Payment Method COD or NOT
 		$order_payment_method = $order_data['payment_method'];
         if($order_payment_method == "cod"){
-        	$codflag   = "YES";
-        	$codamount = $order->get_total() + $order->get_total_shipping();
+        	if($shipping_name === "JNE - REG (1-2 hari)" || $shipping_name === "JNE - OKE (2-3 hari)" || $shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
+				$codamount = $order->get_total();
+				$codflag   = "YES";
+			} elseif($shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
+				if($order->get_total() >= 5000 || $order->get_total() <= 15000000){
+					$codamount = $order->get_total();
+					$codflag   = "YES";
+				} else {
+					$codamount = '0';
+					$codflag   = "N";
+				}
+			} else {
+				$codamount = '0';
+				$codflag   = "N";
+			}
         } else {
         	$codflag   = "N";
-        	$codamount = 0;
+        	$codamount = '0';
         }
 
         // Insurance YES or NO
