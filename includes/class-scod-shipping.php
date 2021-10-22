@@ -166,6 +166,9 @@ class SCOD_Shipping {
 		require_once SCOD_SHIPPING_DIR . 'api/class-scod-shipping-sicepat.php';
 		require_once SCOD_SHIPPING_DIR . 'api/class-scod-shipping-saas.php';
 
+		// Custom WebHook & Callback
+		require_once SCOD_SHIPPING_DIR . 'includes/class-scod-order-webhook.php';
+
 		/**
 		 * The class responsible for defining CLI command and function
 		 * side of the site.

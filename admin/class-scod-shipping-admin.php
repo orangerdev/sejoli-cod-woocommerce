@@ -13,7 +13,6 @@ use SCOD_Shipping\API\SiCepat as API_SICEPAT;
 use SCOD_Shipping\Model\SiCepat\Origin as SICEPAT_Origin;
 use SCOD_Shipping\Model\SiCepat\Destination as SICEPAT_Destination;
 use SCOD_Shipping\Shipping_Method;
-// use SCOD_Shipping\scod_shipping_init\Shipping_Method;
 
 /**
  * The admin-specific functionality of the plugin.
