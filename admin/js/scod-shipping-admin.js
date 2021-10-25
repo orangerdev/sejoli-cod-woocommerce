@@ -38,52 +38,59 @@
             let baseURL 	   = scod_admin_ajax.generate_airwaybill.ajaxurl;
 	    	let nonce 		   = scod_admin_ajax.generate_airwaybill.nonce;
 
-	    	//Get detail request
-	    	$.ajax({
-	    		dataType: "json",
-                url : baseURL,
-                type : 'POST',
-                data : {
-                    orderID: orderID,
-                    shipperName: shipperName,
-                    shipperAddr1: shipperAddr1,
-                    shipperAddr2: shipperAddr2,
-                    shipperCity: shipperCity,
-                    shipperRegion: shipperRegion,
-                    shipperZip: shipperZip,
-                    shipperPhone: shipperPhone,
-                    receiverName: receiverName,
-                    receiverAddr1: receiverAddr1,
-                    receiverAddr2: receiverAddr2,
-                    receiverCity: receiverCity,
-                    receiverRegion: receiverRegion,
-                    receiverZip: receiverZip,
-                    receiverPhone: receiverPhone,
-                    qty: qty,
-                    weight: weight,
-                    goodsDesc: goodsDesc,
-                    goodsValue: goodsValue,
-                    goodsType: goodsType,
-                    insurance: insurance,
-                    origin: origin,
-                    destination: destination,
-                    service: service,
-                    codflag: codflag,
-                    codAmount: codAmount,
-                    nonce:  nonce
-                },
-                success : function(response) {
-                    console.log(response);
-                    $('input#sejoli_shipping_number').val(response);
-                    $('#shipping-number').text(response);
-                    $('a.generate-airwaybill').hide();
-                    window.location.reload();
-                },
-                error: function (request, status, error) {
-                    console.log(request);
-                    console.log(error);
-                }
-            });
+            if (confirm('Apakah Anda yakin ingin melakukan proses request pickup order id #'+orderID+'?')) {
+                // Save it!
+                console.log('Requesting Pickup Succesfull.');
+
+                //Get detail request
+                $.ajax({
+                    dataType: "json",
+                    url: baseURL,
+                    type: 'POST',
+                    data: {
+                        orderID: orderID,
+                        shipperName: shipperName,
+                        shipperAddr1: shipperAddr1,
+                        shipperAddr2: shipperAddr2,
+                        shipperCity: shipperCity,
+                        shipperRegion: shipperRegion,
+                        shipperZip: shipperZip,
+                        shipperPhone: shipperPhone,
+                        receiverName: receiverName,
+                        receiverAddr1: receiverAddr1,
+                        receiverAddr2: receiverAddr2,
+                        receiverCity: receiverCity,
+                        receiverRegion: receiverRegion,
+                        receiverZip: receiverZip,
+                        receiverPhone: receiverPhone,
+                        qty: qty,
+                        weight: weight,
+                        goodsDesc: goodsDesc,
+                        goodsValue: goodsValue,
+                        goodsType: goodsType,
+                        insurance: insurance,
+                        origin: origin,
+                        destination: destination,
+                        service: service,
+                        codflag: codflag,
+                        codAmount: codAmount,
+                        nonce:  nonce
+                    },
+                    success : function(response) {
+                        $('input#sejoli_shipping_number').val(response);
+                        $('#shipping-number').text(response);
+                        $('a.generate-airwaybill').hide();
+                        window.location.reload();
+                    },
+                    error: function (request, status, error) {
+                        console.log(error);
+                    }
+                });
+            } else {
+                // Do nothing!
+                console.log('Requesting Pickup Failed.');
+            }
+
         });
 
         $(document).on( "click", '.generate-airwaybill-sicepat', function(event) {
@@ -122,55 +129,62 @@
             let baseURL               = scod_admin_ajax.generate_airwaybill_sicepat.ajaxurl;
             let nonce                 = scod_admin_ajax.generate_airwaybill_sicepat.nonce;
 
-            //Get detail request
-            $.ajax({
-                dataType: "json",
-                url : baseURL,
-                type : 'POST',
-                data : {
-                    orderID: orderID,
-                    pickup_merchant_name: pickup_merchant_name,
-                    pickup_address: pickup_address,
-                    pickup_city: pickup_city,
-                    pickup_merchant_phone: pickup_merchant_phone,
-                    pickup_merchant_email: pickup_merchant_email,
-                    origin_code: origin_code,
-                    delivery_type: delivery_type,
-                    parcel_category: parcel_category,
-                    parcel_content: parcel_content,
-                    parcel_qty: parcel_qty,
-                    parcel_value: parcel_value,
-                    cod_value: cod_value,
-                    total_weight: total_weight,
-                    shipper_name: shipper_name,
-                    shipper_address: shipper_address,
-                    shipper_province: shipper_province,
-                    shipper_city: shipper_city,
-                    shipper_district: shipper_district,
-                    shipper_zip: shipper_zip,
-                    shipper_phone: shipper_phone,
-                    recipient_name: recipient_name,
-                    recipient_address: recipient_address,
-                    recipient_province: recipient_province,
-                    recipient_city: recipient_city,
-                    recipient_district: recipient_district,
-                    recipient_zip: recipient_zip,
-                    recipient_phone: recipient_phone,
-                    destination_code: destination_code,
-                    nonce:  nonce
-                },
-                success : function(response) {
-                    console.log(response);
-                    $('input#sejoli_shipping_number').val(response);
-                    $('#shipping-number').text(response);
-                    $('a.generate-airwaybill-sicepat').hide();
-                    window.location.reload();
-                },
-                error: function (request, status, error) {
-                    console.log(request);
-                    console.log(error);
-                }
-            });
+            if (confirm('Apakah Anda yakin ingin melakukan proses request pickup order id #'+orderID+'?')) {
+                // Save it!
+                console.log('Requesting Pickup Succesfull.');
+
+                //Get detail request
+                $.ajax({
+                    dataType: "json",
+                    url: baseURL,
+                    type: 'POST',
+                    data: {
+                        orderID: orderID,
+                        pickup_merchant_name: pickup_merchant_name,
+                        pickup_address: pickup_address,
+                        pickup_city: pickup_city,
+                        pickup_merchant_phone: pickup_merchant_phone,
+                        pickup_merchant_email: pickup_merchant_email,
+                        origin_code: origin_code,
+                        delivery_type: delivery_type,
+                        parcel_category: parcel_category,
+                        parcel_content: parcel_content,
+                        parcel_qty: parcel_qty,
+                        parcel_value: parcel_value,
+                        cod_value: cod_value,
+                        total_weight: total_weight,
+                        shipper_name: shipper_name,
+                        shipper_address: shipper_address,
+                        shipper_province: shipper_province,
+                        shipper_city: shipper_city,
+                        shipper_district: shipper_district,
+                        shipper_zip: shipper_zip,
+                        shipper_phone: shipper_phone,
+                        recipient_name: recipient_name,
+                        recipient_address: recipient_address,
+                        recipient_province: recipient_province,
+                        recipient_city: recipient_city,
+                        recipient_district: recipient_district,
+                        recipient_zip: recipient_zip,
+                        recipient_phone: recipient_phone,
+                        destination_code: destination_code,
+                        nonce:  nonce
+                    },
+                    success : function(response) {
+                        $('input#sejoli_shipping_number').val(response);
+                        $('#shipping-number').text(response);
+                        $('a.generate-airwaybill-sicepat').hide();
+                        window.location.reload();
+                    },
+                    error: function (request, status, error) {
+                        console.log(error);
+                    }
+                });
+            } else {
+                // Do nothing!
+                console.log('Requesting Pickup Failed.');
+            }
+
         });
 	});
 
