@@ -726,9 +726,7 @@ class Front {
 			   	$html .= '</tr>';
 		   	}
 		   	$html .= '</table>';
-		endif;
-
-		if(isset($trace_tracking_sicepat->track_history)):
+		elseif(isset($trace_tracking_sicepat->track_history)):
 	        $html = '<h6>'.__('Number Resi:', 'scod-shipping').'</h6>';
 	    	$html .= '<div class="shipping-number" style="font-size:26px;"><b>'.$params['shipmentNumber'].'</b></div>';
 
