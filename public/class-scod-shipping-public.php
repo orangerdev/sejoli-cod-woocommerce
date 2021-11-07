@@ -619,17 +619,9 @@ class Front {
 	 * @since    1.0.0
 	 */
 	public function sejoli_shipment_tracking_shortcode($atts) {
-	  	$form = '
-        <form id="shipment-tracking-form" action="">
-          	<label for="shipment-number">'.__('Shipment Number', 'scod-shipping').'</label>
-          	<input type="text" id="shipment-number" name="shipment-number" value="">
-          	<br>
-          	<input type="submit" name="submit-tracking" value="Search" >
-        </form>';
- 
-        $form .= '<div id="shipment-history"></div>';
+	  	require_once( plugin_dir_path( __FILE__ ) . 'partials/tracking-form.php' );
 
-        return $form;
+        return $html;
 	}
 
 	/**
