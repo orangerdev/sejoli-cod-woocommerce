@@ -616,7 +616,7 @@ class Admin {
 				$codamount = $order->get_total();
 				$codflag   = "YES";
 			} elseif($shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
-				if($order->get_total() >= 5000 || $order->get_total() <= 15000000){
+				if($order->get_total() >= 5000 && $order->get_total() <= 15000000){
 					$codamount = $order->get_total();
 					$codflag   = "YES";
 				} else {
