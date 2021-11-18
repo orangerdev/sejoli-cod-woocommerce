@@ -1,5 +1,5 @@
 <?php
-namespace SCOD_Shipping\Model\JNE;
+namespace SCOD_Shipping\Model\SiCepat;
 
 use SCOD_Shipping\Model\Main as Eloquent;
 
@@ -10,7 +10,7 @@ class Origin extends Eloquent
      *
      * @var string
      */
-    protected $table = 'scod_shipping_jne_origin';
+    protected $table = 'scod_shipping_sicepat_origin';
 
     /**
      * Indicates if the model should be timestamped.
@@ -25,7 +25,7 @@ class Origin extends Eloquent
      * @var array
      */
 	protected $fillable = [
-	   'city_id', 'code', 'name'
+	   'city_id', 'origin_code', 'origin_name'
 	];
 
 }

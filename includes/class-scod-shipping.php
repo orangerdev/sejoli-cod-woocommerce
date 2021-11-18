@@ -125,6 +125,9 @@ class SCOD_Shipping {
 		require_once SCOD_SHIPPING_DIR . 'database/jne/origin.php';
 		require_once SCOD_SHIPPING_DIR . 'database/jne/destination.php';
 		require_once SCOD_SHIPPING_DIR . 'database/jne/tariff.php';
+		require_once SCOD_SHIPPING_DIR . 'database/sicepat/origin.php';
+		require_once SCOD_SHIPPING_DIR . 'database/sicepat/destination.php';
+		require_once SCOD_SHIPPING_DIR . 'database/sicepat/tariff.php';
 
 		/**
 		 * The class responsible for database seed.
@@ -141,6 +144,9 @@ class SCOD_Shipping {
 		require_once SCOD_SHIPPING_DIR . 'model/jne/origin.php';
 		require_once SCOD_SHIPPING_DIR . 'model/jne/destination.php';
 		require_once SCOD_SHIPPING_DIR . 'model/jne/tariff.php';
+		require_once SCOD_SHIPPING_DIR . 'model/sicepat/origin.php';
+		require_once SCOD_SHIPPING_DIR . 'model/sicepat/destination.php';
+		require_once SCOD_SHIPPING_DIR . 'model/sicepat/tariff.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -157,7 +163,11 @@ class SCOD_Shipping {
 		 */
 		require_once SCOD_SHIPPING_DIR . 'includes/class-scod-shipping-api.php';
 		require_once SCOD_SHIPPING_DIR . 'api/class-scod-shipping-jne.php';
+		require_once SCOD_SHIPPING_DIR . 'api/class-scod-shipping-sicepat.php';
 		require_once SCOD_SHIPPING_DIR . 'api/class-scod-shipping-saas.php';
+
+		// Custom WebHook & Callback
+		require_once SCOD_SHIPPING_DIR . 'includes/class-scod-order-webhook.php';
 
 		/**
 		 * The class responsible for defining CLI command and function
@@ -242,6 +252,8 @@ class SCOD_Shipping {
 		// Ajax Generate Airwaybill
 		$this->loader->add_action( 'wp_ajax_scods-generate-airwaybill', $admin, 'generate_airwaybill', 1);
 		$this->loader->add_action( 'wp_ajax_nopriv_scods-generate-airwaybill', $admin, 'generate_airwaybill',	1);
+		$this->loader->add_action( 'wp_ajax_scods-generate-airwaybill-sicepat', $admin, 'generate_airwaybill_sicepat', 1);
+		$this->loader->add_action( 'wp_ajax_nopriv_scods-generate-airwaybill-sicepat', $admin, 'generate_airwaybill_sicepat',	1);
 		
 		// Setting Cron Jobs Update Status Completed based on Shipping Status is Delivered
 		$this->loader->add_filter( 'cron_schedules', $admin, 'sejoli_update_status_cron_schedules' );
@@ -310,6 +322,8 @@ class SCOD_Shipping {
 
 		// Shortcode
 		$this->loader->add_action( 'init', $public, 'sejoli_init_tracking_shipment_shortcode' );
+		$this->loader->add_action( 'wp_ajax_nopriv_sejoli_shipment_tracking_result', $public, 'sejoli_shipment_tracking_result' );
+        $this->loader->add_action( 'wp_ajax_sejoli_shipment_tracking_result', $public, 'sejoli_shipment_tracking_result' );
 
 		// Markup COD
 		$this->loader->add_action( 'woocommerce_cart_calculate_fees', $public, 'adding_markup_price_cod' );

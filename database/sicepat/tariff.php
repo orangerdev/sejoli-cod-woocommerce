@@ -1,5 +1,5 @@
 <?php
-namespace SCOD_Shipping\Database\JNE;
+namespace SCOD_Shipping\Database\SiCepat;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
@@ -7,13 +7,13 @@ use Illuminate\Database\Capsule\Manager as Capsule;
  * Class that responsible to database-functions for City data
  * @since   1.0.0
  */
-Class Origin extends \SCOD_Shipping\Database
+Class Tariff extends \SCOD_Shipping\Database
 {
     /**
      * Table name
      * @since   1.0.0
      */
-    static protected $table       = 'scod_shipping_jne_origin';
+    static protected $table = 'scod_shipping_sicepat_tariff';
 
     /**
      * Create table if not exists
@@ -27,10 +27,12 @@ Class Origin extends \SCOD_Shipping\Database
 
             Capsule::schema()->create( self::table(), function( $table ){
 
-                $table->increments  ('ID');
-                $table->integer     ('city_id')->nullable();
-                $table->string      ('code');
-                $table->string      ('name');
+                $table->increments ('ID');
+                $table->integer    ('sicepat_origin_id');
+                $table->integer    ('sicepat_destination_id');
+                $table->text       ('tariff_data');
+                $table->datetime   ('created_at');
+                $table->datetime   ('updated_at')->default(NULL)->nullable();
 
             });
 

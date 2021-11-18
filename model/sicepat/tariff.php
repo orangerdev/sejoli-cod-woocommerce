@@ -1,5 +1,5 @@
 <?php
-namespace SCOD_Shipping\Model\JNE;
+namespace SCOD_Shipping\Model\SiCepat;
 
 use SCOD_Shipping\Model\Main as Eloquent;
 
@@ -10,14 +10,14 @@ class Tariff extends Eloquent
      *
      * @var string
      */
-    protected $table = 'scod_shipping_jne_tariff';
+    protected $table = 'scod_shipping_sicepat_tariff';
 
     /**
      * The label for this class.
      *
      * @var string
      */
-    protected $label = 'JNE';
+    protected $label = 'SICEPAT';
 
     /**
      * The attributes that are mass assignable.
@@ -25,11 +25,13 @@ class Tariff extends Eloquent
      * @var array
      */
 	protected $fillable = [
-	   'jne_origin_id', 'jne_destination_id', 'tariff_data'
+	   'sicepat_origin_id', 'sicepat_destination_id', 'tariff_data'
 	];
 
     public static function get_available_services() {
+      
         return self::$available_services;
+    
     }
 
     /**
@@ -39,7 +41,9 @@ class Tariff extends Eloquent
      * @return void
      */
     public function setTariffDataAttribute( $value ) {
+       
         $this->attributes['tariff_data'] = serialize( $value );
+    
     }
 
     /**
@@ -49,7 +53,9 @@ class Tariff extends Eloquent
      * @return string
      */
     public function getTariffDataAttribute( $value ) {
+        
         return unserialize( $value );
+
     }
 
     /**
@@ -59,7 +65,9 @@ class Tariff extends Eloquent
      * @return  string
      */
     public function origin() {
-        return $this->belongsTo( 'SCOD_Shipping\Model\JNE\Origin', 'jne_origin_id' );
+       
+        return $this->belongsTo( 'SCOD_Shipping\Model\SiCepat\Origin', 'sicepat_origin_id' );
+    
     }
 
     /**
@@ -69,7 +77,9 @@ class Tariff extends Eloquent
      * @return  string
      */
     public function destination() {
-        return $this->belongsTo( 'SCOD_Shipping\Model\JNE\Destination', 'jne_destination_id' );
+
+        return $this->belongsTo( 'SCOD_Shipping\Model\SiCepat\Destination', 'sicepat_destination_id' );
+    
     }
 
     /**
@@ -86,34 +96,23 @@ class Tariff extends Eloquent
             $label[] = $this->label;
         }
 
-        if( $rate->service_display ) {
-            $label[] = $rate->service_display;
+        if( $rate->service ) {
+            $label[] = $rate->service;
         }
 
         $label = implode( " - ", $label );
 
-        if( $rate->etd_from && $rate->etd_thru ) {
+        if( $rate->etd ) {
 
             $label .= ' (';
 
-            if( $rate->etd_from == 1 && $rate->etd_from == $rate->etd_thru ) {
-                $label .= $rate->etd_from;
-
-                if( $rate->times == 'D' ) {
-                    $label .= ' hari';
-                }
-            } else {
-                $label .= $rate->etd_from . '-' . $rate->etd_thru;
-
-                if( $rate->times == 'D' ) {
-                    $label .= ' hari';
-                }
-            }
+                $label .= $rate->etd;
 
             $label .= ')';
         }
 
         return $label;
+
     }
 
     /**
@@ -126,7 +125,7 @@ class Tariff extends Eloquent
     public function getRateID( $prefix, $rate ) {
 
         $ids = array( $prefix , $this->label );
-        $code = $rate->service_code;
+        $code = $rate->service;
         $separator = "_";
 
         $lessthan_pattern = "/</i";
@@ -141,7 +140,9 @@ class Tariff extends Eloquent
         }
 
         $ids[] = $code;
+
         return mb_strtolower( \implode( $separator, $ids ) );
+
     }
 
 }
