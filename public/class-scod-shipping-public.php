@@ -1064,18 +1064,208 @@ class Front {
 	    // Allow code execution only once
 	    if( ! get_post_meta( $order_id, '_sync_order_action_scod_done', true ) ) {
 
-			// Get an instance of the WC_Order object
-	        $order      = wc_get_order( $order_id );
-	    	$order_data = $order->get_data(); // The Order Data
+	    	$order 		  = wc_get_order( $order_id );
+		    $order_date   = get_the_date('d-m-Y H:I:s');
+		    $order_status = $order->get_status(); // The Order Status
+		    $order_data   = $order->get_data(); // The Order Data
+
+			// Iterating through order fee items ONLY
+			foreach( $order->get_items('fee') as $item_id => $item_fee ){
+
+			    // The fee name
+			    $fee_name = $item_fee->get_name();
+
+			    // The fee total amount
+			    $fee_total = (null !== $item_fee->get_total()) ? $item_fee->get_total() : 0;
+
+			    // The fee total tax amount
+			    $fee_total_tax = $item_fee->get_total_tax();
+			
+			}
 
 			// Check payment method
 			if( $order->get_payment_method() != 'cod' ) {
 				return;
 			}
 
+			// // Get Store Information
+			// $store_address   = get_option( 'woocommerce_store_address' );
+			// $store_address_2 = get_option( 'woocommerce_store_address_2' );
+			// $store_city      = get_option( 'woocommerce_store_city' );
+			// $store_postcode  = get_option( 'woocommerce_store_postcode' );
+			// $store_phone 	 = get_option( 'woocommerce_store_phone' );
+			// $store_email 	 = get_option( 'woocommerce_email_from_address' );
+
+			// // The store country/state
+			// $store_raw_country = get_option( 'woocommerce_default_country' );
+			// $split_country 	   = explode( ":", $store_raw_country );
+			// $store_country     = $split_country[0];
+			// $store_state   	   = $split_country[1];
+
+			// $getStoreStatesName = DB::table( 'scod_shipping_state' )
+	  //               ->where( 'code', $store_state )
+	  //               ->get();
+
+	  //       $getStoreState 				= isset($getStoreStatesName[0]->name) ? $getStoreStatesName[0]->name : $store_state;
+	  //       $getStoreCityState 			= $store_city .', '.$getStoreState;
+			// $order_payment_method_title = $order_data['payment_method_title'];
+	  //       $order_total 				= $order_data['total'];
+			// $order_shipping_first_name  = $order_data['shipping']['first_name'];
+			// $order_shipping_last_name 	= $order_data['shipping']['last_name'];
+			// $order_shipping_fullname 	= $order_data['shipping']['first_name'].' '.$order_data['shipping']['last_name'];
+			// $order_shipping_company 	= $order_data['shipping']['company'];
+			// $order_shipping_address 	= $order_data['shipping']['address_1'];
+			// $order_shipping_district 	= $order_data['shipping']['address_2'];
+			// $order_shipping_city 		= $order_data['shipping']['city'];
+			// $order_shipping_state 		= $order_data['shipping']['state'];
+			// $order_shipping_postcode 	= $order_data['shipping']['postcode'];
+			// $order_shipping_country 	= $order_data['shipping']['country'];
+			// $order_billing_phone 		= $order_data['billing']['phone'];
+
+			// $getStatesName = DB::table( 'scod_shipping_state' )
+	  //               ->where( 'ID', $order_shipping_state )
+	  //               ->get();
+	  //       $getCityName = DB::table( 'scod_shipping_city' )
+	  //               ->where( 'ID', $order_shipping_city )
+	  //               ->get();
+	  //       $getDistrictName = DB::table( 'scod_shipping_district' )
+	  //               ->where( 'ID', $order_shipping_district )
+	  //               ->get();
+
+	  //       $getState 	  = isset($getStatesName[0]->name) ? $getStatesName[0]->name : $order_data['shipping']['state'];
+	  //       $getCity 	  = isset($getCityName[0]->name) ? $getCityName[0]->name : $order_data['shipping']['city'];
+	  //       $getDistrict  = isset($getDistrictName[0]->name) ? $getDistrictName[0]->name : $order_data['shipping']['address_2'];
+			// $getCityState = $getCity. ', ' .$getState;
+
+			// // Get shipping method
+			// $shipping_methods	  = $order->get_shipping_methods();
+			// $shipping_method_id   = NULL;
+			// $shipping_instance_id = NULL;
+			// $courier_name 		  = NULL;
+
+			// foreach ($shipping_methods as $shipping_method) {
+			// 	$shipping_name 		  = $shipping_method['name'];
+			// 	$shipping_method_id   = $shipping_method->get_method_id();
+			// 	$shipping_instance_id = $shipping_method->get_instance_id();
+
+			// 	if( \str_contains( strtolower( $shipping_name ), 'jne' ) ):
+			// 		$courier_name = 'jne';
+			// 	endif;
+
+			// 	if( \str_contains( strtolower( $shipping_name ), 'sicepat' ) ):
+			// 		$courier_name = 'SiCepat';
+			// 	endif;
+			// }
+
+			// if($shipping_name === "JNE - REG (1-2 hari)") {
+			// 	$shipping_service = "REG";
+			// } elseif($shipping_name === "JNE - OKE (2-3 hari)") {
+			// 	$shipping_service = "OKE";
+			// } elseif($shipping_name === "JNE - YES (1 hari)") {
+			// 	$shipping_service = "YES";
+			// } elseif($shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
+			// 	$shipping_service = "JTR";
+			// } elseif($shipping_name === "SICEPAT - BEST (1 hari)") {
+			// 	$shipping_service = "BEST";
+			// } elseif($shipping_name === "SICEPAT - GOKIL (2 - 3 hari)") {
+			// 	$shipping_service = "GOKIL";
+			// } elseif($shipping_name === "SICEPAT - KEPO (1 - 2 hari)") {
+			// 	$shipping_service = "KEPO";
+			// } elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)") {
+			// 	$shipping_service = "REG";
+			// } elseif($shipping_name === "SICEPAT - SDS (1 hari)") {
+			// 	$shipping_service = "SDS";
+			// } elseif($shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
+			// 	$shipping_service = "SIUNT";
+			// } else {
+			// 	$shipping_service = "Cargo";
+			// }
+
+			// // Check selected shipping
+			// if( $shipping_method_id != 'scod-shipping' ) {
+			// 	return;
+			// }
+
+			// // Get store account data
+			// $store_id 		  = NULL;
+			// $store_secret_key = NULL;
+
+			// if( $shipping_instance_id ) {
+			// 	$shipping_class   = new Shipping_Method( $shipping_instance_id );
+			// 	$store_id 		  = $shipping_class->get_option( 'store_id' );
+			// 	$store_secret_key = $shipping_class->get_option( 'store_secret_key' );
+			// 	$shipping_origin  = $shipping_class->get_option( 'shipping_origin' );
+
+			// 	$packages = WC()->shipping->get_packages();
+
+			// 	$packages['destination']['country']   = $store_country;
+			// 	$packages['destination']['state'] 	  = $order_shipping_state;
+			// 	$packages['destination']['postcode']  = $order_shipping_postcode;
+			// 	$packages['destination']['city'] 	  = $order_shipping_city;
+			// 	$packages['destination']['address']   = $order_shipping_address;
+			// 	$packages['destination']['address_1'] = $order_shipping_address;
+			// 	$packages['destination']['address_2'] = $order_shipping_district;
+			// 	$packages['destination']['city2'] 	  = $order_shipping_city;
+			// 	$packages['destination']['district']  = $order_shipping_district;
+
+			// 	if($shipping_name === "JNE - YES (1 hari)" || $shipping_name === "JNE - REG (1-2 hari)" || $shipping_name === "JNE - OKE (2-3 hari)" || $shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
+		 //        	$getOrigin   = $shipping_class->get_origin_info()->code;
+			// 		$destination = $shipping_class->get_destination_info( $packages['destination'] )->code;
+			// 	} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)" || $shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - BEST (1 hari)" || $shipping_name === "SICEPAT - KEPO (1 - 2 hari)" || $shipping_name === "SICEPAT - SDS (1 hari)"  || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
+		 //        	$getOrigin   = $shipping_class->get_sicepat_origin_info()->origin_code;
+			// 		$destination = $shipping_class->get_sicepat_destination_info( $packages['destination'] )->destination_code;
+			// 	}
+				
+			// }
+
+			// // Iterating through each WC_Order_Item_Product objects
+			// // https://stackoverflow.com/questions/39401393/how-to-get-woocommerce-order-details
+			// $quantity       = 0;
+			// $product_weight = 0;
+			// foreach ($order->get_items() as $item_key => $item ):
+			//     // Item ID is directly accessible from the $item_key in the foreach loop or
+			//     $item_id = $item->get_id();
+
+			//     ## Using WC_Order_Item_Product methods ##
+			//     $product      	  = $item->get_product(); // Get the WC_Product object
+			//     $product_id       = $item->get_product_id(); 
+		 //    	$product_category = wp_get_post_terms( $product_id, 'product_cat', array( 'fields' => 'names' ) );
+			//     $item_type    	  = $item->get_type(); // Type of the order item ("line_item")
+			//     $item_name    	  = $item->get_name(); // Name of the product
+			//     $quantity     	  += $item->get_quantity();  
+			//     $product_weight   = $product->get_weight();
+			//     $total_weight 	  = ( floatval($quantity) * floatval($product_weight) );
+			// endforeach;
+
+			// // Check Payment Method COD or NOT
+			// $order_payment_method = $order_data['payment_method'];
+	  //       if($order_payment_method == "cod"){
+	  //       	if($shipping_name === "JNE - REG (1-2 hari)" || $shipping_name === "JNE - OKE (2-3 hari)" || $shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
+			// 		$codamount = $order->get_total();
+			// 		$codflag   = "YES";
+			// 	} elseif($shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
+			// 		if($order->get_total() >= 5000 || $order->get_total() <= 15000000){
+			// 			$codamount = $order->get_total();
+			// 			$codflag   = "YES";
+			// 		} else {
+			// 			$codamount = '0';
+			// 			$codflag   = "N";
+			// 		}
+			// 	} else {
+			// 		$codamount = '0';
+			// 		$codflag   = "N";
+			// 	}
+	  //       } else {
+	  //       	$codflag   = "N";
+	  //       	$codamount = '0';
+	  //       }
+
+	  //       // Insurance YES or NO
+			// $insurance = "N";
+			
 			// Get Store Information
 			$store_address   = get_option( 'woocommerce_store_address' );
-			$store_address_2 = get_option( 'woocommerce_store_address_2' );
+			$store_district  = get_option( 'woocommerce_store_address_2' );
 			$store_city      = get_option( 'woocommerce_store_city' );
 			$store_postcode  = get_option( 'woocommerce_store_postcode' );
 			$store_phone 	 = get_option( 'woocommerce_store_phone' );
@@ -1106,6 +1296,10 @@ class Front {
 			$order_shipping_postcode 	= $order_data['shipping']['postcode'];
 			$order_shipping_country 	= $order_data['shipping']['country'];
 			$order_billing_phone 		= $order_data['billing']['phone'];
+			$order_billing_email 		= $order_data['billing']['email'];
+			$shipping_price				= $order_data['shipping_total'];
+			$packageAmount				= ($order_total - $shipping_price) - $fee_total;
+			$note 						= $order_data['customer_note'];
 
 			$getStatesName = DB::table( 'scod_shipping_state' )
 	                ->where( 'ID', $order_shipping_state )
@@ -1117,22 +1311,26 @@ class Front {
 	                ->where( 'ID', $order_shipping_district )
 	                ->get();
 
-	        $getState 	  = isset($getStatesName[0]->name) ? $getStatesName[0]->name : $order_data['shipping']['state'];
-	        $getCity 	  = isset($getCityName[0]->name) ? $getCityName[0]->name : $order_data['shipping']['city'];
-	        $getDistrict  = isset($getDistrictName[0]->name) ? $getDistrictName[0]->name : $order_data['shipping']['address_2'];
-			$getCityState = $getCity. ', ' .$getState;
+	        $getState 	    = isset($getStatesName[0]->name) ? $getStatesName[0]->name : $order_data['shipping']['state'];
+	        $getCity 	    = isset($getCityName[0]->name) ? $getCityName[0]->name : $order_data['shipping']['city'];
+	        $getCityLabel   = ["Kota", "Kabupaten"];
+	        $getDistrict    = isset($getDistrictName[0]->name) ? $getDistrictName[0]->name : $order_data['shipping']['address_2'];
+	        $getSubdistrict = isset($getDistrictName[0]->name) ? $getDistrictName[0]->name : $order_data['shipping']['address_2'];
+			$getCityState   = $getCity. ', ' .$getState;
 
-			// Get shipping method
-			$shipping_methods	  = $order->get_shipping_methods();
+			// Get Origin Code and Destination Code
+		    // https://wordpress.org/support/topic/how-to-get-shipping-method-instance-field-value-from-instance-id/
+		    $shipping_methods	  = $order->get_shipping_methods();
 			$shipping_method_id   = NULL;
 			$shipping_instance_id = NULL;
 			$courier_name 		  = NULL;
 
 			foreach ($shipping_methods as $shipping_method) {
 				$shipping_name 		  = $shipping_method['name'];
+				$shipping_total	 	  = $shipping_method['total'];
 				$shipping_method_id   = $shipping_method->get_method_id();
 				$shipping_instance_id = $shipping_method->get_instance_id();
-
+				
 				if( \str_contains( strtolower( $shipping_name ), 'jne' ) ):
 					$courier_name = 'jne';
 				endif;
@@ -1142,15 +1340,17 @@ class Front {
 				endif;
 			}
 
-			if($shipping_name === "JNE - REG (1-2 hari)") {
+			if($shipping_name == "JNE - REG (1-2 days)") {
 				$shipping_service = "REG";
-			} elseif($shipping_name === "JNE - OKE (2-3 hari)") {
+			} elseif($shipping_name == "JNE - OKE (2-3 days)") {
 				$shipping_service = "OKE";
-			} elseif($shipping_name === "JNE - YES (1 hari)") {
+			} elseif($shipping_name == "JNE - YES (1 day)") {
 				$shipping_service = "YES";
-			} elseif($shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
+			} else {
 				$shipping_service = "JTR";
-			} elseif($shipping_name === "SICEPAT - BEST (1 hari)") {
+			}
+
+			if($shipping_name === "SICEPAT - BEST (1 hari)") {
 				$shipping_service = "BEST";
 			} elseif($shipping_name === "SICEPAT - GOKIL (2 - 3 hari)") {
 				$shipping_service = "GOKIL";
@@ -1165,6 +1365,26 @@ class Front {
 			} else {
 				$shipping_service = "Cargo";
 			}
+
+			// // Check selected shipping
+			// if( $shipping_method_id != 'scod-shipping' ) {
+			// 	return;
+			// }
+
+			// $shipping_class_names = WC()->shipping->get_shipping_method_class_names();
+			// $method_instance 	  = new $shipping_class_names['scod-shipping']( $shipping_instance_id );
+			// $shipping_origin 	  = $method_instance->get_option( 'shipping_origin' );
+			// $packages 			  = WC()->shipping->get_packages();
+
+			// $packages['destination']['country']   = $store_country;
+			// $packages['destination']['state'] 	  = $order_shipping_state;
+			// $packages['destination']['postcode']  = $order_shipping_postcode;
+			// $packages['destination']['city'] 	  = $order_shipping_city;
+			// $packages['destination']['address']   = $order_shipping_address;
+			// $packages['destination']['address_1'] = $order_shipping_address;
+			// $packages['destination']['address_2'] = $order_shipping_district;
+			// $packages['destination']['city2'] 	  = $order_shipping_city;
+			// $packages['destination']['district']  = $order_shipping_district;
 
 			// Check selected shipping
 			if( $shipping_method_id != 'scod-shipping' ) {
@@ -1203,6 +1423,14 @@ class Front {
 				
 			}
 
+			// if($shipping_name === "JNE - YES (1 hari)" || $shipping_name === "JNE - REG (1-2 hari)" || $shipping_name === "JNE - OKE (2-3 hari)" || $shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
+	  //       	$getOrigin   = $method_instance->get_origin_info()->code;
+			// 	$destination = $method_instance->get_destination_info( $packages['destination'] )->code;
+			// } elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)" || $shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - BEST (1 hari)" || $shipping_name === "SICEPAT - KEPO (1 - 2 hari)" || $shipping_name === "SICEPAT - SDS (1 hari)"  || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
+	  //       	$getOrigin   = $method_instance->get_sicepat_origin_info()->origin_code;
+			// 	$destination = $method_instance->get_sicepat_destination_info( $packages['destination'] )->destination_code;
+			// }
+			
 			// Iterating through each WC_Order_Item_Product objects
 			// https://stackoverflow.com/questions/39401393/how-to-get-woocommerce-order-details
 			$quantity       = 0;
@@ -1214,12 +1442,12 @@ class Front {
 			    ## Using WC_Order_Item_Product methods ##
 			    $product      	  = $item->get_product(); // Get the WC_Product object
 			    $product_id       = $item->get_product_id(); 
-		    	$product_category = wp_get_post_terms( $product_id, 'product_cat', array( 'fields' => 'names' ) );
+			    $product_category = wp_get_post_terms( $product_id, 'product_cat', array( 'fields' => 'names' ) );
 			    $item_type    	  = $item->get_type(); // Type of the order item ("line_item")
 			    $item_name    	  = $item->get_name(); // Name of the product
 			    $quantity     	  += $item->get_quantity();  
 			    $product_weight   = $product->get_weight();
-			    $total_weight 	  = ( floatval($quantity) * floatval($product_weight) );
+			    $total_weight 	  = ( $quantity * $product_weight );
 			endforeach;
 
 			// Check Payment Method COD or NOT
@@ -1229,7 +1457,7 @@ class Front {
 					$codamount = $order->get_total();
 					$codflag   = "YES";
 				} elseif($shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
-					if($order->get_total() >= 5000 || $order->get_total() <= 15000000){
+					if($order->get_total() >= 5000 && $order->get_total() <= 15000000){
 						$codamount = $order->get_total();
 						$codflag   = "YES";
 					} else {
@@ -1250,50 +1478,57 @@ class Front {
 
 			// Default params
 			$order_params = array(
-				'store_id'		  => $store_id,
-				'secret_key'	  => $store_secret_key,
-				'buyer_name'	  => $order->get_billing_first_name() .' '. $order->get_billing_last_name(),
-				'buyer_email'	  => $order->get_billing_email(),
-				'buyer_phone'	  => $order->get_billing_phone(),
-				'courier_name'	  => $courier_name,
-				'invoice_number'  => $order->get_order_number(),
-				'shipper_name'    => get_bloginfo('name'),
-		        'shipper_addr1'   => $store_address,
-		        'shipper_addr2'   => $store_address_2,
-		        'shipper_city'    => $getStoreCityState,
-		        'shipper_region'  => $getStoreState,
-		        'shipper_zip'     => $store_postcode,
-		        'shipper_phone'   => $store_phone,
-		        'shipper_email'   => $store_email,
-		        'receiver_name'   => $order_shipping_fullname,
-		        'receiver_addr1'  => $order_shipping_address,
-		        'receiver_addr2'  => $getDistrict,
-		        'receiver_city'   => $getCityState,
-		        'receiver_region' => $getState,
-		        'receiver_zip'    => $order_shipping_postcode,
-		        'receiver_phone'  => $order_billing_phone,
-		        'qty'             => $quantity,
-		        'weight'          => $total_weight,
-		        'goods_desc'      => $item_name,
-		        'goods_category'  => $product_category[0],
-		        'goods_value'     => $quantity,
-		        'goods_type'      => '1',
-		        'insurance'       => $insurance,
-		        'origin'          => $getOrigin,
-		        'destination'     => $destination,
-		        'service'         => $shipping_service,
-		        'codflag'         => $codflag,
-		        'codamount'       => $codamount,
-				'invoice_total'   => $order->get_total(),
-				'shipping_fee'	  => $order->get_total_shipping(),
-				'shipping_status' => 'pending',
-				'notes'			  => $order->get_customer_note(),
-				'order'			  => $order
+				'store_id'		       => $store_id,
+				'secret_key'	       => $store_secret_key,
+		        'buyer_name'	       => $order->get_billing_first_name() .' '. $order->get_billing_last_name(),
+				'buyer_email'	       => $order->get_billing_email(),
+				'buyer_phone'	       => $order->get_billing_phone(),
+				'courier_name'	       => $courier_name,
+				'invoice_number'       => $order->get_order_number(),
+				'shipper_name'         => get_bloginfo('name'),
+		        'shipper_address'      => $store_address,
+		        'shipper_province'     => $getStoreState,
+		        'shipper_city'         => $store_city,
+		        'shipper_district'     => $store_district,
+		        'shipper_subdistrict'  => $store_district,
+		        'shipper_zip'          => $store_postcode,
+		        'shipper_phone'        => $store_phone,
+		        'shipper_email'        => $store_email,
+		        'receiver_name'        => $order_shipping_fullname,
+		        'receiver_address'     => $order_shipping_address,
+		        'receiver_province'    => $getState,
+		        'receiver_city'        => ltrim(str_replace($getCityLabel, "", $getCity)),
+		        'receiver_district'    => $getDistrict,
+		        'receiver_subdistrict' => $getSubdistrict,
+		        'receiver_zip'         => $order_shipping_postcode,
+		        'receiver_phone'       => $order_billing_phone,
+		        'receiver_email'       => $order_billing_email,
+		        'qty'                  => $quantity,
+		        'weight'               => $total_weight,
+		        'goods_desc'           => $item_name,
+		        'goods_category'       => $product_category[0],
+		        'goods_value'          => $packageAmount,
+		        'goods_type'           => '1',
+		        'insurance'            => $insurance,
+		        'origin'               => $getOrigin,
+		        'destination'          => $destination,
+		        'service'              => $shipping_service,
+		        'codflag'              => $codflag,
+		        'codamount'            => $codamount,
+				'invoice_total'        => $order->get_total(),
+				'shipping_fee'	       => $order->get_total_shipping(),
+		        'cod_fee'              => $fee_total,
+				'shipping_status'      => 'pending',
+				'notes'			       => $order->get_customer_note(),
+				'order'			       => $order
 			);
 
 			// Send data to API
 			$api_scod 	  = new API_SCOD();
 			$create_order = $api_scod->post_create_order( $order_params );
+
+			error_log(print_r($order_params, true));
+			error_log(print_r($create_order, true));
 
 			if( ! is_wp_error( $create_order ) ) {
 				// Flag the action as done (to avoid repetitions on reload for example)

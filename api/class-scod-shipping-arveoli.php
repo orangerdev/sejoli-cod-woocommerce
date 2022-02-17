@@ -294,48 +294,53 @@ class ARVEOLI extends \SCOD_Shipping\API {
      *
      * @return 	(array|WP_Error) The response array or a WP_Error on failure
      */
-	public function get_airwaybill( int $order_date, string $shipper_name, string $shipper_phone, string $shipper_addr, string $shipper_city, int $shipper_zip, string $receiver_name, string $receiver_phone, string $receiver_addr, string $receiver_email, string $receiver_city, int $receiver_zip, string $receiver_region, string $receiver_district, string $receiver_subdistrict, string $origin, string $service, int $weight, int $qty, string $goodsdesc, int $goodsvalue, string $insurance, string $note, string $codflag, int $codamount, int $shipping_price ) {
+	public function get_airwaybill( $pickupParams ) {
 		
 		try {
 
 			self::$endpoint = 'https://apiv2.arveoli.com/droptest';
 			self::$method 	= 'POST';
 			self::$body 	= array_merge( self::$body, [
-				'TANGGALORDER'	  => $order_date,
-				'SHIPPER_NAME'	  => $shipper_name,
-				'SHIPPER_PHONE'	  => $shipper_phone,
-				'SHIPPER_ADDRESS' => $shipper_addr,
-				'SHIPPER_CITY'	  => $shipper_city,
-				'SHIPPER_ZIP'	  => $shipper_zip,
-				'CUST_NAMA'	 	  => $receiver_name,
-				'CUST_PHONE'	  => $receiver_phone,
-				'CUST_ALAMAT'	  => $receiver_addr,
-				'CUST_EMAIL'	  => $receiver_email,
-				'CUST_KOTA'	 	  => $receiver_city,
-				'CUST_KODEPOS'	  => $receiver_zip,
-				'CUST_PROPINSI'   => $receiver_region,
-				'CUST_KECAMATAN'  => $receiver_district,
-				'CUST_KELURAHAN'  => $receiver_subdistrict,
-				'ORIGINCODE'	  => $origin,
-				'SERVICE'		  => $service,
-				'WEIGHT'		  => $weight,
-				'QTY'			  => $qty,
-				'DESKRIPSI'		  => $goodsdesc,
-				'NILAIPAKET'	  => $goodsvalue,
-				'ASURANSI'		  => $insurance,
-				'CATATAN'		  => $note,
-				'IS_COD'		  => $codflag,
-				'NILAICOD'		  => $codamount,
-				'ONGKOS_KIRIM'	  => $shipping_price
+				'TANGGALORDER'	  => $pickupParams['orderDate'],
+				'SHIPPER_NAME'	  => $pickupParams['shipperName'],
+				'SHIPPER_PHONE'	  => $pickupParams['shipperPhone'],
+				'SHIPPER_ADDRESS' => $pickupParams['shipperAddress'],
+				'SHIPPER_CITY'	  => $pickupParams['shipperCity'],
+				'SHIPPER_ZIP'	  => $pickupParams['shipperZip'],
+				'CUST_NAMA'	 	  => $pickupParams['receiverName'],
+				'CUST_PHONE'	  => $pickupParams['receiverPhone'],
+				'CUST_EMAIL'	  => $pickupParams['receiverEmail'],
+				'CUST_ALAMAT'	  => $pickupParams['receiverAddress'],
+				'CUST_KOTA'	 	  => $pickupParams['receiverCity'],
+				'CUST_KODEPOS'	  => $pickupParams['receiverZip'],
+				'CUST_PROPINSI'   => $pickupParams['receiverProvince'],
+				'CUST_KECAMATAN'  => $pickupParams['receiverDistrict'],
+				'CUST_KELURAHAN'  => $pickupParams['receiverSubdistrict'],
+				'ORIGINCODE'	  => $pickupParams['origin'],
+				'SERVICE'		  => $pickupParams['service'],
+				'WEIGHT'		  => $pickupParams['weight'],
+				'QTY'			  => $pickupParams['qty'],
+				'DESKRIPSI'		  => $pickupParams['description'],
+				'NILAIPAKET'	  => $pickupParams['packageAmount'],
+				'ASURANSI'		  => $pickupParams['insurance'],
+				'CATATAN'		  => $pickupParams['note'],
+				'IS_COD'		  => $pickupParams['codflag'],
+				'NILAICOD'		  => $pickupParams['codAmount'],
+				'ONGKOS_KIRIM'	  => $pickupParams['shippingPrice']
 			]);
 
 			$get_response = self::do_request();
+			// $data = self::get_valid_body_object( $get_response );
 
 			if ( ! is_wp_error( $get_response ) ) :
+				
+				error_log(print_r($get_response, true));
 
 				if ( self::verify_response_code( $get_response ) ) :
 
 					if( $data = self::get_valid_body_object( $get_response ) ) :
+
+						error_log(print_r($data, true));
 
 						if( isset( $data->detail ) ) {
 
