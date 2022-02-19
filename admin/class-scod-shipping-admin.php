@@ -9,6 +9,9 @@ use SCOD_Shipping\API\SCOD as API_SCOD;
 use SCOD_Shipping\API\JNE as API_JNE;
 use SCOD_Shipping\Model\JNE\Origin as JNE_Origin;
 use SCOD_Shipping\Model\JNE\Destination as JNE_Destination;
+use SCOD_Shipping\API\ARVEOLI as API_ARVEOLI;
+use SCOD_Shipping\Model\ARVEOLI\Origin as ARVEOLI_Origin;
+use SCOD_Shipping\Model\ARVEOLI\Destination as ARVEOLI_Destination;
 use SCOD_Shipping\API\SiCepat as API_SICEPAT;
 use SCOD_Shipping\Model\SiCepat\Origin as SICEPAT_Origin;
 use SCOD_Shipping\Model\SiCepat\Destination as SICEPAT_Destination;
@@ -471,11 +474,27 @@ class Admin {
     // https://wordpress.stackexchange.com/questions/319346/woocommerce-get-physical-store-address
     public function add_other_fields_for_shipping_number($post) {
 	    $order 		  = wc_get_order( $post->ID );
+	    $order_date   = get_the_date('d-m-Y H:I:s');
 	    $order_status = $order->get_status(); // The Order Status
 	    $order_data   = $order->get_data(); // The Order Data
+
+		// Iterating through order fee items ONLY
+		foreach( $order->get_items('fee') as $item_id => $item_fee ){
+
+		    // The fee name
+		    $fee_name = $item_fee->get_name();
+
+		    // The fee total amount
+		    $fee_total = (null !== $item_fee->get_total()) ? $item_fee->get_total() : 0;
+
+		    // The fee total tax amount
+		    $fee_total_tax = $item_fee->get_total_tax();
+		
+		}
+
 	    // Get Store Information
 		$store_address   = get_option( 'woocommerce_store_address' );
-		$store_address_2 = get_option( 'woocommerce_store_address_2' );
+		$store_district  = get_option( 'woocommerce_store_address_2' );
 		$store_city      = get_option( 'woocommerce_store_city' );
 		$store_postcode  = get_option( 'woocommerce_store_postcode' );
 		$store_phone 	 = get_option( 'woocommerce_store_phone' );
@@ -506,6 +525,10 @@ class Admin {
 		$order_shipping_postcode 	= $order_data['shipping']['postcode'];
 		$order_shipping_country 	= $order_data['shipping']['country'];
 		$order_billing_phone 		= $order_data['billing']['phone'];
+		$order_billing_email 		= $order_data['billing']['email'];
+		$shipping_price				= $order_data['shipping_total'];
+		$packageAmount				= ($order_total - $shipping_price) - $fee_total;
+		$note 						= $order_data['customer_note'];
 
 		$getStatesName = DB::table( 'scod_shipping_state' )
                 ->where( 'ID', $order_shipping_state )
@@ -517,10 +540,12 @@ class Admin {
                 ->where( 'ID', $order_shipping_district )
                 ->get();
 
-        $getState 	  = isset($getStatesName[0]->name) ? $getStatesName[0]->name : $order_data['shipping']['state'];
-        $getCity 	  = isset($getCityName[0]->name) ? $getCityName[0]->name : $order_data['shipping']['city'];
-        $getDistrict  = isset($getDistrictName[0]->name) ? $getDistrictName[0]->name : $order_data['shipping']['address_2'];
-		$getCityState = $getCity. ', ' .$getState;
+        $getState 	    = isset($getStatesName[0]->name) ? $getStatesName[0]->name : $order_data['shipping']['state'];
+        $getCity 	    = isset($getCityName[0]->name) ? $getCityName[0]->name : $order_data['shipping']['city'];
+		$getCityLabel   = ["Kota", "Kabupaten"];
+        $getDistrict    = isset($getDistrictName[0]->name) ? $getDistrictName[0]->name : $order_data['shipping']['address_2'];
+        $getSubdistrict = isset($getDistrictName[0]->name) ? $getDistrictName[0]->name : $order_data['shipping']['address_2'];
+		$getCityState   = $getCity. ', ' .$getState;
 
 		// Get Origin Code and Destination Code
 	    // https://wordpress.org/support/topic/how-to-get-shipping-method-instance-field-value-from-instance-id/
@@ -635,11 +660,91 @@ class Admin {
         // Insurance YES or NO
 		$insurance = "N";
 
-		// SHipping Number Metabox Field
+		// Shipping Number Metabox Field
 	    $shipping_number = get_post_meta( $post->ID, '_sejoli_shipping_number', true );
 	    $number_awb      = !empty( $shipping_number ) ? esc_attr( $shipping_number ) : '';
 
-	    if( \str_contains( strtolower( $shipping_name ), 'jne' ) ):
+	 //    if( \str_contains( strtolower( $shipping_name ), 'jne' ) ):
+		// 	$trace_tracking = API_JNE::set_params()->get_tracking( $number_awb );
+
+		//    	if($shipping_number){
+		//    		echo '<h4>'.__('Number Resi:', 'scod-shipping').'</h4>';
+		//     	echo '<div class="shipping-number" style="font-size:20px;">'.$number_awb.'</div>';
+
+		// 	   	echo '<h4>'.__('Shipping Details:', 'scod-shipping').'</h4>';
+		// 	   	echo '<table style="text-align: left;">';
+		// 	   	echo '<tr>';
+		// 	   		echo '<th>'.__('Courier:', 'scod-shipping').'</th>';
+		// 	   		echo '<td>'.$shipping_name.'</td>';
+		// 	   	echo '</tr>';
+		// 	   	echo '<tr>';
+		// 	   		echo '<th>'.__('Receiver:', 'scod-shipping').'</th>';
+		// 	   		echo '<td>'.$trace_tracking->cnote->cnote_receiver_name.' - ('.$trace_tracking->cnote->keterangan.')</td>';
+		// 	   	echo '</tr>';
+		// 	   	echo '<tr>';
+		// 	   		echo '<th>'.__('Last Status:', 'scod-shipping').'</th>';
+		// 	   		echo '<td>'.$trace_tracking->cnote->pod_status.'</td>';
+		// 	   	echo '</tr>';
+		// 	   	echo '</table>';
+
+		// 	   	echo '<h4>'.__('Tracking History:', 'scod-shipping').'</h4>';
+		// 	   		echo '<table style="text-align: left;">';
+		// 	   		echo '<tr>';
+		// 		   		echo '<th>'.__('Date', 'scod-shipping').'</th>';
+		// 		   		echo '<th>'.__('Status', 'scod-shipping').'</th>';
+		// 		   	echo '</tr>';	
+		// 		   	foreach ($trace_tracking->history as $history) {
+		// 				echo '<tr>';
+		// 			   		echo '<td>'.$history->date.'</td>';
+		// 			   		echo '<td>'.$history->desc.'</td>';
+		// 			   	echo '</tr>';
+		// 		   	}
+		// 	   	echo '</table>';
+		//    	} else {
+		//    		if ($order_status == 'processing') {
+
+		//     		echo '<h4>'.__('Number Resi:', 'scod-shipping').'</h4>';
+		// 	   		echo '<input type="hidden" class="input-text" name="sejoli_shipping_number" id="sejoli_shipping_number" value="' . $number_awb . '" style="width:100%; margin-bottom: 15px;" />';
+		//     		echo '<input type="hidden" name="sejoli_shipping_number_nonce" value="' . wp_create_nonce() . '">';
+		// 	    	echo '<div id="shipping-number" style="font-size:20px;">'.$number_awb.'</div>';
+			    	
+		// 	    	// echo __("Input your number resi", "scod-shipping")."<br>";
+		// 	    	// echo __("or", "scod-shipping")."<br>";
+		// 	    	// echo __("Request pickup automatically on this button", "scod-shipping")."<br><br>";
+
+		// 	   		echo '<a href="#"
+		// 	   		data-id="'.$post->ID.'"
+		// 	   		data-shipper-name="'.get_bloginfo('name').'"
+		// 	   		data-shipper-addr1="'.$store_address.'"
+		// 	   		data-shipper-addr2="'.$store_district.'"
+		// 	   		data-shipper-city="'.$getStoreCityState.'"
+		// 	   		data-shipper-region="'.$getStoreState.'"
+		// 	   		data-shipper-zip="'.$store_postcode.'"
+		// 	   		data-shipper-phone="'.$store_phone.'"
+		// 	   		data-receiver-name="'.$order_shipping_fullname.'"
+		// 	   		data-receiver-addr1="'.$order_shipping_address.'"
+		// 	   		data-receiver-addr2="'.$getDistrict.'"
+		// 	   		data-receiver-city="'.$getCityState.'"
+		// 	   		data-receiver-region="'.$getState.'"
+		// 	   		data-receiver-zip="'.$order_shipping_postcode.'"
+		// 	   		data-receiver-phone="'.$order_billing_phone.'"
+		// 	   		data-qty="'.$quantity.'"
+		// 	   		data-weight="'.$total_weight.'"
+		// 	   		data-goodsdesc="'.$item_name.'"
+		// 	   		data-goodsvalue="'.$quantity.'"
+		// 	   		data-goodstype="1"
+		// 	   		data-insurance="'.$insurance.'"
+		// 	   		data-origin="'.$getOrigin.'"
+		// 	   		data-destination="'.$destination.'"
+		// 	   		data-service="'.$shipping_service.'"
+		// 	   		data-codflag="'.$codflag.'"
+		// 	   		data-codamount="'.$order_total.'"
+		// 	   		class="button button-primary generate-airwaybill">'.__("Request Pickup", "scod-shipping").'</a>';
+		// 	   	}
+		//    	}
+		// endif;
+		
+		if( \str_contains( strtolower( $shipping_name ), 'jne' ) ):
 			$trace_tracking = API_JNE::set_params()->get_tracking( $number_awb );
 
 		   	if($shipping_number){
@@ -689,31 +794,32 @@ class Admin {
 
 			   		echo '<a href="#"
 			   		data-id="'.$post->ID.'"
+			   		data-order-date="'.$order_date.'"
 			   		data-shipper-name="'.get_bloginfo('name').'"
-			   		data-shipper-addr1="'.$store_address.'"
-			   		data-shipper-addr2="'.$store_address_2.'"
-			   		data-shipper-city="'.$getStoreCityState.'"
-			   		data-shipper-region="'.$getStoreState.'"
-			   		data-shipper-zip="'.$store_postcode.'"
 			   		data-shipper-phone="'.$store_phone.'"
+			   		data-shipper-address="'.$store_address.'"
+			   		data-shipper-city="'.$store_city.'"
+			   		data-shipper-zip="'.$store_postcode.'"
 			   		data-receiver-name="'.$order_shipping_fullname.'"
-			   		data-receiver-addr1="'.$order_shipping_address.'"
-			   		data-receiver-addr2="'.$getDistrict.'"
-			   		data-receiver-city="'.$getCityState.'"
-			   		data-receiver-region="'.$getState.'"
-			   		data-receiver-zip="'.$order_shipping_postcode.'"
 			   		data-receiver-phone="'.$order_billing_phone.'"
-			   		data-qty="'.$quantity.'"
-			   		data-weight="'.$total_weight.'"
-			   		data-goodsdesc="'.$item_name.'"
-			   		data-goodsvalue="'.$quantity.'"
-			   		data-goodstype="1"
-			   		data-insurance="'.$insurance.'"
+			   		data-receiver-address="'.$order_shipping_address.'"
+			   		data-receiver-email="'.$order_billing_email.'"
+			   		data-receiver-city="'.ltrim(str_replace($getCityLabel, "", $getCity)).'"
+			   		data-receiver-zip="'.$order_shipping_postcode.'"
+			   		data-receiver-province="'.$getState.'"
+			   		data-receiver-district="'.$getDistrict.'"
+			   		data-receiver-subdistrict="'.$getSubdistrict.'"
 			   		data-origin="'.$getOrigin.'"
-			   		data-destination="'.$destination.'"
 			   		data-service="'.$shipping_service.'"
+			   		data-weight="'.$total_weight.'"
+			   		data-qty="'.$quantity.'"
+			   		data-description="'.$item_name.'"
+			   		data-package-amount="'.$packageAmount.'"
+			   		data-insurance="'.$insurance.'"
+			   		data-note="'.$note.'"
 			   		data-codflag="'.$codflag.'"
 			   		data-codamount="'.$order_total.'"
+			   		data-shipping-price="'.$shipping_price.'"
 			   		class="button button-primary generate-airwaybill">'.__("Request Pickup", "scod-shipping").'</a>';
 			   	}
 		   	}
@@ -781,20 +887,20 @@ class Admin {
 			   		data-parcel_category="'.$product_category[0].'"
 			   		data-parcel_content="'.$item_name.'"
 			   		data-parcel_qty="'.$quantity.'"
-			   		data-parcel_value="'.$order_total.'"
+			   		data-parcel_value="'.$packageAmount.'"
 			   		data-cod_value="'.$order_total.'"
 			   		data-total_weight="'.$total_weight.'"
 			   		data-shipper_name="'.get_bloginfo('name').'"
 			   		data-shipper_address="'.$store_address.'"
 			   		data-shipper_province="'.$getStoreState.'"
-			   		data-shipper_city="'.$getStoreCityState.'"
-			   		data-shipper_district="'.$store_address_2.'"
+			   		data-shipper_city="'.$store_city.'"
+			   		data-shipper_district="'.$store_district.'"
 			   		data-shipper_zip="'.$store_postcode.'"
 			   		data-shipper_phone="'.$store_phone.'"
 			   		data-recipient_name="'.$order_shipping_fullname.'"
 			   		data-recipient_address="'.$order_shipping_address.'"
 			   		data-recipient_province="'.$getState.'"
-			   		data-recipient_city="'.$getCityState.'"
+			   		data-recipient_city="'.ltrim(str_replace($getCityLabel, "", $getCity)).'"
 			   		data-recipient_district="'.$getDistrict.'"
 			   		data-recipient_zip="'.$order_shipping_postcode.'"
 			   		data-recipient_phone="'.$order_billing_phone.'"
@@ -853,41 +959,132 @@ class Admin {
 	    }
 	}
 
+	// /**
+	//  * WooCommerce action to generate airwaybill by request
+	//  * Hook via wp_ajax_scods-generate-airwaybill
+	//  *
+	//  * @since    1.0.0
+	//  */
+	// public function generate_airwaybill($order_id) {
+	// 	$params = wp_parse_args( $_POST, array(
+ //            'orderID'  		 => NULL,
+ //            'shipperName' 	 => NULL,
+ //            'shipperAddr1' 	 => NULL,
+ //            'shipperAddr2' 	 => NULL,
+ //            'shipperCity' 	 => NULL,
+ //            'shipperRegion'  => NULL,
+ //            'shipperZip' 	 => NULL,
+ //            'shipperPhone' 	 => NULL,
+ //            'receiverName' 	 => NULL,
+ //            'receiverAddr1'  => NULL,
+ //            'receiverAddr2'  => NULL,
+ //            'receiverCity' 	 => NULL,
+ //            'receiverRegion' => NULL,
+ //            'receiverZip' 	 => NULL,
+ //            'receiverPhone'  => NULL,
+ //            'qty' 			 => NULL,
+ //            'weight' 		 => NULL,
+ //            'goodsDesc' 	 => NULL,
+ //            'goodsValue' 	 => NULL,
+ //            'goodsType' 	 => NULL,
+ //            'insurance'		 => NULL,
+ //            'origin' 		 => NULL,
+ //            'destination' 	 => NULL,
+ //            'service' 		 => NULL,
+ //            'codflag'		 => NULL,
+ //            'codAmount' 	 => NULL,
+ //            'nonce' 		 => NULL
+ //        ));
+
+ //        $respond  = [
+ //            'valid'   => false,
+ //            'message' => NULL
+ //        ];
+
+ //        if( wp_verify_nonce( $params['nonce'], 'scods-generate-airwaybill') ) :
+
+ //            unset( $params['nonce'] );
+
+ //            $do_update = API_JNE::set_params()->get_airwaybill( $params['orderID'], $params['shipperName'], $params['shipperAddr1'], $params['shipperAddr2'], $params['shipperCity'], $params['shipperRegion'], $params['shipperZip'], $params['shipperPhone'], $params['receiverName'], $params['receiverAddr1'], $params['receiverAddr2'], $params['receiverCity'], $params['receiverRegion'], $params['receiverZip'], $params['receiverPhone'], $params['qty'], $params['weight'], $params['goodsDesc'], $params['goodsValue'], $params['goodsType'], $params['insurance'], $params['origin'], $params['destination'], $params['service'], $params['codflag'], $params['codAmount'] );
+
+ //            if ( ! is_wp_error( $do_update ) ) {
+
+ //                $respond['valid']  = true;
+
+ //            } else {
+
+ //                $respond['message'] = $do_update->get_error_message();
+ //            }
+
+ //        endif;
+
+ //        $order 	  	= wc_get_order( $params['orderID'] );
+ //        $order_id 	= $order->get_id();
+ //        $numberResi = $do_update[0]->cnote_no;
+
+ //        // echo $respond;
+	// 	if ( $order_id > 0 ) {
+	// 		if($numberResi){
+	// 			update_post_meta( $order_id, '_sejoli_shipping_number', $numberResi );
+	// 		} else {
+	// 			update_post_meta( $order_id, '_sejoli_shipping_number', 0 );
+	// 		}
+ //        }
+
+	// 	// Send update status data to API
+ //        $status 	  = "on-the-way";
+	// 	$api_scod 	  = new API_SCOD();
+	// 	$update_order = $api_scod->post_update_order( $order_id, $status, $numberResi );
+
+	// 	if( ! is_wp_error( $update_order ) ) {
+	// 		// Flag the action as done (to avoid repetitions on reload for example)
+	// 		if( $order->save() ) {
+	// 			error_log( 'Sync order success ..' );
+	// 		}
+	// 	}
+
+	// 	wp_update_post( ['ID' => $order_id, 'post_status' => 'wc-in-shipping'] );
+
+ //        echo wp_send_json( $numberResi );
+	// }
+	
 	/**
-	 * WooCommerce action to generate airwaybill by request
+	 * WooCommerce action to generate airwaybill arveoli by request
 	 * Hook via wp_ajax_scods-generate-airwaybill
 	 *
 	 * @since    1.0.0
 	 */
-	public function generate_airwaybill($order_id) {
+	public function generate_airwaybill( $order_id ) {
+
 		$params = wp_parse_args( $_POST, array(
-            'orderID'  		 => NULL,
-            'shipperName' 	 => NULL,
-            'shipperAddr1' 	 => NULL,
-            'shipperAddr2' 	 => NULL,
-            'shipperCity' 	 => NULL,
-            'shipperRegion'  => NULL,
-            'shipperZip' 	 => NULL,
-            'shipperPhone' 	 => NULL,
-            'receiverName' 	 => NULL,
-            'receiverAddr1'  => NULL,
-            'receiverAddr2'  => NULL,
-            'receiverCity' 	 => NULL,
-            'receiverRegion' => NULL,
-            'receiverZip' 	 => NULL,
-            'receiverPhone'  => NULL,
-            'qty' 			 => NULL,
-            'weight' 		 => NULL,
-            'goodsDesc' 	 => NULL,
-            'goodsValue' 	 => NULL,
-            'goodsType' 	 => NULL,
-            'insurance'		 => NULL,
-            'origin' 		 => NULL,
-            'destination' 	 => NULL,
-            'service' 		 => NULL,
-            'codflag'		 => NULL,
-            'codAmount' 	 => NULL,
-            'nonce' 		 => NULL
+            'orderID'  		      => NULL,
+            'orderDate'		      => NULL,
+            'shipperName' 	      => NULL,
+            'shipperPhone' 	      => NULL,
+            'shipperAddress' 	  => NULL,
+            'shipperCity' 	      => NULL,
+            'shipperZip' 	      => NULL,
+            'receiverName' 	      => NULL,
+            'receiverPhone'       => NULL,
+            'receiverAddress'     => NULL,
+            'receiverEmail'       => NULL,
+            'receiverCity' 	      => NULL,
+            'receiverZip' 	  	  => NULL,
+            'receiverProvince'    => NULL,
+            'receiverDistrict'    => NULL,
+            'receiverSubdistrict' => NULL,
+            'origin' 		 	  => NULL,
+            'service' 		      => NULL,
+            'weight' 		      => NULL,
+            'qty' 			      => NULL,
+            'description' 	      => NULL,
+            'packageAmount' 	  => NULL,
+            'insurance'		      => NULL,
+            'note' 	 			  => NULL,
+            'codflag'		      => NULL,
+            'codAmount' 	      => NULL,
+            'shippingPrice' 	  => NULL,
+            'nonce' 		      => NULL
         ));
 
         $respond  = [
@@ -899,7 +1096,7 @@ class Admin {
 
             unset( $params['nonce'] );
 
-            $do_update = API_JNE::set_params()->get_airwaybill( $params['orderID'], $params['shipperName'], $params['shipperAddr1'], $params['shipperAddr2'], $params['shipperCity'], $params['shipperRegion'], $params['shipperZip'], $params['shipperPhone'], $params['receiverName'], $params['receiverAddr1'], $params['receiverAddr2'], $params['receiverCity'], $params['receiverRegion'], $params['receiverZip'], $params['receiverPhone'], $params['qty'], $params['weight'], $params['goodsDesc'], $params['goodsValue'], $params['goodsType'], $params['insurance'], $params['origin'], $params['destination'], $params['service'], $params['codflag'], $params['codAmount'] );
+            $do_update = API_ARVEOLI::set_params()->get_airwaybill( $params );
 
             if ( ! is_wp_error( $do_update ) ) {
 
@@ -910,36 +1107,39 @@ class Admin {
                 $respond['message'] = $do_update->get_error_message();
             }
 
+            exit;
+
+	        $order 	  	= wc_get_order( $params['orderID'] );
+	        $order_id 	= $order->get_id();
+	        $numberResi = $do_update[0]->cnote_no;
+
+	        // echo $respond;
+			if ( $order_id > 0 ) {
+				if($numberResi){
+					update_post_meta( $order_id, '_sejoli_shipping_number', $numberResi );
+				} else {
+					update_post_meta( $order_id, '_sejoli_shipping_number', 0 );
+				}
+	        }
+
+			// Send update status data to API
+	        $status 	  = "on-the-way";
+			$api_scod 	  = new API_SCOD();
+			$update_order = $api_scod->post_update_order( $order_id, $status, $numberResi );
+
+			if( ! is_wp_error( $update_order ) ) {
+				// Flag the action as done (to avoid repetitions on reload for example)
+				if( $order->save() ) {
+					error_log( 'Sync order success ..' );
+				}
+			}
+
+			wp_update_post( ['ID' => $order_id, 'post_status' => 'wc-in-shipping'] );
+
+	        echo wp_send_json( $numberResi );
+
         endif;
 
-        $order 	  	= wc_get_order( $params['orderID'] );
-        $order_id 	= $order->get_id();
-        $numberResi = $do_update[0]->cnote_no;
-
-        // echo $respond;
-		if ( $order_id > 0 ) {
-			if($numberResi){
-				update_post_meta( $order_id, '_sejoli_shipping_number', $numberResi );
-			} else {
-				update_post_meta( $order_id, '_sejoli_shipping_number', 0 );
-			}
-        }
-
-		// Send update status data to API
-        $status 	  = "on-the-way";
-		$api_scod 	  = new API_SCOD();
-		$update_order = $api_scod->post_update_order( $order_id, $status, $numberResi );
-
-		if( ! is_wp_error( $update_order ) ) {
-			// Flag the action as done (to avoid repetitions on reload for example)
-			if( $order->save() ) {
-				error_log( 'Sync order success ..' );
-			}
-		}
-
-		wp_update_post( ['ID' => $order_id, 'post_status' => 'wc-in-shipping'] );
-
-        echo wp_send_json( $numberResi );
 	}
 
 	/**
@@ -949,6 +1149,7 @@ class Admin {
 	 * @since    1.0.0
 	 */
 	public function generate_airwaybill_sicepat( $order_id ) {
+
 		$params = wp_parse_args( $_POST, array(
 			'orderID'  		 	    => NULL,
             'pickup_merchant_name'  => NULL,
@@ -1002,35 +1203,36 @@ class Admin {
                 $respond['message'] = $do_update->get_error_message();
             }
 
+	        $order 	  	= wc_get_order( $params['orderID'] );
+	        $order_id 	= $order->get_id();
+	        $numberResi = $do_update->request_number;
+
+			if ( $order_id > 0 ) {
+				if($numberResi){
+					update_post_meta( $order_id, '_sejoli_shipping_number', $numberResi );
+				} else {
+					update_post_meta( $order_id, '_sejoli_shipping_number', 0 );
+				}
+	        }
+
+			// Send update status data to API
+	        $status 	  = "on-the-way";
+			$api_scod 	  = new API_SCOD();
+			$update_order = $api_scod->post_update_order( $order_id, $status, $numberResi );
+
+			if( ! is_wp_error( $update_order ) ) {
+				// Flag the action as done (to avoid repetitions on reload for example)
+				if( $order->save() ) {
+					error_log( 'Sync order success ..' );
+				}
+			}
+
+			wp_update_post( ['ID' => $order_id, 'post_status' => 'wc-in-shipping'] );
+
+	        echo wp_send_json( $numberResi );
+
         endif;
 
-        $order 	  	= wc_get_order( $params['orderID'] );
-        $order_id 	= $order->get_id();
-        $numberResi = $do_update->request_number;
-
-		if ( $order_id > 0 ) {
-			if($numberResi){
-				update_post_meta( $order_id, '_sejoli_shipping_number', $numberResi );
-			} else {
-				update_post_meta( $order_id, '_sejoli_shipping_number', 0 );
-			}
-        }
-
-		// Send update status data to API
-        $status 	  = "on-the-way";
-		$api_scod 	  = new API_SCOD();
-		$update_order = $api_scod->post_update_order( $order_id, $status, $numberResi );
-
-		if( ! is_wp_error( $update_order ) ) {
-			// Flag the action as done (to avoid repetitions on reload for example)
-			if( $order->save() ) {
-				error_log( 'Sync order success ..' );
-			}
-		}
-
-		wp_update_post( ['ID' => $order_id, 'post_status' => 'wc-in-shipping'] );
-
-        echo wp_send_json( $numberResi );
 	}
 
 	/**

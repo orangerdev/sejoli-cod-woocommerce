@@ -9,6 +9,7 @@ use SCOD_Shipping\Model\JNE\Origin as JNE_Origin;
 use SCOD_Shipping\Model\JNE\Destination as JNE_Destination;
 use SCOD_Shipping\Model\JNE\Tariff as JNE_Tariff;
 use SCOD_Shipping\API\JNE as API_JNE;
+use SCOD_Shipping\API\ARVEOLI as API_ARVEOLI;
 use SCOD_Shipping\Model\SiCepat\Origin as SICEPAT_Origin;
 use SCOD_Shipping\Model\SiCepat\Destination as SICEPAT_Destination;
 use SCOD_Shipping\Model\SiCepat\Tariff as SICEPAT_Tariff;
@@ -141,39 +142,77 @@ function scod_shipping_init() {
         			'description' 	=> __( 'Berat default yang digunakan ketika berat per barang tidak ada.', 'scod-shipping' ),
         			'default' 		=> '',
         		),
-        		'jne_settings' => array(
-					'title' 		=> __( 'PENGATURAN SHIPPING JNE', 'scod-shipping' ),
+     //    		'jne_settings' => array(
+					// 'title' 		=> __( 'PENGATURAN SHIPPING JNE', 'scod-shipping' ),
+     //    			'label'			=> __( 'YES', 'scod-shipping' ),
+     //    			'type' 			=> 'title',
+     //    		),
+     //    		'jne_service_yes' => array(
+					// 'title' 		=> __( 'JNE Services', 'scod-shipping' ),
+     //    			'label'			=> __( 'YES', 'scod-shipping' ),
+     //    			'type' 			=> 'checkbox',
+					// 'default'		=> 'yes',
+     //    		),
+     //    		'jne_service_reg' => array(
+     //    			'label'			=> __( 'Regular (COD Available)', 'scod-shipping' ),
+     //    			'type' 			=> 'checkbox',
+					// 'default'		=> 'yes',
+     //    		),
+     //    		'jne_service_oke' => array(
+     //    			'label'			=> __( 'OKE (COD Available) ', 'scod-shipping' ),
+     //    			'type' 			=> 'checkbox',
+					// 'default'		=> 'yes',
+     //    		),
+     //    		'jne_service_jtr' => array(
+     //    			'label'			=> __( 'JNE Trucking (COD Available) ', 'scod-shipping' ),
+     //    			'type' 			=> 'checkbox',
+					// 'default'		=> 'yes',
+     //    		),
+     //    		'jne_label_markup_cod' => array(
+     //    			'title' 		=> __( 'Label Biaya Markup COD JNE', 'scod-shipping' ),
+     //    			'type' 			=> 'text',
+     //    			'description' 	=> '',
+     //    			'default' 		=> __( 'Biaya COD', 'scod-shipping' ),
+     //    		),
+     //    		'jne_biaya_markup' => array(
+     //    			'title' 		=> __( 'Biaya COD JNE Termasuk ke Ongkir?', 'scod-shipping' ),
+     //    			'label'			=> __( 'Aktifkan', 'scod-shipping' ),
+     //    			'type' 			=> 'checkbox',
+					// 'default'		=> 'no',
+     //    		),
+        		'arveoli_jne_settings' => array(
+					'title' 		=> __( 'PENGATURAN SHIPPING JNE (Arveoli)', 'scod-shipping' ),
         			'label'			=> __( 'YES', 'scod-shipping' ),
         			'type' 			=> 'title',
         		),
-        		'jne_service_yes' => array(
+        		'arveoli_jne_service_yes' => array(
 					'title' 		=> __( 'JNE Services', 'scod-shipping' ),
         			'label'			=> __( 'YES', 'scod-shipping' ),
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
-        		'jne_service_reg' => array(
+        		'arveoli_jne_service_reg' => array(
         			'label'			=> __( 'Regular (COD Available)', 'scod-shipping' ),
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
-        		'jne_service_oke' => array(
+        		'arveoli_jne_service_oke' => array(
         			'label'			=> __( 'OKE (COD Available) ', 'scod-shipping' ),
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
-        		'jne_service_jtr' => array(
+        		'arveoli_jne_service_jtr' => array(
         			'label'			=> __( 'JNE Trucking (COD Available) ', 'scod-shipping' ),
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
-        		'jne_label_markup_cod' => array(
+        		'arveoli_jne_label_markup_cod' => array(
         			'title' 		=> __( 'Label Biaya Markup COD JNE', 'scod-shipping' ),
         			'type' 			=> 'text',
         			'description' 	=> '',
         			'default' 		=> __( 'Biaya COD', 'scod-shipping' ),
         		),
-        		'jne_biaya_markup' => array(
+        		'arveoli_jne_biaya_markup' => array(
         			'title' 		=> __( 'Biaya COD JNE Termasuk ke Ongkir?', 'scod-shipping' ),
         			'label'			=> __( 'Aktifkan', 'scod-shipping' ),
         			'type' 			=> 'checkbox',
@@ -362,6 +401,38 @@ function scod_shipping_init() {
 			}
 
 			return $services;
+		}
+
+		/**
+		 * Generate options for origin dropdown
+		 *
+		 * @since 1.0.0
+		 *
+		 * @return array
+		 */
+		private function get_arveoli_jne_services() {
+
+			$services = array();
+
+			if( $this->get_option('arveoli_jne_service_yes') === 'yes' ) {
+				$services[] = 'YES19';
+			}
+
+			if( $this->get_option('arveoli_jne_service_oke') === 'yes' ) {
+				$services[] = 'OKE19';
+			}
+
+			if( $this->get_option('arveoli_jne_service_reg') === 'yes' ) {
+				$services[] = 'REG19';
+			}
+
+			if( $this->get_option('arveoli_jne_service_jtr') === 'yes' ) {
+				$codes = array( 'JTR18', 'JTR250', 'JTR<150', 'JTR>250' );
+				$services = array_merge( $services, $codes );
+			}
+
+			return $services;
+			
 		}
 
 		/**
@@ -670,6 +741,49 @@ function scod_shipping_init() {
 	     *
 		 * @return 	(Object|false) 	returns an object on true, or false if fail
 		 */
+		private function get_arveoli_jne_tariff_info( $origin, $destination ) {
+
+			$get_tariff = JNE_Tariff::where( 'jne_origin_id', $origin->ID )
+							->where( 'jne_destination_id', $destination->ID )
+							->first();
+
+			if( ! $get_tariff ) {
+
+	        	$req_tariff_data = API_ARVEOLI::set_params()->get_tariff( $origin->code, $destination->code );
+
+				if( is_wp_error( $req_tariff_data ) ) {
+
+	        		return false;
+
+	        	}
+
+	        	$get_tariff 					= new JNE_Tariff();
+	        	$get_tariff->jne_origin_id 		= $origin->ID;
+	        	$get_tariff->jne_destination_id = $destination->ID;
+	        	$get_tariff->tariff_data 		= $req_tariff_data;
+
+	        	if( ! $get_tariff->save() ) {
+
+	        		return false;
+
+	        	}
+
+	        }
+
+			return $get_tariff;
+
+		}
+
+		/**
+		 * Get tariff object
+		 *
+		 * @since 	1.0.0
+		 *
+	     * @param 	$origin 		origin object to find
+	     * @param 	$destination 	destination object to find
+	     *
+		 * @return 	(Object|false) 	returns an object on true, or false if fail
+		 */
 		private function get_sicepat_tariff_info( $origin, $destination ) {
 			$get_tariff = SICEPAT_Tariff::where( 'sicepat_origin_id', $origin->ID )
 							->where( 'sicepat_destination_id', $destination->ID )
@@ -732,24 +846,93 @@ function scod_shipping_init() {
 	     * @return 	boolean|rate returns false if fail, add rate to wc if available
 	     */
 	    public function calculate_shipping( $package = array() ) {
-			$origin 	 = $this->get_origin_info();
-			$destination = $this->get_destination_info( $package['destination'] );
+			// $origin 	 = $this->get_origin_info();
+			// $destination = $this->get_destination_info( $package['destination'] );
 
-			if( ! $origin ) {
+			// if( ! $origin ) {
+	  //       	return false;
+	  //       }
+
+			// if( ! $destination ) {
+	  //       	return false;
+	  //       }
+
+			// $tariff = $this->get_tariff_info( $origin, $destination );
+
+			// if( ! $tariff ) {
+	  //       	return false;
+	  //       }
+
+	  //       if( is_array( $tariff->tariff_data ) && count( $tariff->tariff_data ) > 0 ) {
+
+	  //      		$cart_weight = $this->get_cart_weight();
+
+	  //      		if( ! $cart_weight ) {
+	  //      			return false;
+	  //      		}
+
+	  //      		foreach ( $tariff->tariff_data as $rate ) {
+
+			// 		if( \in_array( $rate->service_code, $this->get_jne_services() ) ) {
+
+			// 			$chosen_shipping_method = WC()->session->get('chosen_shipping_methods');
+			// 			$chosen_payment_method  = WC()->session->get( 'chosen_payment_method' );
+			// 			$option_biaya_markup    = $this->get_option( 'jne_biaya_markup' );
+
+			// 			$percentage     = 0.04;
+			// 			$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
+					 	
+			// 			if($option_biaya_markup === 'yes') {
+			// 				if($chosen_payment_method === 'cod') {
+			// 			        if (strpos( $chosen_shipping_method[0], 'scod-shipping_jne_reg19' ) !== false ||
+			// 						strpos( $chosen_shipping_method[0], 'scod-shipping_jne_oke19' ) !== false ||
+			// 						strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtrbt250' ) !== false ||
+			// 						strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtrlt150' ) !== false ||
+			// 						strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr250' ) !== false ||
+			// 						strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr18' ) !== false) {
+			// 					        $this->add_rate( array(
+			// 								'id'    => $tariff->getRateID( $this->id, $rate ),
+			// 								'label' => $tariff->getLabel( $rate ),
+			// 								'cost' 	=> ($rate->price + $percentage_fee) * $cart_weight
+			// 							));
+			// 					}
+			// 				} else {
+			// 					$this->add_rate( array(
+			// 						'id'    => $tariff->getRateID( $this->id, $rate ),
+			// 						'label' => $tariff->getLabel( $rate ),
+			// 						'cost' 	=> $rate->price * $cart_weight
+			// 					));
+			// 				}
+			// 		 	} else {
+			// 		 		$this->add_rate( array(
+			// 					'id'    => $tariff->getRateID( $this->id, $rate ),
+			// 					'label' => $tariff->getLabel( $rate ),
+			// 					'cost' 	=> $rate->price * $cart_weight
+			// 				));
+			// 		 	}
+
+			// 		}
+	  //       	}
+	  //      	}
+
+	       	$arveoli_origin 	 = $this->get_origin_info();
+			$arveoli_destination = $this->get_destination_info( $package['destination'] );
+
+			if( ! $arveoli_origin ) {
 	        	return false;
 	        }
 
-			if( ! $destination ) {
+			if( ! $arveoli_destination ) {
 	        	return false;
 	        }
 
-			$tariff = $this->get_tariff_info( $origin, $destination );
+			$arveoli_tariff = $this->get_arveoli_jne_tariff_info( $arveoli_origin, $arveoli_destination );
 
-			if( ! $tariff ) {
+			if( ! $arveoli_tariff ) {
 	        	return false;
 	        }
 
-	        if( is_array( $tariff->tariff_data ) && count( $tariff->tariff_data ) > 0 ) {
+	        if( is_array( $arveoli_tariff->tariff_data ) && count( $arveoli_tariff->tariff_data ) > 0 ) {
 
 	       		$cart_weight = $this->get_cart_weight();
 
@@ -757,13 +940,13 @@ function scod_shipping_init() {
 	       			return false;
 	       		}
 
-	       		foreach ( $tariff->tariff_data as $rate ) {
+	       		foreach ( $arveoli_tariff->tariff_data as $rate ) {
 
-					if( \in_array( $rate->service_code, $this->get_jne_services() ) ) {
+					if( \in_array( $rate->service_code, $this->get_arveoli_jne_services() ) ) {
 
 						$chosen_shipping_method = WC()->session->get('chosen_shipping_methods');
 						$chosen_payment_method  = WC()->session->get( 'chosen_payment_method' );
-						$option_biaya_markup    = $this->get_option( 'jne_biaya_markup' );
+						$option_biaya_markup    = $this->get_option( 'arveoli_jne_biaya_markup' );
 
 						$percentage     = 0.04;
 						$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
@@ -777,22 +960,22 @@ function scod_shipping_init() {
 									strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr250' ) !== false ||
 									strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr18' ) !== false) {
 								        $this->add_rate( array(
-											'id'    => $tariff->getRateID( $this->id, $rate ),
-											'label' => $tariff->getLabel( $rate ),
+											'id'    => $arveoli_tariff->getRateID( $this->id, $rate ),
+											'label' => $arveoli_tariff->getLabel( $rate ),
 											'cost' 	=> ($rate->price + $percentage_fee) * $cart_weight
 										));
 								}
 							} else {
 								$this->add_rate( array(
-									'id'    => $tariff->getRateID( $this->id, $rate ),
-									'label' => $tariff->getLabel( $rate ),
+									'id'    => $arveoli_tariff->getRateID( $this->id, $rate ),
+									'label' => $arveoli_tariff->getLabel( $rate ),
 									'cost' 	=> $rate->price * $cart_weight
 								));
 							}
 					 	} else {
 					 		$this->add_rate( array(
-								'id'    => $tariff->getRateID( $this->id, $rate ),
-								'label' => $tariff->getLabel( $rate ),
+								'id'    => $arveoli_tariff->getRateID( $this->id, $rate ),
+								'label' => $arveoli_tariff->getLabel( $rate ),
 								'cost' 	=> $rate->price * $cart_weight
 							));
 					 	}
