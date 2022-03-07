@@ -1107,13 +1107,10 @@ class Admin {
                 $respond['message'] = $do_update->get_error_message();
             }
 
-            exit;
-
 	        $order 	  	= wc_get_order( $params['orderID'] );
 	        $order_id 	= $order->get_id();
-	        $numberResi = $do_update[0]->cnote_no;
+	        $numberResi = $do_update->message;
 
-	        // echo $respond;
 			if ( $order_id > 0 ) {
 				if($numberResi){
 					update_post_meta( $order_id, '_sejoli_shipping_number', $numberResi );
@@ -1126,6 +1123,8 @@ class Admin {
 	        $status 	  = "on-the-way";
 			$api_scod 	  = new API_SCOD();
 			$update_order = $api_scod->post_update_order( $order_id, $status, $numberResi );
+
+			error_log(print_r($update_order, true));
 
 			if( ! is_wp_error( $update_order ) ) {
 				// Flag the action as done (to avoid repetitions on reload for example)

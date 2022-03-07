@@ -107,7 +107,12 @@ class API {
 			return true;
 		}
 
+		if( $response_code == 201 ) {
+			return true;
+		}
+
 		return false;
+		
 	}
 
 }
