@@ -330,21 +330,16 @@ class ARVEOLI extends \SCOD_Shipping\API {
 			]);
 
 			$get_response = self::do_request();
-			// $data = self::get_valid_body_object( $get_response );
 
 			if ( ! is_wp_error( $get_response ) ) :
-				
-				error_log(print_r($get_response, true));
 
 				if ( self::verify_response_code( $get_response ) ) :
 
 					if( $data = self::get_valid_body_object( $get_response ) ) :
 
-						error_log(print_r($data, true));
+						if( isset( $data ) ) {
 
-						if( isset( $data->detail ) ) {
-
-							return $data->detail;
+							return $data;
 
 						}
 

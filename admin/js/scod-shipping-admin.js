@@ -166,6 +166,7 @@
                         nonce:  nonce
                     },
                     success : function(response) {
+                        console.log(response);
                         $('input#sejoli_shipping_number').val(response);
                         $('#shipping-number').text(response);
                         $('a.generate-airwaybill').hide();

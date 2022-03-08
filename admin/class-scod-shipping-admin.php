@@ -958,95 +958,6 @@ class Admin {
 	        echo '<p><strong>'. __("Shipping Number", "scod-shipping").':</strong><mark class="order-status">' . get_post_meta( $order->get_id(), '_sejoli_shipping_number', true ) . '</mark></p>';
 	    }
 	}
-
-	// /**
-	//  * WooCommerce action to generate airwaybill by request
-	//  * Hook via wp_ajax_scods-generate-airwaybill
-	//  *
-	//  * @since    1.0.0
-	//  */
-	// public function generate_airwaybill($order_id) {
-	// 	$params = wp_parse_args( $_POST, array(
- //            'orderID'  		 => NULL,
- //            'shipperName' 	 => NULL,
- //            'shipperAddr1' 	 => NULL,
- //            'shipperAddr2' 	 => NULL,
- //            'shipperCity' 	 => NULL,
- //            'shipperRegion'  => NULL,
- //            'shipperZip' 	 => NULL,
- //            'shipperPhone' 	 => NULL,
- //            'receiverName' 	 => NULL,
- //            'receiverAddr1'  => NULL,
- //            'receiverAddr2'  => NULL,
- //            'receiverCity' 	 => NULL,
- //            'receiverRegion' => NULL,
- //            'receiverZip' 	 => NULL,
- //            'receiverPhone'  => NULL,
- //            'qty' 			 => NULL,
- //            'weight' 		 => NULL,
- //            'goodsDesc' 	 => NULL,
- //            'goodsValue' 	 => NULL,
- //            'goodsType' 	 => NULL,
- //            'insurance'		 => NULL,
- //            'origin' 		 => NULL,
- //            'destination' 	 => NULL,
- //            'service' 		 => NULL,
- //            'codflag'		 => NULL,
- //            'codAmount' 	 => NULL,
- //            'nonce' 		 => NULL
- //        ));
-
- //        $respond  = [
- //            'valid'   => false,
- //            'message' => NULL
- //        ];
-
- //        if( wp_verify_nonce( $params['nonce'], 'scods-generate-airwaybill') ) :
-
- //            unset( $params['nonce'] );
-
- //            $do_update = API_JNE::set_params()->get_airwaybill( $params['orderID'], $params['shipperName'], $params['shipperAddr1'], $params['shipperAddr2'], $params['shipperCity'], $params['shipperRegion'], $params['shipperZip'], $params['shipperPhone'], $params['receiverName'], $params['receiverAddr1'], $params['receiverAddr2'], $params['receiverCity'], $params['receiverRegion'], $params['receiverZip'], $params['receiverPhone'], $params['qty'], $params['weight'], $params['goodsDesc'], $params['goodsValue'], $params['goodsType'], $params['insurance'], $params['origin'], $params['destination'], $params['service'], $params['codflag'], $params['codAmount'] );
-
- //            if ( ! is_wp_error( $do_update ) ) {
-
- //                $respond['valid']  = true;
-
- //            } else {
-
- //                $respond['message'] = $do_update->get_error_message();
- //            }
-
- //        endif;
-
- //        $order 	  	= wc_get_order( $params['orderID'] );
- //        $order_id 	= $order->get_id();
- //        $numberResi = $do_update[0]->cnote_no;
-
- //        // echo $respond;
-	// 	if ( $order_id > 0 ) {
-	// 		if($numberResi){
-	// 			update_post_meta( $order_id, '_sejoli_shipping_number', $numberResi );
-	// 		} else {
-	// 			update_post_meta( $order_id, '_sejoli_shipping_number', 0 );
-	// 		}
- //        }
-
-	// 	// Send update status data to API
- //        $status 	  = "on-the-way";
-	// 	$api_scod 	  = new API_SCOD();
-	// 	$update_order = $api_scod->post_update_order( $order_id, $status, $numberResi );
-
-	// 	if( ! is_wp_error( $update_order ) ) {
-	// 		// Flag the action as done (to avoid repetitions on reload for example)
-	// 		if( $order->save() ) {
-	// 			error_log( 'Sync order success ..' );
-	// 		}
-	// 	}
-
-	// 	wp_update_post( ['ID' => $order_id, 'post_status' => 'wc-in-shipping'] );
-
- //        echo wp_send_json( $numberResi );
-	// }
 	
 	/**
 	 * WooCommerce action to generate airwaybill arveoli by request
@@ -1107,13 +1018,10 @@ class Admin {
                 $respond['message'] = $do_update->get_error_message();
             }
 
-            exit;
-
 	        $order 	  	= wc_get_order( $params['orderID'] );
 	        $order_id 	= $order->get_id();
-	        $numberResi = $do_update[0]->cnote_no;
+	        $numberResi = $do_update->message;
 
-	        // echo $respond;
 			if ( $order_id > 0 ) {
 				if($numberResi){
 					update_post_meta( $order_id, '_sejoli_shipping_number', $numberResi );
@@ -1126,6 +1034,8 @@ class Admin {
 	        $status 	  = "on-the-way";
 			$api_scod 	  = new API_SCOD();
 			$update_order = $api_scod->post_update_order( $order_id, $status, $numberResi );
+
+			error_log(print_r($update_order, true));
 
 			if( ! is_wp_error( $update_order ) ) {
 				// Flag the action as done (to avoid repetitions on reload for example)
