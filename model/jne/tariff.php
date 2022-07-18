@@ -103,7 +103,7 @@ class Tariff extends Eloquent
                     $label .= ' hari';
                 }
             } else {
-                $label .= $rate->etd_from . '-' . $rate->etd_thru;
+                $label .= $rate->etd_from . " - " . $rate->etd_thru;
 
                 if( $rate->times == 'D' ) {
                     $label .= ' hari';
