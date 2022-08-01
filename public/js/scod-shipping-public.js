@@ -244,12 +244,13 @@
                 url : baseURL,
                 type : 'POST',
                 data : {
-                    shipmentExpedition: $('#shipment-expedition').val(),
                     shipmentNumber: $('#shipment-number').val(),
                     nonce:  nonce
                 },
                 success : function(response) {
+                    console.log(response);
                     $('#shipment-history').html(response);
+                    // window.location.reload();
                 },
                 error: function (request, status, error) {
                     console.log(request);

@@ -260,7 +260,7 @@ class SICEPAT extends \SCOD_Shipping\API {
 			self::$method 	= 'POST';
 
 			$auth_key = 'DE7085E652524385971725E39E8805DE';
-	    	$pickupDataArray = array(
+	    	$pickupDataArray = array (
 	    		"auth_key"              => $auth_key,
 				"reference_number"      => "SICEPAT-TEST-SCPT".$pickupParams['orderID'],
 				"pickup_request_date"   => date('Y-m-d H:i:s'),
@@ -269,7 +269,7 @@ class SICEPAT extends \SCOD_Shipping\API {
 				"pickup_city" 	        => $pickupParams['pickup_city'],
 				"pickup_merchant_phone" => $pickupParams['pickup_merchant_phone'],
 				"pickup_merchant_email" => $pickupParams['pickup_merchant_email'],
-				'PackageList' => [ array(
+				'PackageList' => [ array (
 					"receipt_number"      => "999888777666",
 					"origin_code"         => $pickupParams['origin_code'],
 					"delivery_type"       => $pickupParams['delivery_type'],
