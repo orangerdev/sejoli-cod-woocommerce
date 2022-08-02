@@ -67,16 +67,13 @@ function scod_shipping_init() {
 	     * @param integer $instance_id default: 0
 	     */
 	    public function __construct( $instance_id = 0 ) {
-
 			$this->api                = new API_SCOD();
 	        $this->id 				  = 'scod-shipping';
 	        $this->instance_id 		  = absint( $instance_id );
 	        $this->title         	  = __( 'Sejoli COD Shipping', 'scod-shipping' );
 	        $this->method_title       = __( 'Sejoli COD Shipping', 'scod-shipping' );
 	        $this->method_description = __( 'Sejoli COD for WooCommerce shipping method', 'scod-shipping' );
-
 			$this->init();
-			
 	    }
 
 	    /**
@@ -85,12 +82,10 @@ function scod_shipping_init() {
 		 * @since 1.0.0
 		 */
 		public function init() {
-
 			$this->init_form_fields();
 			$this->init_settings();
 
 			add_action( 'woocommerce_update_options_shipping_' . $this->id, array( $this, 'process_admin_options' ) );
-
 		}
 
 	    /**
@@ -99,7 +94,6 @@ function scod_shipping_init() {
 		 * @since 1.0.0
 		 */
 		public function init_form_fields() {
-
 			if ( ! $this->validate_supported_country( WC()->countries->get_base_country() ) ) {
 				$this->instance_form_fields = array(
 					'title' => array(
@@ -285,7 +279,6 @@ function scod_shipping_init() {
 			);
 
 			$this->instance_form_fields = $settings;
-
 		}
 
 		/**
@@ -296,13 +289,10 @@ function scod_shipping_init() {
 		 * @return array
 		 */
 		private function generate_origin_dropdown() {
-
 			$option_default = array( '' => __( '--- Pilih Origin ---' ) );
 			// $option_cities  = JNE_Origin::pluck( 'name', 'id' )->toArray();
 			$option_cities  = City::pluck( 'name', 'id' )->toArray();
-
 			return $option_default + $option_cities;
-
 		}
 
 		/**
@@ -313,11 +303,8 @@ function scod_shipping_init() {
 		 * @since 1.0.0
 		 */
 		public function validate_supported_country( string $country_code ) {
-
 			$supported_countries = $this->available_countries;
-
 			return \in_array( $country_code, $supported_countries );
-
 		}
 
 		/**
@@ -329,7 +316,6 @@ function scod_shipping_init() {
 		 * @throws Exception Error message.
 		 */
 		public function validate_scod_username_field( $key, $value ) {
-
 			error_log( 'Validating scod account ..' );
 			$error_msg 		  = wp_sprintf( __( '%s is not valid. Please use a valid account.', 'scod-shipping' ), 'Username or password' );
 			$posted 		  = $this->get_post_data();
@@ -352,7 +338,6 @@ function scod_shipping_init() {
 			}
 
 			return $value;
-
 		}
 
 		/**
@@ -364,7 +349,6 @@ function scod_shipping_init() {
 		 * @throws Exception Error message.
 		 */
 		public function validate_store_secret_key_field( $key, $value ) {
-
 			error_log( 'Validating scod store account ..' );
 			$error_msg 				  = wp_sprintf( __( '%s is not valid. Please use a valid account.', 'scod-shipping' ), 'Store ID or Store secret key' );
 			$posted    				  = $this->get_post_data();
@@ -387,7 +371,6 @@ function scod_shipping_init() {
 			}
 
 			return $value;
-
 		}
 
 		/**
@@ -398,7 +381,6 @@ function scod_shipping_init() {
 		 * @return array
 		 */
 		private function get_jne_services() {
-
 			$services = array();
 
 			if( $this->get_option('jne_service_yes') === 'yes' ) {
@@ -419,7 +401,6 @@ function scod_shipping_init() {
 			}
 
 			return $services;
-
 		}
 
 		/**
@@ -462,7 +443,6 @@ function scod_shipping_init() {
 		 * @return array
 		 */
 		private function get_sicepat_services() {
-
 			$services = array();
 
 			if( $this->get_option('sicepat_service_cargo') === 'yes' ) {
@@ -498,7 +478,6 @@ function scod_shipping_init() {
 			}
 
 			return $services;
-
 		}
 
 		/**
@@ -509,7 +488,6 @@ function scod_shipping_init() {
 		 * @return 	(Object|false) returns an object on true, or false if fail
 		 */
 		public function get_origin_info() {
-
 			$origin_option = $this->get_option( 'shipping_origin' );
 
 			// $getSetOriginName = DB::table( 'scod_shipping_jne_origin' )
@@ -531,7 +509,6 @@ function scod_shipping_init() {
 			}
 
 			return $origin;
-
 		}
 
 		/**
@@ -542,7 +519,6 @@ function scod_shipping_init() {
 		 * @return 	(Object|false) returns an object on true, or false if fail
 		 */
 		public function get_sicepat_origin_info() {
-
 			$origin_option = $this->get_option( 'shipping_origin' );
 
 			// $getSetOriginName = DB::table( 'scod_shipping_jne_origin' )
@@ -564,7 +540,6 @@ function scod_shipping_init() {
 			}
 
 			return $origin;
-
 		}
 
 		/**
@@ -577,7 +552,6 @@ function scod_shipping_init() {
 		 * @return 	(Object|false) returns an object on true, or false if fail
 		 */
 		public function get_destination_info( array $destination ) {
-
 			if( ! $this->validate_supported_country( $destination['country'] ) ) {
 				return false;
 			}
@@ -643,7 +617,6 @@ function scod_shipping_init() {
 			// }
 			
 			return false;
-
 		}
 
 		/**
@@ -656,7 +629,6 @@ function scod_shipping_init() {
 		 * @return 	(Object|false) returns an object on true, or false if fail
 		 */
 		public function get_sicepat_destination_info( array $destination ) {
-
 			if( ! $this->validate_supported_country( $destination['country'] ) ) {
 				return false;
 			}
@@ -722,7 +694,6 @@ function scod_shipping_init() {
 			// }
 			
 			return false;
-
 		}
 
 		/**
@@ -736,7 +707,6 @@ function scod_shipping_init() {
 		 * @return 	(Object|false) 	returns an object on true, or false if fail
 		 */
 		private function get_tariff_info( $origin, $destination ) {
-			
 			$get_tariff = JNE_Tariff::where( 'jne_origin_id', $origin->ID )
 							->where( 'jne_destination_id', $destination->ID )
 							->first();
@@ -759,7 +729,6 @@ function scod_shipping_init() {
 	        }
 
 			return $get_tariff;
-
 		}
 
 		/**
@@ -772,7 +741,7 @@ function scod_shipping_init() {
 	     *
 		 * @return 	(Object|false) 	returns an object on true, or false if fail
 		 */
-		private function get_arveoli_tariff_info( $expedition, $origin, $destination, $weight ) {
+		private function get_arveoli_jne_tariff_info( $origin, $destination ) {
 
 			$get_tariff = JNE_Tariff::where( 'jne_origin_id', $origin->ID )
 							->where( 'jne_destination_id', $destination->ID )
@@ -780,7 +749,7 @@ function scod_shipping_init() {
 
 			if( ! $get_tariff ) {
 
-	        	$req_tariff_data = API_ARVEOLI::set_params()->get_tariff( $expedition, $origin->code, $destination->code, $weight );
+	        	$req_tariff_data = API_ARVEOLI::set_params()->get_tariff( $origin->code, $destination->code );
 
 				if( is_wp_error( $req_tariff_data ) ) {
 
@@ -815,13 +784,13 @@ function scod_shipping_init() {
 	     *
 		 * @return 	(Object|false) 	returns an object on true, or false if fail
 		 */
-		private function get_sicepat_tariff_info( $expedition, $origin, $destination, $weight ) {
+		private function get_sicepat_tariff_info( $origin, $destination ) {
 			$get_tariff = SICEPAT_Tariff::where( 'sicepat_origin_id', $origin->ID )
 							->where( 'sicepat_destination_id', $destination->ID )
 							->first();
 
 			if( ! $get_tariff ) {
-	        	$req_tariff_data = API_ARVEOLI::set_params()->get_tariff( $expedition, $origin->origin_code, $destination->destination_code, $weight );
+	        	$req_tariff_data = API_SICEPAT::set_params()->get_tariff( $origin->origin_code, $destination->destination_code );
 	        	
 				if( is_wp_error( $req_tariff_data ) ) {
 	        		return false;
@@ -848,7 +817,6 @@ function scod_shipping_init() {
 		 * @return 	(Double|false) 	returns double type number, or false if fail
 		 */
 		private function get_cart_weight() {
-
 			$scod_weight_unit = 'kg';
 			$cart_weight 	  = WC()->cart->get_cart_contents_weight();
 			$wc_weight_unit   = get_option( 'woocommerce_weight_unit' );
@@ -866,7 +834,6 @@ function scod_shipping_init() {
        		}
 
 			return false;
-
 		}
 
 	    /**
@@ -948,31 +915,32 @@ function scod_shipping_init() {
 	  //       	}
 	  //      	}
 
-	       	$arveoli_jne_origin 	 = $this->get_origin_info();
-			$arveoli_jne_destination = $this->get_destination_info( $package['destination'] );
-			$cart_weight 		     = $this->get_cart_weight();
+	       	$arveoli_origin 	 = $this->get_origin_info();
+			$arveoli_destination = $this->get_destination_info( $package['destination'] );
 
-			if( ! $arveoli_jne_origin ) {
+			if( ! $arveoli_origin ) {
 	        	return false;
 	        }
 
-			if( ! $arveoli_jne_destination ) {
+			if( ! $arveoli_destination ) {
 	        	return false;
 	        }
 
-			$arveoli_jne_tariff = $this->get_arveoli_tariff_info( $expedition = 'jne', $arveoli_jne_origin, $arveoli_jne_destination, $cart_weight );
+			$arveoli_tariff = $this->get_arveoli_jne_tariff_info( $arveoli_origin, $arveoli_destination );
 
-			if( ! $arveoli_jne_tariff ) {
+			if( ! $arveoli_tariff ) {
 	        	return false;
 	        }
 
-	        if( $arveoli_jne_tariff ) {
+	        if( is_array( $arveoli_tariff->tariff_data ) && count( $arveoli_tariff->tariff_data ) > 0 ) {
+
+	       		$cart_weight = $this->get_cart_weight();
 
 	       		if( ! $cart_weight ) {
 	       			return false;
 	       		}
 
-	       		foreach ( $arveoli_jne_tariff->tariff_data->price as $key => $rate ) {
+	       		foreach ( $arveoli_tariff->tariff_data as $rate ) {
 
 					if( \in_array( $rate->service_code, $this->get_arveoli_jne_services() ) ) {
 
@@ -984,72 +952,64 @@ function scod_shipping_init() {
 						$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
 					 	
 						if($option_biaya_markup === 'yes') {
-
 							if($chosen_payment_method === 'cod') {
-
 						        if (strpos( $chosen_shipping_method[0], 'scod-shipping_jne_reg19' ) !== false ||
 									strpos( $chosen_shipping_method[0], 'scod-shipping_jne_oke19' ) !== false ||
 									strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtrbt250' ) !== false ||
 									strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtrlt150' ) !== false ||
 									strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr250' ) !== false ||
 									strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr18' ) !== false) {
-								       
 								        $this->add_rate( array(
-											'id'    => $arveoli_jne_tariff->getRateID( $this->id, $rate ),
-											'label' => $arveoli_jne_tariff->getLabel( $rate ),
+											'id'    => $arveoli_tariff->getRateID( $this->id, $rate ),
+											'label' => $arveoli_tariff->getLabel( $rate ),
 											'cost' 	=> ($rate->price + $percentage_fee) * $cart_weight
 										));
-
 								}
-
 							} else {
-
 								$this->add_rate( array(
-									'id'    => $arveoli_jne_tariff->getRateID( $this->id, $rate ),
-									'label' => $arveoli_jne_tariff->getLabel( $rate ),
+									'id'    => $arveoli_tariff->getRateID( $this->id, $rate ),
+									'label' => $arveoli_tariff->getLabel( $rate ),
 									'cost' 	=> $rate->price * $cart_weight
 								));
-
 							}
-
 					 	} else {
-
 					 		$this->add_rate( array(
-								'id'    => $arveoli_jne_tariff->getRateID( $this->id, $rate ),
-								'label' => $arveoli_jne_tariff->getLabel( $rate ),
+								'id'    => $arveoli_tariff->getRateID( $this->id, $rate ),
+								'label' => $arveoli_tariff->getLabel( $rate ),
 								'cost' 	=> $rate->price * $cart_weight
 							));
-
 					 	}
 
 					}
 	        	}
 	       	}
 	    	
-	       	$arveoli_sicepat_origin 	 = $this->get_sicepat_origin_info();
-			$arveoli_sicepat_destination = $this->get_sicepat_destination_info( $package['destination'] );
+	       	$sicepat_origin 	 = $this->get_sicepat_origin_info();
+			$sicepat_destination = $this->get_sicepat_destination_info( $package['destination'] );
 
-			if( ! $arveoli_sicepat_origin ) {
+			if( ! $sicepat_origin ) {
 	        	return false;
 	        }
 
-			if( ! $arveoli_sicepat_destination ) {
+			if( ! $sicepat_destination ) {
 	        	return false;
 	        }
 
-			$arveoli_sicepat_tariff = $this->get_sicepat_tariff_info( $expedition = 'sicepat', $arveoli_sicepat_origin, $arveoli_sicepat_destination, $cart_weight );
+			$sicepat_tariff = $this->get_sicepat_tariff_info( $sicepat_origin, $sicepat_destination );
 
-			if( ! $arveoli_sicepat_tariff ) {
+			if( ! $sicepat_tariff ) {
 	        	return false;
 	        }
 
-	        if( $arveoli_sicepat_tariff ) {
+	        if( is_array( $sicepat_tariff->tariff_data ) && count( $sicepat_tariff->tariff_data ) > 0 ) {
+
+	       		$cart_weight = $this->get_cart_weight();
 
 	       		if( ! $cart_weight ) {
 	       			return false;
 	       		}
 
-	       		foreach ( $arveoli_sicepat_tariff->tariff_data->price as $key => $rate ) {
+	       		foreach ( $sicepat_tariff->tariff_data as $rate ) {
 
 					if( \in_array( $rate->service, $this->get_sicepat_services() ) ) {
 
@@ -1062,38 +1022,28 @@ function scod_shipping_init() {
 						$total_order    = WC()->cart->get_cart_contents_total();
 					 	
 						if($option_biaya_markup === 'yes') {
-
 							if($chosen_payment_method === 'cod') {
-
 						        if (strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_gokil' ) !== false ||
-									strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_siunt' ) !== false) {
-
+									strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_siunt' ) !== false)  {
 								        $this->add_rate( array(
-											'id'    => $arveoli_sicepat_tariff->getRateID( $this->id, $rate ),
-											'label' => $arveoli_sicepat_tariff->getLabel( $rate ),
+											'id'    => $sicepat_tariff->getRateID( $this->id, $rate ),
+											'label' => $sicepat_tariff->getLabel( $rate ),
 											'cost' 	=> ($rate->tariff + $percentage_fee) * $cart_weight
 										));
-
 								}
-
 							} else {
-
 								$this->add_rate( array(
-									'id'    => $arveoli_sicepat_tariff->getRateID( $this->id, $rate ),
-									'label' => $arveoli_sicepat_tariff->getLabel( $rate ),
+									'id'    => $sicepat_tariff->getRateID( $this->id, $rate ),
+									'label' => $sicepat_tariff->getLabel( $rate ),
 									'cost' 	=> $rate->tariff * $cart_weight
 								));
-
 							}
-
 					 	} else {
-
 					 		$this->add_rate( array(
-								'id'    => $arveoli_sicepat_tariff->getRateID( $this->id, $rate ),
-								'label' => $arveoli_sicepat_tariff->getLabel( $rate ),
+								'id'    => $sicepat_tariff->getRateID( $this->id, $rate ),
+								'label' => $sicepat_tariff->getLabel( $rate ),
 								'cost' 	=> $rate->tariff * $cart_weight
 							));
-
 					 	}
 
 					}
