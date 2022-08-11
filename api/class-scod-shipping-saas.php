@@ -324,8 +324,10 @@ class SCOD {
 		        'goods_value'          => NULL,
 		        'goods_type'           => NULL,
 		        'insurance'            => NULL,
+		        'expedition'           => NULL,
 		        'origin'               => NULL,
 		        'destination'          => NULL,
+		        'branch'          	   => NULL,
 		        'service'              => NULL,
 		        'codflag'              => NULL,
 		        'codamount'            => 0.0,
@@ -424,15 +426,20 @@ class SCOD {
      *
      * @return 	(array|WP_Error) The response array or a WP_Error on failure
      */
-	public function post_update_order( $order_id, $status, $shipNumber ) {
+	public function post_update_order( $params ) {
 		error_log( 'Updating order data ..' );
 		try {
 
-			$this->endpoint = 'wp-json/scod/v1/orders/update/' . $order_id. '/' .$status. '/' .$shipNumber;
-			$this->method 	= 'PUT';
-			$this->body		= NULL;
+			$this->endpoint = 'wp-json/scod/v1/orders/update';
+			$this->method 	= 'POST';
+			$body_params = wp_parse_args( $params, array(
+				'invoice_number'  => NULL,
+	            'shipping_status' => NULL,
+	            'shipping_number' => NULL
+			));
 
-			$get_response 	= $this->do_request();
+			$set_body 	  = $this->set_body_params( $body_params );
+			$get_response = $this->do_request();
 
 			if ( ! is_wp_error( $get_response ) ) :
 

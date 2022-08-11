@@ -328,6 +328,7 @@ class SCOD_Shipping {
 
 		// Markup COD
 		$this->loader->add_action( 'woocommerce_cart_calculate_fees', $public, 'adding_markup_price_cod' );
+		$this->loader->add_action( 'woocommerce_checkout_update_order_review', $public, 'combine_shipping_cost_with_markup_price', 10, 2 );
 		$this->loader->add_action( 'woocommerce_review_order_before_payment', $public, 'adding_markup_price_cod_payment_ajax' );
 		
 	}

@@ -30,10 +30,10 @@ class ARVEOLI extends \SCOD_Shipping\API {
      */
 	public static function set_sandbox_data() {
 
-		$api_key 	= '0o4k0gs4o0kwg8cs840oskwscc4k0g4swwww8804';
+		$api_key = '0o4k0gs4o0kwg8cs840oskwscc4k0g4swwww8804';
 
-		self::$body = array(
-			'ARVEOLI_KEY'  => $api_key
+		self::$headers = array(
+			'access-key' => $api_key
 		);
 
 	}
@@ -45,10 +45,10 @@ class ARVEOLI extends \SCOD_Shipping\API {
      */
 	public static function set_live_data() {
 
-		$api_key 	= '0o4k0gs4o0kwg8cs840oskwscc4k0g4swwww8804';
+		$api_key = '0o4k0gs4o0kwg8cs840oskwscc4k0g4swwww8804';
 
-		self::$body = array(
-			'ARVEOLI_KEY'  => $api_key
+		self::$headers = array(
+			'access-key' => $api_key
 		);
 
 	}
@@ -113,7 +113,7 @@ class ARVEOLI extends \SCOD_Shipping\API {
 
 		try {
 
-			self::$endpoint = 'https://apiv2.arveoli.com/origin?keyword='.$city;
+			self::$endpoint = 'https://sandbox.arveoli.com/api/region/origins/jne?query='.$city;
 			self::$method 	= 'GET';
 
 			$get_response = self::do_request();
@@ -122,11 +122,11 @@ class ARVEOLI extends \SCOD_Shipping\API {
 
 				if ( self::verify_response_code( $get_response ) ) :
 
-					if( $data = self::get_valid_body_object( $get_response ) ) :
+					if( $origin = self::get_valid_body_object( $get_response ) ) :
 						
-						if( isset( $data->detail ) ) {
+						if( isset( $origin ) ) {
 
-							return $data->detail;
+							return $origin;
 
 						}
 
@@ -168,16 +168,12 @@ class ARVEOLI extends \SCOD_Shipping\API {
      *
      * @return 	(array|WP_Error) The response array or a WP_Error on failure
      */
-	public function get_destination( string $province_name, string $city_name ) {
+	public function get_destination( string $city, string $district ) {
 
 		try {
 
-			self::$endpoint = 'https://apiv2.arveoli.com/dest/getdistrict';
-			self::$method 	= 'POST';
-			self::$body 	= array_merge( self::$body, [
-				'province_name' => $province_name,
-				'city_name'	    => $city_name
-			]);
+			self::$endpoint = 'https://sandbox.arveoli.com/api/region/destinations/jne/'.$city.'/'.$district;
+			self::$method 	= 'GET';
 
 			$get_response = self::do_request();
 
@@ -185,18 +181,18 @@ class ARVEOLI extends \SCOD_Shipping\API {
 
 				if ( self::verify_response_code( $get_response ) ) :
 
-					if( $data = self::get_valid_body_object( $get_response ) ) :
+					if( $destination = self::get_valid_body_object( $get_response ) ) :
+						
+						if( isset( $destination ) ) {
 
-						if( isset( $data ) ) {
-
-							return $data;
+							return $destination;
 
 						}
 
 						return new \WP_Error( 'invalid_api_response', 'Invalid destination data.' );
-						
-					else:
 
+					else:
+						
 						return new \WP_Error( 'invalid_api_response', 'Invalid response body.' );
 
 					endif;
@@ -209,12 +205,12 @@ class ARVEOLI extends \SCOD_Shipping\API {
 
 			else :
 
-				return new \WP_Error( 'invalid_api_response', 'Invalid response.' );
+				return $get_response;
 
 			endif;
 
 		} catch ( Exception $e ) {
-
+			
 			return new \WP_Error( 'invalid_api_response', wp_sprintf( __( '<strong>Error from Arveoli API</strong>: %s', 'scod-shipping' ), $e->getMessage() ) );
 		
 		}
@@ -232,29 +228,33 @@ class ARVEOLI extends \SCOD_Shipping\API {
      *
      * @return 	(array|WP_Error) The response array or a WP_Error on failure
      */
-	public function get_tariff( string $origin, string $destination, int $weight = 1 ) {
+	public function get_tariff( string $expedition, string $origin, string $destination, int $weight = 1 ) {
 
 		try {
 
-			self::$endpoint = 'https://apiv2.arveoli.com/tarif';
+			self::$endpoint = 'https://sandbox.arveoli.com/api/tariff/check';
 			self::$method 	= 'POST';
-			self::$body 	= array_merge( self::$body, [
-				'origin' => $origin,
-				'dest'	 => $destination,
-				'weight' => $weight
-			]);
+
+			$tariffDataArray = array(
+				"expedition"  => $expedition,
+			  	"origin" 	  => $origin,
+			  	"destination" => $destination,
+				"weight" 	  => $weight
+			);
+
+			self::$body = $tariffDataArray;
 
 			$get_response = self::do_request();
 
-			if ( ! is_wp_error( $get_response ) ) :
+			if ( ! is_wp_error( $weight ) ) :
 
 				if ( self::verify_response_code( $get_response ) ) :
 
 					if( $tariff = self::get_valid_body_object( $get_response ) ) :
 
-						if( isset( $tariff->data->price ) ) {
+						if( isset( $tariff ) ) {
 
-							return $tariff->data->price;
+							return $tariff;
 
 						}
 
@@ -298,36 +298,112 @@ class ARVEOLI extends \SCOD_Shipping\API {
 		
 		try {
 
-			self::$endpoint = 'https://apiv2.arveoli.com/droptest';
+			self::$endpoint = 'https://sandbox.arveoli.com/api/orders?ordertype=pickup';
 			self::$method 	= 'POST';
-			self::$body 	= array_merge( self::$body, [
-				'TANGGALORDER'	  => $pickupParams['orderDate'],
-				'SHIPPER_NAME'	  => $pickupParams['shipperName'],
-				'SHIPPER_PHONE'	  => $pickupParams['shipperPhone'],
-				'SHIPPER_ADDRESS' => $pickupParams['shipperAddress'],
-				'SHIPPER_CITY'	  => $pickupParams['shipperCity'],
-				'SHIPPER_ZIP'	  => $pickupParams['shipperZip'],
-				'CUST_NAMA'	 	  => $pickupParams['receiverName'],
-				'CUST_PHONE'	  => $pickupParams['receiverPhone'],
-				'CUST_EMAIL'	  => $pickupParams['receiverEmail'],
-				'CUST_ALAMAT'	  => $pickupParams['receiverAddress'],
-				'CUST_KOTA'	 	  => $pickupParams['receiverCity'],
-				'CUST_KODEPOS'	  => $pickupParams['receiverZip'],
-				'CUST_PROPINSI'   => $pickupParams['receiverProvince'],
-				'CUST_KECAMATAN'  => $pickupParams['receiverDistrict'],
-				'CUST_KELURAHAN'  => $pickupParams['receiverSubdistrict'],
-				'ORIGINCODE'	  => $pickupParams['origin'],
-				'SERVICE'		  => $pickupParams['service'],
-				'WEIGHT'		  => $pickupParams['weight'],
-				'QTY'			  => $pickupParams['qty'],
-				'DESKRIPSI'		  => $pickupParams['description'],
-				'NILAIPAKET'	  => $pickupParams['packageAmount'],
-				'ASURANSI'		  => $pickupParams['insurance'],
-				'CATATAN'		  => $pickupParams['note'],
-				'IS_COD'		  => $pickupParams['codflag'],
-				'NILAICOD'		  => $pickupParams['codAmount'],
-				'ONGKOS_KIRIM'	  => $pickupParams['shippingPrice']
-			]);
+
+			// $pickupDataArray = array(
+			// 	"expedition" => $pickupParams['expedition'], // new
+			//   	"cod" 		 => $pickupParams['codflag'],
+			//   	"insurance"  => $pickupParams['insurance'],
+			//   	"sender" 	 => [ array(
+			//     	"name"		 => $pickupParams['shipperName'],
+			//     	"phone" 	 => $pickupParams['shipperPhone'],
+			//     	"address" 	 => $pickupParams['shipperAddress'],
+			//     	"city" 		 => $pickupParams['shipperCity'],
+			//     	"postal" 	 => $pickupParams['shipperZip'],
+			//     	"origincode" => $pickupParams['origin'],
+			//     	"branchcode" => $pickupParams['branch'] // new
+			//   	) ],
+			//   	"recipient" => [ array(
+			//     	"name"			  => $pickupParams['receiverName'],
+			// 	    "phone"			  => $pickupParams['receiverPhone'],
+			// 	    "address"		  => $pickupParams['receiverAddress'],
+			// 	    "address2"		  => "",
+			// 	    "address3"	 	  => "",
+			// 	    "district"		  => $pickupParams['receiverDistrict'],
+			// 	    "city"			  => $pickupParams['receiverCity'],
+			// 	    "province"		  => $pickupParams['receiverProvince'],
+			// 	    "postal"		  => $pickupParams['receiverZip'],
+			// 	    "service"		  => $pickupParams['service'],
+			// 	    "cost"			  => $pickupParams['shippingPrice'],
+			// 	    "destinationcode" => $pickupParams['destination']
+			// 	) ],
+			//   	"goods" => [ array(
+			// 	    "description" => $pickupParams['description'],
+			// 	    "quantity" 	  => $pickupParams['qty'],
+			// 	    "weight"	  => $pickupParams['weight'],
+			// 	    "value"		  => $pickupParams['packageAmount'], // new
+			// 	    "notes"		  => $pickupParams['note'],
+			// 	    "category"	  => $pickupParams['productCategory'], // new
+			// 	    "cod"		  => $pickupParams['codAmount']
+			//   	) ],
+			//   	"pickup" => [ array(
+			// 	    "name"     => "arya",
+			// 	    "date"	   => date('d-m-Y'),
+			// 	    "time"	   => date('H:i'),
+			// 	    "pic"	   => "TEAS",
+			// 	    "picphone" => "6289100000002",
+			// 	    "address"  => "JAKARTA",
+			// 	    "district" => "JAKARTA",
+			// 	    "city"     => "JAKARTA",
+			// 	    "province" => "DKI JAKARTA",
+			// 	    "service"  => "Reguler",
+			// 	    "vehicle"  => "MOTOR"
+			//   	) ]
+			// );
+
+			$pickupDataArray = array(
+				"expedition" => "sicepat",
+			  	"cod" 		 => $pickupParams['codflag'],
+			  	"insurance"  => $pickupParams['insurance'],
+			  	"sender" 	 => array(
+			    	"name"		 => $pickupParams['shipperName'],
+			    	"phone" 	 => $pickupParams['shipperPhone'],
+			    	"address" 	 => $pickupParams['shipperAddress'],
+			    	"city" 		 => $pickupParams['shipperCity'],
+			    	"postal" 	 => $pickupParams['shipperZip'],
+			    	"origincode" => "CGK",
+			    	"branchcode" => "CGK000"
+			  	),
+			  	"recipient" => array(
+			    	"name"			  => $pickupParams['receiverName'],
+				    "phone"			  => $pickupParams['receiverPhone'],
+				    "address"		  => $pickupParams['receiverAddress'],
+				    "address2"		  => "",
+				    "address3"	 	  => "",
+				    "district"		  => $pickupParams['receiverDistrict'],
+				    "city"			  => $pickupParams['receiverCity'],
+				    "province"		  => $pickupParams['receiverProvince'],
+				    "postal"		  => $pickupParams['receiverZip'],
+				    "service"		  => "SIUNT",
+				    "cost"			  => $pickupParams['shippingPrice'],
+				    "destinationcode" => "BDO10000"
+				),
+			  	"goods" => array(
+				    "description" => $pickupParams['description'],
+				    "quantity" 	  => $pickupParams['qty'],
+				    "weight"	  => $pickupParams['weight'],
+				    "value"		  => $pickupParams['packageAmount'], // new
+				    "notes"		  => "Mohon Segera Diproses, Terima Kasih",
+				    "category"	  => $pickupParams['category'], // new
+				    "cod"		  => $pickupParams['codAmount']
+			  	),
+			  	"pickup" => array(
+				    "name"     => "arya",
+				    "date"	   => date('d-m-Y'),
+				    "time"	   => date('H:i'),
+				    "pic"	   => "TEAS",
+				    "picphone" => "6289100000002",
+				    "address"  => "JAKARTA",
+				    "district" => "JAKARTA",
+				    "city"     => "JAKARTA",
+				    "province" => "DKI JAKARTA",
+				    "service"  => "Reguler",
+				    "vehicle"  => "MOTOR"
+			  	)
+			);
+
+			self::$body = $pickupDataArray;
 
 			$get_response = self::do_request();
 
@@ -335,11 +411,11 @@ class ARVEOLI extends \SCOD_Shipping\API {
 
 				if ( self::verify_response_code( $get_response ) ) :
 
-					if( $data = self::get_valid_body_object( $get_response ) ) :
+					if( $pickup = self::get_valid_body_object( $get_response ) ) :
 
-						if( isset( $data ) ) {
+						if( isset( $pickup ) ) {
 
-							return $data;
+							return $pickup;
 
 						}
 
@@ -380,12 +456,19 @@ class ARVEOLI extends \SCOD_Shipping\API {
      *
      * @return 	(array|WP_Error) The response array or a WP_Error on failure
      */
-	public function get_tracking( string $tracking_number ) {
+	public function get_tracking( string $expedition, string $tracking_number ) {
 
 		try {
 
-			self::$endpoint = 'http://apiv2.jne.co.id:10101/tracing/api/list/v1/cnote/'.$tracking_number;
+			self::$endpoint = 'https://sandbox.arveoli.com/api/orders/track';
 			self::$method 	= 'POST';
+
+			$trackingDataArray = array(
+				"expedition" => $expedition,
+			  	"cnote" 	 => $tracking_number
+			);
+
+			self::$body = $trackingDataArray;
 
 			$get_response = self::do_request();
 
@@ -393,11 +476,11 @@ class ARVEOLI extends \SCOD_Shipping\API {
 
 				if ( self::verify_response_code( $get_response ) ) :
 
-					if( $data = self::get_valid_body_object( $get_response ) ) :
+					if( $tracking = self::get_valid_body_object( $get_response ) ) :
 						
-						if( isset( $data ) ) {
+						if( isset( $tracking ) ) {
 
-							return $data;
+							return $tracking;
 
 						}
 
