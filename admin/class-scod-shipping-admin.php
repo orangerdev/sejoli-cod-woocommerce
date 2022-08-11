@@ -512,6 +512,7 @@ class Admin {
 	    $order_date   = get_the_date('d-m-Y H:I:s');
 	    $order_status = $order->get_status(); // The Order Status
 	    $order_data   = $order->get_data(); // The Order Data
+	    $fee_total 	  = 0.0;
 
 		// Iterating through order fee items ONLY
 		foreach( $order->get_items('fee') as $item_id => $item_fee ){
@@ -596,11 +597,11 @@ class Admin {
 			$shipping_instance_id = $shipping_method->get_instance_id();
 		}
 
-		if($shipping_name == "JNE - REG (1-2 days)") {
+		if($shipping_name == "JNE - REG (1 - 2 hari)") {
 			$shipping_service = "REG";
-		} elseif($shipping_name == "JNE - OKE (2-3 days)") {
+		} elseif($shipping_name == "JNE - OKE (2 - 3 hari)") {
 			$shipping_service = "OKE";
-		} elseif($shipping_name == "JNE - YES (1 day)") {
+		} elseif($shipping_name == "JNE - YES (1 hari)") {
 			$shipping_service = "YES";
 		} else {
 			$shipping_service = "JTR";
@@ -642,7 +643,7 @@ class Admin {
 		$packages['destination']['city2'] 	  = $order_shipping_city;
 		$packages['destination']['district']  = $order_shipping_district;
 
-		if($shipping_name === "JNE - YES (1 hari)" || $shipping_name === "JNE - REG (1-2 hari)" || $shipping_name === "JNE - OKE (2-3 hari)" || $shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
+		if($shipping_name === "JNE - YES (1 hari)" || $shipping_name === "JNE - REG (1 - 2 hari)" || $shipping_name === "JNE - OKE (2 - 3 hari)" || $shipping_name === "JNE - JTR>250 (3 - 4 hari)" || $shipping_name === "JNE - JTR<150 (3 - 4 hari)" || $shipping_name === "JNE - JTR250 (3 - 4 hari)" || $shipping_name === "JNE - JTR (3 - 4 hari)") {
         	$getOrigin   = $method_instance->get_origin_info()->code;
 			$destination = $method_instance->get_destination_info( $packages['destination'] )->code;
 		} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)" || $shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - BEST (1 hari)" || $shipping_name === "SICEPAT - KEPO (1 - 2 hari)" || $shipping_name === "SICEPAT - SDS (1 hari)"  || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
@@ -672,7 +673,7 @@ class Admin {
 		// Check Payment Method COD or NOT
 		$order_payment_method = $order_data['payment_method'];
         if($order_payment_method == "cod"){
-        	if($shipping_name === "JNE - REG (1-2 hari)" || $shipping_name === "JNE - OKE (2-3 hari)" || $shipping_name === "JNE - JTR>250 (3-4 hari)" || $shipping_name === "JNE - JTR<150 (3-4 hari)" || $shipping_name === "JNE - JTR250 (3-4 hari)" || $shipping_name === "JNE - JTR (3-4 hari)") {
+        	if($shipping_name === "JNE - REG (1 - 2 hari)" || $shipping_name === "JNE - OKE (2 - 3 hari)" || $shipping_name === "JNE - JTR>250 (3 - 4 hari)" || $shipping_name === "JNE - JTR<150 (3 - 4 hari)" || $shipping_name === "JNE - JTR250 (3 - 4 hari)" || $shipping_name === "JNE - JTR (3 - 4 hari)") {
 				$codamount = $order->get_total();
 				$codflag   = 1;
 			} elseif($shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
@@ -705,10 +706,10 @@ class Admin {
 
 		if( \str_contains( strtolower( $shipping_name ), 'jne' ) ):
 
-			// $trace_tracking_arveoli_jne = API_ARVEOLI::set_params()->get_tracking( 'jne', $number_awb );
-	        $trace_tracking_arveoli_jne     = API_ARVEOLI::set_params()->get_tracking( 'jne', '001708802337' );
+			$trace_tracking_arveoli_jne = API_ARVEOLI::set_params()->get_tracking( 'sicepat', $number_awb );
+	        // $trace_tracking_arveoli_jne     = API_ARVEOLI::set_params()->get_tracking( 'jne', '001708802337' );
 
-		   	if( $shipping_number ) {
+		   	if( $number_awb ) {
 
 		   		if ( ! is_wp_error( $trace_tracking_arveoli_jne ) ) {
 
@@ -834,10 +835,10 @@ class Admin {
 
 		if( \str_contains( strtolower( $shipping_name ), 'sicepat' ) ):
 			
-			// $trace_tracking_arveoli_sicepat = API_ARVEOLI::set_params()->get_tracking( 'sicepat', $number_awb );
-			$trace_tracking_arveoli_sicepat = API_ARVEOLI::set_params()->get_tracking( 'sicepat', '001708802337' );
+			$trace_tracking_arveoli_sicepat = API_ARVEOLI::set_params()->get_tracking( 'sicepat', $number_awb );
+			// $trace_tracking_arveoli_sicepat = API_ARVEOLI::set_params()->get_tracking( 'sicepat', '001708802337' );
 
-		   	if( $shipping_number ) {
+		   	if( $number_awb ) {
 
 		   		if ( ! is_wp_error( $trace_tracking_arveoli_sicepat ) ) {
 
@@ -1068,47 +1069,46 @@ class Admin {
 
                 $respond['valid']  = true;
 
+		        $order 	  	= wc_get_order( $params['orderID'] );
+		        $order_id 	= $order->get_id();
+		        $numberResi = $do_update->no_resi;
+		        $status 	= "on-the-way";
+
+				if ( $order_id > 0 ) {
+					if($numberResi){
+						update_post_meta( $order_id, '_sejoli_shipping_number', $numberResi );
+					}
+		        }
+
+				$order_params = array(
+					'invoice_number'  => $order_id,
+		            'shipping_status' => $status,
+		            'shipping_number' => $numberResi
+				);
+
+				// Send data to API
+				$api_scod 	  = new API_SCOD();
+				$update_order = $api_scod->post_update_order( $order_params );
+				
+				if( ! is_wp_error( $update_order ) ) {
+					// Flag the action as done (to avoid repetitions on reload for example)
+					// $order->update_meta_data( '_sync_order_action_scod_done', true );
+					if( $order->save() ) {
+						error_log( 'Sync order success ..' );
+					}
+				} else {
+					error_log( 'Sync order error .. ' );
+				}
+
+				wp_update_post( ['ID' => $order_id, 'post_status' => 'wc-in-shipping'] );
+
+		        echo wp_send_json( $numberResi );
+
             } else {
 
                 $respond['message'] = $do_update->get_error_message();
             }
 
-	        $order 	  	= wc_get_order( $params['orderID'] );
-	        $order_id 	= $order->get_id();
-	        $numberResi = $do_update->no_resi;
-	        $status 	= "on-the-way";
-
-			if ( $order_id > 0 ) {
-				if($numberResi){
-					update_post_meta( $order_id, '_sejoli_shipping_number', $numberResi );
-				} else {
-					update_post_meta( $order_id, '_sejoli_shipping_number', 0 );
-				}
-	        }
-
-			$order_params = array(
-				'invoice_number'  => $order_id,
-	            'shipping_status' => $status,
-	            'shipping_number' => $numberResi
-			);
-
-			// Send data to API
-			$api_scod 	  = new API_SCOD();
-			$update_order = $api_scod->post_update_order( $order_params );
-			
-			if( ! is_wp_error( $update_order ) ) {
-				// Flag the action as done (to avoid repetitions on reload for example)
-				// $order->update_meta_data( '_sync_order_action_scod_done', true );
-				if( $order->save() ) {
-					error_log( 'Sync order success ..' );
-				}
-			} else {
-				error_log( 'Sync order error .. ' );
-			}
-
-			wp_update_post( ['ID' => $order_id, 'post_status' => 'wc-in-shipping'] );
-
-	        echo wp_send_json( $numberResi );
 
         endif;
 
