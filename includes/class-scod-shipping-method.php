@@ -5,15 +5,9 @@ use \WeDevs\ORM\Eloquent\Facades\DB;
 use SCOD_Shipping\Model\State as State;
 use SCOD_Shipping\Model\City as City;
 use SCOD_Shipping\Model\District as District;
-use SCOD_Shipping\Model\JNE\Origin as JNE_Origin;
-use SCOD_Shipping\Model\JNE\Destination as JNE_Destination;
 use SCOD_Shipping\Model\JNE\Tariff as JNE_Tariff;
-use SCOD_Shipping\API\JNE as API_JNE;
 use SCOD_Shipping\API\ARVEOLI as API_ARVEOLI;
-use SCOD_Shipping\Model\SiCepat\Origin as SICEPAT_Origin;
-use SCOD_Shipping\Model\SiCepat\Destination as SICEPAT_Destination;
 use SCOD_Shipping\Model\SiCepat\Tariff as SICEPAT_Tariff;
-use SCOD_Shipping\API\SiCepat as API_SICEPAT;
 use SCOD_Shipping\API\SCOD as API_SCOD;
 /**
  * The admin-specific functionality of the plugin.
@@ -71,9 +65,9 @@ function scod_shipping_init() {
 			$this->api                = new API_SCOD();
 	        $this->id 				  = 'scod-shipping';
 	        $this->instance_id 		  = absint( $instance_id );
-	        $this->title         	  = __( 'Sejoli COD Shipping', 'scod-shipping' );
-	        $this->method_title       = __( 'Sejoli COD Shipping', 'scod-shipping' );
-	        $this->method_description = __( 'Sejoli COD for WooCommerce shipping method', 'scod-shipping' );
+	        $this->title         	  = __( 'Sejoli Shipping', 'scod-shipping' );
+	        $this->method_title       = __( 'Sejoli Shipping', 'scod-shipping' );
+	        $this->method_description = __( 'Sejoli Shipping for WooCommerce shipping method', 'scod-shipping' );
 
 			$this->init();
 			
@@ -114,23 +108,23 @@ function scod_shipping_init() {
 
 			$settings = array(
         		'scod_username' => array(
-        			'title' 		=> __( 'SCOD Username', 'scod-shipping' ),
+        			'title' 		=> __( 'Username', 'scod-shipping' ),
         			'type' 			=> 'text',
         			'description' 	=> __( 'Please enter your account username.', 'scod-shipping' ),
         		),
         		'scod_password' => array(
-        			'title' 		=> __( 'SCOD Password', 'scod-shipping' ),
+        			'title' 		=> __( 'Password', 'scod-shipping' ),
         			'type' 			=> 'password',
         			'description' 	=> __( 'Please enter your account password.', 'scod-shipping' ),
         		),
         		'store_id' => array(
-        			'title' 		=> __( 'SCOD Store ID', 'scod-shipping' ),
+        			'title' 		=> __( 'Store ID', 'scod-shipping' ),
         			'type' 			=> 'text',
         			'description' 	=> __( 'Please enter your store ID.', 'scod-shipping' ),
         			'default' 		=> '',
         		),
         		'store_secret_key' => array(
-        			'title' 		=> __( 'SCOD Store Secret Key', 'scod-shipping' ),
+        			'title' 		=> __( 'Store Secret Key', 'scod-shipping' ),
         			'type' 			=> 'text',
         			'description' 	=> __( 'Please enter your store secret key.', 'scod-shipping' ),
         			'default' 		=> '',
@@ -148,46 +142,8 @@ function scod_shipping_init() {
         			'description' 	=> __( 'Berat default yang digunakan ketika berat per barang tidak ada.', 'scod-shipping' ),
         			'default' 		=> '',
         		),
-     //    		'jne_settings' => array(
-					// 'title' 		=> __( 'PENGATURAN SHIPPING JNE', 'scod-shipping' ),
-     //    			'label'			=> __( 'YES', 'scod-shipping' ),
-     //    			'type' 			=> 'title',
-     //    		),
-     //    		'jne_service_yes' => array(
-					// 'title' 		=> __( 'JNE Services', 'scod-shipping' ),
-     //    			'label'			=> __( 'YES', 'scod-shipping' ),
-     //    			'type' 			=> 'checkbox',
-					// 'default'		=> 'yes',
-     //    		),
-     //    		'jne_service_reg' => array(
-     //    			'label'			=> __( 'Regular (COD Available)', 'scod-shipping' ),
-     //    			'type' 			=> 'checkbox',
-					// 'default'		=> 'yes',
-     //    		),
-     //    		'jne_service_oke' => array(
-     //    			'label'			=> __( 'OKE (COD Available) ', 'scod-shipping' ),
-     //    			'type' 			=> 'checkbox',
-					// 'default'		=> 'yes',
-     //    		),
-     //    		'jne_service_jtr' => array(
-     //    			'label'			=> __( 'JNE Trucking (COD Available) ', 'scod-shipping' ),
-     //    			'type' 			=> 'checkbox',
-					// 'default'		=> 'yes',
-     //    		),
-     //    		'jne_label_markup_cod' => array(
-     //    			'title' 		=> __( 'Label Biaya Markup COD JNE', 'scod-shipping' ),
-     //    			'type' 			=> 'text',
-     //    			'description' 	=> '',
-     //    			'default' 		=> __( 'Biaya COD', 'scod-shipping' ),
-     //    		),
-     //    		'jne_biaya_markup' => array(
-     //    			'title' 		=> __( 'Biaya COD JNE Termasuk ke Ongkir?', 'scod-shipping' ),
-     //    			'label'			=> __( 'Aktifkan', 'scod-shipping' ),
-     //    			'type' 			=> 'checkbox',
-					// 'default'		=> 'no',
-     //    		),
         		'arveoli_jne_settings' => array(
-					'title' 		=> __( 'PENGATURAN SHIPPING JNE (Arveoli)', 'scod-shipping' ),
+					'title' 		=> __( 'PENGATURAN SHIPPING JNE', 'scod-shipping' ),
         			'label'			=> __( 'YES', 'scod-shipping' ),
         			'type' 			=> 'title',
         		),
@@ -203,12 +159,12 @@ function scod_shipping_init() {
 					'default'		=> 'yes',
         		),
         		'arveoli_jne_service_oke' => array(
-        			'label'			=> __( 'OKE (COD Available) ', 'scod-shipping' ),
+        			'label'			=> __( 'OKE', 'scod-shipping' ),
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
         		'arveoli_jne_service_jtr' => array(
-        			'label'			=> __( 'JNE Trucking (COD Available) ', 'scod-shipping' ),
+        			'label'			=> __( 'JNE Trucking', 'scod-shipping' ),
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
@@ -241,7 +197,7 @@ function scod_shipping_init() {
 					'default'		=> 'yes',
         		),
         		'sicepat_service_gokil' => array(
-        			'label'			=> __( 'GOKIL (COD Available)', 'scod-shipping' ),
+        			'label'			=> __( 'GOKIL', 'scod-shipping' ),
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
@@ -397,38 +353,6 @@ function scod_shipping_init() {
 		 *
 		 * @return array
 		 */
-		private function get_jne_services() {
-
-			$services = array();
-
-			if( $this->get_option('jne_service_yes') === 'yes' ) {
-				$services[] = 'YES19';
-			}
-
-			if( $this->get_option('jne_service_oke') === 'yes' ) {
-				$services[] = 'OKE19';
-			}
-
-			if( $this->get_option('jne_service_reg') === 'yes' ) {
-				$services[] = 'REG19';
-			}
-
-			if( $this->get_option('jne_service_jtr') === 'yes' ) {
-				$codes = array( 'JTR18', 'JTR250', 'JTR<150', 'JTR>250' );
-				$services = array_merge( $services, $codes );
-			}
-
-			return $services;
-
-		}
-
-		/**
-		 * Generate options for origin dropdown
-		 *
-		 * @since 1.0.0
-		 *
-		 * @return array
-		 */
 		private function get_arveoli_jne_services() {
 
 			$services = array();
@@ -502,6 +426,132 @@ function scod_shipping_init() {
 		}
 
 		/**
+	     * Get origin detail
+	     * @since   1.0.0
+	     * @param   integer     $subdistrict_id     District ID
+	     * @return  array|null  District detail
+	     */
+	    public function get_origin( $expedition, $city ) {
+
+	        if( $city && $expedition === 'jne' ) :
+
+	            ob_start();
+
+	            require SCOD_SHIPPING_DIR . 'json/json_origin_JNE.json';
+	            $json_data = ob_get_contents();
+	            
+	            ob_end_clean();
+
+	            $origins = json_decode( $json_data, true );
+	            $current_origin = array();
+
+	            foreach( $origins as $data ):
+	                if( \str_contains( strtolower( $city ), strtolower( $data['originname'] ) ) !== false ) {
+	                    $current_origin = $data;
+
+	                    break;
+	                } else {
+	                    $current_origin = null;
+	                }
+	            endforeach;
+
+	            return $current_origin;
+
+	        endif;
+
+	        if( $city && $expedition === 'sicepat' ) :
+
+	            ob_start();
+
+	            require SCOD_SHIPPING_DIR . 'json/json_origin_sicepat.json';
+	            $json_data = ob_get_contents();
+	            
+	            ob_end_clean();
+
+	            $origins = json_decode( $json_data, true );
+	            $current_origin = array();
+
+	            foreach( $origins as $data ):
+	                if( \str_contains( strtolower( $city ), strtolower( $data['origin_name'] ) ) !== false ) {
+	                    $current_origin = $data;
+
+	                    break;
+	                } else {
+	                    $current_origin = null;
+	                }
+	            endforeach;
+
+	            return $current_origin;
+
+	        endif;
+
+	        return NULL;
+
+	    }
+
+	    /**
+	     * Get destination detail
+	     * @since   1.0.0
+	     * @param   integer     $subdistrict_id     District ID
+	     * @return  array|null  District detail
+	     */
+	    public function get_destination( $expedition, $district ) {
+
+	        if( $district && $expedition === 'jne' ) :
+
+	            ob_start();
+
+	            require SCOD_SHIPPING_DIR . 'json/json_dest_jne.json';
+	            $json_data = ob_get_contents();
+	            
+	            ob_end_clean();
+
+	            $destinations   = json_decode( $json_data, true );
+
+	            foreach( $destinations as $data ):
+	                if( \str_contains( strtolower( $district ), strtolower( $data['district_name'] ) ) !== false ) {
+	                    $current_destination = $data;
+
+	                    break;
+	                } else {
+	                    $current_destination = null;
+	                }
+	            endforeach;
+
+	            return $current_destination;
+
+	        endif;
+
+	        if( $district && $expedition === 'sicepat' ) :
+
+	            ob_start();
+
+	            require SCOD_SHIPPING_DIR . 'json/json_dest_sicepat.json';
+	            $json_data = ob_get_contents();
+	            
+	            ob_end_clean();
+
+	            $destinations   = json_decode( $json_data, true );
+
+	            foreach( $destinations as $data ):
+	                if( \str_contains( strtolower( $district ), strtolower( $data['subdistrict'] ) ) !== false ) {
+	                    $current_destination = $data;
+
+	                    break;
+	                } else {
+	                    $current_destination = null;
+	                }
+	            endforeach;
+
+	            return $current_destination;
+
+	        endif;
+
+	        return NULL;
+
+	    }
+
+		/**
 		 * Get origin object
 		 *
 		 * @since 	1.0.0
@@ -512,19 +562,17 @@ function scod_shipping_init() {
 
 			$origin_option = $this->get_option( 'shipping_origin' );
 
-			// $getSetOriginName = DB::table( 'scod_shipping_jne_origin' )
-	  //               ->where( 'ID', $origin_option )
-	  //               ->get();
+	        $cod_origin_city = DB::table( 'scod_shipping_city' )
+	                ->where( 'ID', $origin_option )
+	                ->get();      
 
-	        $getOriginCode = DB::table( 'scod_shipping_jne_origin' )
-	                ->where( 'city_id', $origin_option )
-	                ->get();        
+	        $getOriginCode = $this->get_origin( $expedition = 'jne', $cod_origin_city[0]->name );  
 
 			if( ! $getOriginCode ) {
 				return false;
 			}
 
-			$origin = $getOriginCode[0];
+			$origin = $getOriginCode['origincode'];
 
 			if( ! $origin ) {
 				return false;
@@ -541,23 +589,52 @@ function scod_shipping_init() {
 		 *
 		 * @return 	(Object|false) returns an object on true, or false if fail
 		 */
+		public function get_branch_info() {
+
+			$branch_option = $this->get_option( 'shipping_origin' );
+
+	        $cod_branch_city = DB::table( 'scod_shipping_city' )
+	                ->where( 'ID', $branch_option )
+	                ->get();      
+
+	        $getBranchCode = $this->get_origin( $expedition = 'jne', $cod_branch_city[0]->name );  
+
+			if( ! $getBranchCode ) {
+				return false;
+			}
+
+			$branch = $getBranchCode['branchcode'];
+
+			if( ! $branch ) {
+				return false;
+			}
+
+			return $branch;
+
+		}
+
+		/**
+		 * Get origin object
+		 *
+		 * @since 	1.0.0
+		 *
+		 * @return 	(Object|false) returns an object on true, or false if fail
+		 */
 		public function get_sicepat_origin_info() {
 
 			$origin_option = $this->get_option( 'shipping_origin' );
 
-			// $getSetOriginName = DB::table( 'scod_shipping_jne_origin' )
-	  //               ->where( 'ID', $origin_option )
-	  //               ->get();
+	        $cod_origin_city = DB::table( 'scod_shipping_city' )
+	                ->where( 'ID', $origin_option )
+	                ->get();      
 
-	        $getOriginCode = DB::table( 'scod_shipping_sicepat_origin' )
-	                ->where( 'city_id', $origin_option )
-	                ->get();        
+	        $getOriginCode = $this->get_origin( $expedition = 'sicepat', $cod_origin_city[0]->name );  
 
 			if( ! $getOriginCode ) {
 				return false;
 			}
 
-			$origin = $getOriginCode[0];
+			$origin = $getOriginCode['origin_code'];
 
 			if( ! $origin ) {
 				return false;
@@ -612,35 +689,11 @@ function scod_shipping_init() {
 				}
 			}
 
-			$get_dest = DB::table( (new JNE_Destination)->getTableName() );
-
-			if( empty( $location_data['city'] ) ) {
-				$get_dest = $get_dest->whereNull( 'city_id' );
-			} else {
-				$get_dest = $get_dest->where( 'city_id', $location_data['city']->ID );
-			}
-
-			if( empty( $location_data['district'] ) ) {
-				$get_dest = $get_dest->whereNull( 'district_id' );
-			} else {
-				$get_dest = $get_dest->where( 'district_id', $location_data['district']->ID );
-			}
-
-			if( $destination = $get_dest->first() ) {
-				return $destination;
-			}
-
-			// $get_dest = DB::table( (new JNE_Destination)->getTableName() );
-
-			// if( empty( $location_data['district'] ) ) {
-			// 	$get_dest = $get_dest->whereNull( 'district_name' );
-			// } else {
-			// 	$get_dest = $get_dest->Where('district_name', 'like', '%' . strtoupper($location_data['district']->name));
-			// }
+			$getDestCode  = $this->get_destination( $expedition = 'jne', $location_data['district']->name );
 			
-			// if( $destination = $get_dest->first() ) {
-			// 	return $destination;
-			// }
+			if( $destination = $getDestCode ) {
+				return $destination['tariff_code'];
+			}
 			
 			return false;
 
@@ -691,35 +744,11 @@ function scod_shipping_init() {
 				}
 			}
 
-			$get_dest = DB::table( (new SICEPAT_Destination)->getTableName() );
-
-			if( empty( $location_data['city'] ) ) {
-				$get_dest = $get_dest->whereNull( 'city_id' );
-			} else {
-				$get_dest = $get_dest->where( 'city_id', $location_data['city']->ID );
-			}
-
-			if( empty( $location_data['district'] ) ) {
-				$get_dest = $get_dest->whereNull( 'district_id' );
-			} else {
-				$get_dest = $get_dest->where( 'district_id', $location_data['district']->ID );
-			}
-
-			if( $destination = $get_dest->first() ) {
-				return $destination;
-			}
-
-			// $get_dest = DB::table( (new SICEPAT_Destination)->getTableName() );
-
-			// if( empty( $location_data['district'] ) ) {
-			// 	$get_dest = $get_dest->whereNull( 'subdistrict' );
-			// } else {
-			// 	$get_dest = $get_dest->Where('subdistrict', 'like', '%' . strtoupper($location_data['district']->name));
-			// }
+			$getDestCode  = $this->get_destination( $expedition = 'sicepat', $location_data['district']->name );
 			
-			// if( $destination = $get_dest->first() ) {
-			// 	return $destination;
-			// }
+			if( $destination = $getDestCode ) {
+				return $destination['destination_code'];
+			}
 			
 			return false;
 
@@ -735,52 +764,15 @@ function scod_shipping_init() {
 	     *
 		 * @return 	(Object|false) 	returns an object on true, or false if fail
 		 */
-		private function get_tariff_info( $origin, $destination ) {
-			
-			$get_tariff = JNE_Tariff::where( 'jne_origin_id', $origin->ID )
-							->where( 'jne_destination_id', $destination->ID )
-							->first();
-
-			if( ! $get_tariff ) {
-	        	$req_tariff_data = API_JNE::set_params()->get_tariff( $origin->code, $destination->code );
-
-				if( is_wp_error( $req_tariff_data ) ) {
-	        		return false;
-	        	}
-
-	        	$get_tariff 					= new JNE_Tariff();
-	        	$get_tariff->jne_origin_id 		= $origin->ID;
-	        	$get_tariff->jne_destination_id = $destination->ID;
-	        	$get_tariff->tariff_data 		= $req_tariff_data;
-
-	        	if( ! $get_tariff->save() ) {
-	        		return false;
-	        	}
-	        }
-
-			return $get_tariff;
-
-		}
-
-		/**
-		 * Get tariff object
-		 *
-		 * @since 	1.0.0
-		 *
-	     * @param 	$origin 		origin object to find
-	     * @param 	$destination 	destination object to find
-	     *
-		 * @return 	(Object|false) 	returns an object on true, or false if fail
-		 */
 		private function get_arveoli_tariff_info( $expedition, $origin, $destination, $weight ) {
 
-			$get_tariff = JNE_Tariff::where( 'jne_origin_id', $origin->ID )
-							->where( 'jne_destination_id', $destination->ID )
+			$get_tariff = JNE_Tariff::where( 'jne_origin_id', $origin )
+							->where( 'jne_destination_id', $destination )
 							->first();
 
 			if( ! $get_tariff ) {
 
-	        	$req_tariff_data = API_ARVEOLI::set_params()->get_tariff( $expedition, $origin->code, $destination->code, $weight );
+	        	$req_tariff_data = API_ARVEOLI::set_params()->get_tariff( $expedition, $origin, $destination, $weight );
 
 				if( is_wp_error( $req_tariff_data ) ) {
 
@@ -789,8 +781,8 @@ function scod_shipping_init() {
 	        	}
 
 	        	$get_tariff 					= new JNE_Tariff();
-	        	$get_tariff->jne_origin_id 		= $origin->ID;
-	        	$get_tariff->jne_destination_id = $destination->ID;
+	        	$get_tariff->jne_origin_id 		= $origin;
+	        	$get_tariff->jne_destination_id = $destination;
 	        	$get_tariff->tariff_data 		= $req_tariff_data;
 
 	        	if( ! $get_tariff->save() ) {
@@ -816,20 +808,21 @@ function scod_shipping_init() {
 		 * @return 	(Object|false) 	returns an object on true, or false if fail
 		 */
 		private function get_sicepat_tariff_info( $expedition, $origin, $destination, $weight ) {
-			$get_tariff = SICEPAT_Tariff::where( 'sicepat_origin_id', $origin->ID )
-							->where( 'sicepat_destination_id', $destination->ID )
+			
+			$get_tariff = SICEPAT_Tariff::where( 'sicepat_origin_id', $origin )
+							->where( 'sicepat_destination_id', $destination )
 							->first();
 
 			if( ! $get_tariff ) {
-	        	$req_tariff_data = API_ARVEOLI::set_params()->get_tariff( $expedition, $origin->origin_code, $destination->destination_code, $weight );
+	        	$req_tariff_data = API_ARVEOLI::set_params()->get_tariff( $expedition, $origin, $destination, $weight );
 	        	
 				if( is_wp_error( $req_tariff_data ) ) {
 	        		return false;
 	        	}
 
 	        	$get_tariff 					    = new SICEPAT_Tariff();
-	        	$get_tariff->sicepat_origin_id 		= $origin->ID;
-	        	$get_tariff->sicepat_destination_id = $destination->ID;
+	        	$get_tariff->sicepat_origin_id 		= $origin;
+	        	$get_tariff->sicepat_destination_id = $destination;
 	        	$get_tariff->tariff_data 		    = $req_tariff_data;
 
 	        	if( ! $get_tariff->save() ) {
@@ -838,6 +831,7 @@ function scod_shipping_init() {
 	        }
 
 			return $get_tariff;
+
 		}
 
 		/**
@@ -884,76 +878,6 @@ function scod_shipping_init() {
 				return;
 			}
 
-			
-			// $origin 	 = $this->get_origin_info();
-			// $destination = $this->get_destination_info( $package['destination'] );
-
-			// if( ! $origin ) {
-	  //       	return false;
-	  //       }
-
-			// if( ! $destination ) {
-	  //       	return false;
-	  //       }
-
-			// $tariff = $this->get_tariff_info( $origin, $destination );
-
-			// if( ! $tariff ) {
-	  //       	return false;
-	  //       }
-
-	  //       if( is_array( $tariff->tariff_data ) && count( $tariff->tariff_data ) > 0 ) {
-
-	  //      		$cart_weight = $this->get_cart_weight();
-
-	  //      		if( ! $cart_weight ) {
-	  //      			return false;
-	  //      		}
-
-	  //      		foreach ( $tariff->tariff_data as $rate ) {
-
-			// 		if( \in_array( $rate->service_code, $this->get_jne_services() ) ) {
-
-			// 			$chosen_shipping_method = WC()->session->get('chosen_shipping_methods');
-			// 			$chosen_payment_method  = WC()->session->get( 'chosen_payment_method' );
-			// 			$option_biaya_markup    = $this->get_option( 'jne_biaya_markup' );
-
-			// 			$percentage     = 0.04;
-			// 			$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
-					 	
-			// 			if($option_biaya_markup === 'yes') {
-			// 				if($chosen_payment_method === 'cod') {
-			// 			        if (strpos( $chosen_shipping_method[0], 'scod-shipping_jne_reg19' ) !== false ||
-			// 						strpos( $chosen_shipping_method[0], 'scod-shipping_jne_oke19' ) !== false ||
-			// 						strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtrbt250' ) !== false ||
-			// 						strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtrlt150' ) !== false ||
-			// 						strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr250' ) !== false ||
-			// 						strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr18' ) !== false) {
-			// 					        $this->add_rate( array(
-			// 								'id'    => $tariff->getRateID( $this->id, $rate ),
-			// 								'label' => $tariff->getLabel( $rate ),
-			// 								'cost' 	=> ($rate->price + $percentage_fee) * $cart_weight
-			// 							));
-			// 					}
-			// 				} else {
-			// 					$this->add_rate( array(
-			// 						'id'    => $tariff->getRateID( $this->id, $rate ),
-			// 						'label' => $tariff->getLabel( $rate ),
-			// 						'cost' 	=> $rate->price * $cart_weight
-			// 					));
-			// 				}
-			// 		 	} else {
-			// 		 		$this->add_rate( array(
-			// 					'id'    => $tariff->getRateID( $this->id, $rate ),
-			// 					'label' => $tariff->getLabel( $rate ),
-			// 					'cost' 	=> $rate->price * $cart_weight
-			// 				));
-			// 		 	}
-
-			// 		}
-	  //       	}
-	  //      	}
-
 	       	$arveoli_jne_origin 	 = $this->get_origin_info();
 			$arveoli_jne_destination = $this->get_destination_info( $package['destination'] );
 			$cart_weight 		     = $this->get_cart_weight();
@@ -988,14 +912,13 @@ function scod_shipping_init() {
 
 						$shipping_methods = WC()->shipping->get_shipping_methods();
 						$rate_table[] = '';
+
 						foreach($shipping_methods as $shipping_method){
 						    $shipping_method->init();
 
 						    foreach($shipping_method->rates as $key=>$val)
 						        $rate_table[$key] = $val->id;
 						}
-						// error_log(print_r($rate_table[WC()->session->get( 'chosen_shipping_methods' )[0]], true));
-						// error_log(print_r($chosen_payment_method, true));
 
 						$percentage     = 0.04;
 						$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
@@ -1004,12 +927,7 @@ function scod_shipping_init() {
 
 							if($chosen_payment_method === 'cod') {
 
-						        if (strpos( $chosen_shipping_method[0], 'scod-shipping_jne_reg19' ) !== false ||
-									strpos( $chosen_shipping_method[0], 'scod-shipping_jne_oke19' ) !== false ||
-									strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtrbt250' ) !== false ||
-									strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtrlt150' ) !== false ||
-									strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr250' ) !== false ||
-									strpos( $chosen_shipping_method[0], 'scod-shipping_jne_jtr18' ) !== false) {
+						        if (strpos( $chosen_shipping_method[0], 'scod-shipping_jne_reg19' ) !== false) {
 								       
 								        $this->add_rate( array(
 											'id'    => $arveoli_jne_tariff->getRateID( $this->id, $rate ),
@@ -1082,8 +1000,7 @@ function scod_shipping_init() {
 
 							if($chosen_payment_method === 'cod') {
 
-						        if (strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_gokil' ) !== false ||
-									strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_siunt' ) !== false) {
+						        if (strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_siunt' ) !== false) {
 
 								        $this->add_rate( array(
 											'id'    => $arveoli_sicepat_tariff->getRateID( $this->id, $rate ),
