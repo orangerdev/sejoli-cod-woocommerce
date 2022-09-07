@@ -30,10 +30,12 @@ class ARVEOLI extends \SCOD_Shipping\API {
      */
 	public static function set_sandbox_data() {
 
-		$api_key = '0o4k0gs4o0kwg8cs840oskwscc4k0g4swwww8804';
+		$access_key = 'c8gk4wggsoock40gkwo4kc8c8swo08g04scwkcos';
+		$app_key    = 'cxrucexvrel5QLO0LFfRlAMXXPLKsAv0sT5VifKq';
 
 		self::$headers = array(
-			'access-key' => $api_key
+			'access-key' => $access_key,
+			'app-key'    => $app_key
 		);
 
 	}
@@ -45,10 +47,12 @@ class ARVEOLI extends \SCOD_Shipping\API {
      */
 	public static function set_live_data() {
 
-		$api_key = '0o4k0gs4o0kwg8cs840oskwscc4k0g4swwww8804';
+		$access_key = 'c8gk4wggsoock40gkwo4kc8c8swo08g04scwkcos';
+		$app_key    = 'cxrucexvrel5QLO0LFfRlAMXXPLKsAv0sT5VifKq';
 
 		self::$headers = array(
-			'access-key' => $api_key
+			'access-key' => $access_key,
+			'app-key'    => $app_key
 		);
 
 	}
