@@ -1,0 +1,2321 @@
+[{
+    "origincode": "AMI10000",
+    "originname": "MATARAM",
+    "branchcode": "AMI000"
+}, {
+    "origincode": "AMI20100",
+    "originname": "BIMA",
+    "branchcode": "AMI000"
+}, {
+    "origincode": "AMI20200",
+    "originname": "DOMPU,KAB.DOMPU",
+    "branchcode": "AMI000"
+}, {
+    "origincode": "AMI20300",
+    "originname": "PRAYA,KAB.LOMBOK TENGAH",
+    "branchcode": "AMI000"
+}, {
+    "origincode": "AMI20400",
+    "originname": "SELONG,KAB.LOMBOK TIMUR",
+    "branchcode": "AMI000"
+}, {
+    "origincode": "AMI20500",
+    "originname": "SUMBAWA BESAR",
+    "branchcode": "AMI000"
+}, {
+    "origincode": "AMI20800",
+    "originname": "GERUNG, KAB.LOMBOK BARAT",
+    "branchcode": "AMI000"
+}, {
+    "origincode": "AMI20807",
+    "originname": "TANJUNG, GERUNG",
+    "branchcode": "AMI000"
+}, {
+    "origincode": "AMI20900",
+    "originname": "TALIWANG, KAB.SUMBAWA BARAT",
+    "branchcode": "AMI000"
+}, {
+    "origincode": "AMQ10000",
+    "originname": "AMBON",
+    "branchcode": "AMQ000"
+}, {
+    "origincode": "AMQ20100",
+    "originname": "MASOHI,KAB.MALUKU TENGAH",
+    "branchcode": "AMQ000"
+}, {
+    "origincode": "AMQ20101",
+    "originname": "BANDA,MASOHI",
+    "branchcode": "AMQ000"
+}, {
+    "origincode": "AMQ20108",
+    "originname": "PULAU HARUKU,MASOHI",
+    "branchcode": "AMQ000"
+}, {
+    "origincode": "AMQ20200",
+    "originname": "TUAL",
+    "branchcode": "AMQ000"
+}, {
+    "origincode": "AMQ20300",
+    "originname": "NAMLEA,KAB.BURU",
+    "branchcode": "AMQ000"
+}, {
+    "origincode": "AMQ20307",
+    "originname": "NAMROLE,BURU SEL.",
+    "branchcode": "AMQ000"
+}, {
+    "origincode": "AMQ20400",
+    "originname": "DOBO, DOBO",
+    "branchcode": "AMQ000"
+}, {
+    "origincode": "AMQ20600",
+    "originname": "PIRU, PIRU",
+    "branchcode": "AMQ000"
+}, {
+    "origincode": "AMQ20700",
+    "originname": "DATARAN HUNIMOA",
+    "branchcode": "AMQ000"
+}, {
+    "origincode": "AMQ20800",
+    "originname": "SAUMLAKI,KAB.MALUKU TENGGARA",
+    "branchcode": "AMQ000"
+}, {
+    "origincode": "AMQ20900",
+    "originname": "MOA LAKOR,MALUKU BARAT DAYA",
+    "branchcode": "AMQ000"
+}, {
+    "origincode": "BDJ10000",
+    "originname": "BANJARMASIN",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ10100",
+    "originname": "BARABAI,KAB.HULU SUNGAI TNGH",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ10200",
+    "originname": "KANDANGAN,KAB.HULU SUNGAI SLTN",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ10300",
+    "originname": "KOTABARU,PULAULAUT",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ10302",
+    "originname": "HAMPANG,KOTABARUPULAULAUT",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ10400",
+    "originname": "TANJUNG,KAB.TABALONG",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ10404",
+    "originname": "KELUA,TANJUNG",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ10500",
+    "originname": "BANJARBARU",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ20100",
+    "originname": "AMUNTAI",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ20200",
+    "originname": "MARABAHAN,KAB.BARITO KUALA",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ20300",
+    "originname": "MARTAPURA,KAB.BANJAR",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ20303",
+    "originname": "GAMBUT,MARTAPURA",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ20400",
+    "originname": "PELAIHARI, KAB.BANJARMASIN",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ20401",
+    "originname": "BATI-BATI,PELAIHARI",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ20402",
+    "originname": "JORONG,PELAIHARI",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ20500",
+    "originname": "RANTAU",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ20502",
+    "originname": "BINUANG,RANTAU",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ20700",
+    "originname": "MUARATEWEH",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ20800",
+    "originname": "TAMIANGLAYANG",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ20803",
+    "originname": "DUSUN TENGAH,TAMIANGLAYANG",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ20900",
+    "originname": "PURUK CAHU",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ21100",
+    "originname": "BUNTOK",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ21200",
+    "originname": "PARINGIN, KAB BALANGAN",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ21300",
+    "originname": "BATULICIN, KAB TANAH BUMBU",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ21301",
+    "originname": "KUSAN HILIR,BATULICIN",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ21303",
+    "originname": "SATUI,BATULICIN",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDJ21304",
+    "originname": "SUNGAI LOBAN,BATULICIN",
+    "branchcode": "BDJ000"
+}, {
+    "origincode": "BDO10000",
+    "originname": "BANDUNG",
+    "branchcode": "BDO000"
+}, {
+    "origincode": "BDO10100",
+    "originname": "BANDUNG KAB, SOREANG",
+    "branchcode": "BDO000"
+}, {
+    "origincode": "BDO10129",
+    "originname": "RANCAEKEK,SOREANG",
+    "branchcode": "BDO000"
+}, {
+    "origincode": "BDO20200",
+    "originname": "SUMEDANG",
+    "branchcode": "BDO000"
+}, {
+    "origincode": "BDO20700",
+    "originname": "GARUT, KOTA GARUT",
+    "branchcode": "BDO000"
+}, {
+    "origincode": "BDO21000",
+    "originname": "BANDUNG BARAT KAB, NGAMPRAH",
+    "branchcode": "BDO000"
+}, {
+    "origincode": "BDO21200",
+    "originname": "CIANJUR, CIANJUR",
+    "branchcode": "BDO000"
+}, {
+    "origincode": "BKI10000",
+    "originname": "BEKASI",
+    "branchcode": "BKI000"
+}, {
+    "origincode": "BKS10000",
+    "originname": "BENGKULU",
+    "branchcode": "BKS000"
+}, {
+    "origincode": "BKS20100",
+    "originname": "ARGAMAKMUR, KAB.BENGKULU UTARA",
+    "branchcode": "BKS000"
+}, {
+    "origincode": "BKS20110",
+    "originname": "KETAHUN,ARGAMAKMUR",
+    "branchcode": "BKS000"
+}, {
+    "origincode": "BKS20116",
+    "originname": "PUTRI HIJAU,ARGAMAKMUR",
+    "branchcode": "BKS000"
+}, {
+    "origincode": "BKS20200",
+    "originname": "CURUP, KAB.REJANG LEBONG",
+    "branchcode": "BKS000"
+}, {
+    "origincode": "BKS20300",
+    "originname": "KOTA MANNA, KAB.BENGKULU SLTN",
+    "branchcode": "BKS000"
+}, {
+    "origincode": "BKS21100",
+    "originname": "KAUR,KAB.KAUR",
+    "branchcode": "BKS000"
+}, {
+    "origincode": "BKS21200",
+    "originname": "KEPAHIANG,KAB.KEPAHIANG",
+    "branchcode": "BKS000"
+}, {
+    "origincode": "BKS21300",
+    "originname": "LEBONG",
+    "branchcode": "BKS000"
+}, {
+    "origincode": "BKS21400",
+    "originname": "MUKO-MUKO,BENGKULU",
+    "branchcode": "BKS000"
+}, {
+    "origincode": "BKS23000",
+    "originname": "TAIS, KAB.SELUMA",
+    "branchcode": "BKS000"
+}, {
+    "origincode": "BOO10000",
+    "originname": "BOGOR",
+    "branchcode": "BOO000"
+}, {
+    "origincode": "BPN10000",
+    "originname": "BALIKPAPAN",
+    "branchcode": "BPN000"
+}, {
+    "origincode": "BPN10008",
+    "originname": "SAMBOJA, KUTAI KARTANEGARA",
+    "branchcode": "BPN000"
+}, {
+    "origincode": "BPN10014",
+    "originname": "MUARA JAWA\/HANDIL,KUKAR",
+    "branchcode": "BPN000"
+}, {
+    "origincode": "BPN20100",
+    "originname": "TANAH GROGOT, KAB PASER",
+    "branchcode": "BPN000"
+}, {
+    "origincode": "BPN20101",
+    "originname": "BATU SOPANG,TANAH GROGOT",
+    "branchcode": "BPN000"
+}, {
+    "origincode": "BPN20200",
+    "originname": "TANJUNGREDEB, KAB.BERAU",
+    "branchcode": "BPN000"
+}, {
+    "origincode": "BPN20300",
+    "originname": "PENAJAM, PENAJAM PASER UTARA",
+    "branchcode": "BPN000"
+}, {
+    "origincode": "BTG10000",
+    "originname": "BONTANG",
+    "branchcode": "BTG000"
+}, {
+    "origincode": "BTG20100",
+    "originname": "SANGGATA, KUTAI TIMUR",
+    "branchcode": "BTG000"
+}, {
+    "origincode": "BTG20103",
+    "originname": "BENGALON , SANGATA",
+    "branchcode": "BTG000"
+}, {
+    "origincode": "BTG20112",
+    "originname": "MUARA WAHAU , SANGATA",
+    "branchcode": "BTG000"
+}, {
+    "origincode": "BTG20116",
+    "originname": "SANGKULIRANG , SANGATA",
+    "branchcode": "BTG000"
+}, {
+    "origincode": "BTH10000",
+    "originname": "BATAM",
+    "branchcode": "BTH000"
+}, {
+    "origincode": "BTH10200",
+    "originname": "DAIK",
+    "branchcode": "BTH000"
+}, {
+    "origincode": "BTH10204",
+    "originname": "SINGKEP, DAIK",
+    "branchcode": "BTH000"
+}, {
+    "origincode": "BTH10300",
+    "originname": "RANAI, KAB. NATUNA",
+    "branchcode": "BTH000"
+}, {
+    "origincode": "BTH10306",
+    "originname": "JEMAJA,RANAI",
+    "branchcode": "BTH000"
+}, {
+    "origincode": "BTH10400",
+    "originname": "TANJUNG BALAI KARIMUN",
+    "branchcode": "BTH000"
+}, {
+    "origincode": "BTH10403",
+    "originname": "KUNDUR, KAB. KARIMUN",
+    "branchcode": "BTH000"
+}, {
+    "origincode": "BTJ10000",
+    "originname": "BANDAACEH",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ10100",
+    "originname": "LANGSA",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ10200",
+    "originname": "LHOKSEUMAWE",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ20100",
+    "originname": "BIREUEN",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ20200",
+    "originname": "KUTACANE",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ20300",
+    "originname": "MEULABOH",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ20400",
+    "originname": "SIGLI,KAB.PIDIE",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ20500",
+    "originname": "TAKENGON",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ20600",
+    "originname": "TAPAKTUAN,KAB.ACEH SELATAN",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ20700",
+    "originname": "SABANG,KOTA SABANG",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ21000",
+    "originname": "BLANGPIDIE",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ21100",
+    "originname": "KRUENG SABEE\/CALANG",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ21300",
+    "originname": "KUALASIMPANG,KAB.ACEH TAMIANG",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ21400",
+    "originname": "IDI RAYEUK,KAB.ACEH TIMUR",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ21500",
+    "originname": "LHOKSUKON,KAB.ACEH UTARA",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ21600",
+    "originname": "SIMPANG TIGA REDELON",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ21700",
+    "originname": "BLANGKEJEREN,KAB.GAYOLUES",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ21800",
+    "originname": "SUKA MAKMUE",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ21900",
+    "originname": "MEUREUDU,KAB.PIDIE JAYA",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ22100",
+    "originname": "SINABANG",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "BTJ22200",
+    "originname": "SUBULUSSALAM",
+    "branchcode": "BTJ000"
+}, {
+    "origincode": "CBN10000",
+    "originname": "CIREBON",
+    "branchcode": "CBN000"
+}, {
+    "origincode": "CBN20100",
+    "originname": "INDRAMAYU",
+    "branchcode": "CBN000"
+}, {
+    "origincode": "CBN20200",
+    "originname": "KUNINGAN, KAB KUNINGAN",
+    "branchcode": "CBN000"
+}, {
+    "origincode": "CBN20300",
+    "originname": "MAJALENGKA",
+    "branchcode": "CBN000"
+}, {
+    "origincode": "CBN20420",
+    "originname": "KLANGENAN, SUMBER",
+    "branchcode": "CBN000"
+}, {
+    "origincode": "CBN20426",
+    "originname": "PABUARAN, SUMBER",
+    "branchcode": "CBN000"
+}, {
+    "origincode": "CGK10000",
+    "originname": "JAKARTA",
+    "branchcode": "CGK000"
+}, {
+    "origincode": "CKR10000",
+    "originname": "CIKARANG,KAB.BEKASI",
+    "branchcode": "CKR000"
+}, {
+    "origincode": "CLG10000",
+    "originname": "CILEGON",
+    "branchcode": "CLG000"
+}, {
+    "origincode": "CLG20100",
+    "originname": "PANDEGLANG,KAB.PANDEGLANG",
+    "branchcode": "CLG000"
+}, {
+    "origincode": "CLG20200",
+    "originname": "RANGKASBITUNG",
+    "branchcode": "CLG000"
+}, {
+    "origincode": "CXP10000",
+    "originname": "CILACAP",
+    "branchcode": "CXP000"
+}, {
+    "origincode": "CXP10017",
+    "originname": "SIDAREJA,CILACAP",
+    "branchcode": "CXP000"
+}, {
+    "origincode": "CXP20000",
+    "originname": "KROYA,CILACAP",
+    "branchcode": "CXP000"
+}, {
+    "origincode": "DJB10000",
+    "originname": "JAMBI",
+    "branchcode": "DJB000"
+}, {
+    "origincode": "DJB10100",
+    "originname": "KUALATUNGKAL",
+    "branchcode": "DJB000"
+}, {
+    "origincode": "DJB20100",
+    "originname": "BANGKO,KAB.MERANGIN",
+    "branchcode": "DJB000"
+}, {
+    "origincode": "DJB20200",
+    "originname": "MUARABULIAN,KAB.BATANG HARI",
+    "branchcode": "DJB000"
+}, {
+    "origincode": "DJB20204",
+    "originname": "MUARATEMBESI,MUARABULIAN",
+    "branchcode": "DJB000"
+}, {
+    "origincode": "DJB20300",
+    "originname": "MUARABUNGO,KAB.BUNGO",
+    "branchcode": "DJB000"
+}, {
+    "origincode": "DJB20400",
+    "originname": "SUNGAIPENUH,KAB.KERINCI",
+    "branchcode": "DJB000"
+}, {
+    "origincode": "DJB20403",
+    "originname": "DANAU KERINCI,SUNGAIPENUH",
+    "branchcode": "DJB000"
+}, {
+    "origincode": "DJB20607",
+    "originname": "SUNGAI BAHAR,SENGETI",
+    "branchcode": "DJB000"
+}, {
+    "origincode": "DJB20700",
+    "originname": "SAROLANGUN,KAB.SAROLANGUN",
+    "branchcode": "DJB000"
+}, {
+    "origincode": "DJB20800",
+    "originname": "MUARA SABAK,KAB.TNJ JABUNG TMR",
+    "branchcode": "DJB000"
+}, {
+    "origincode": "DJB20900",
+    "originname": "MUARA TEBO",
+    "branchcode": "DJB000"
+}, {
+    "origincode": "DJB20901",
+    "originname": "RIMBO BUJANG,MUARA TEBO",
+    "branchcode": "DJB000"
+}, {
+    "origincode": "DJJ10000",
+    "originname": "JAYAPURA",
+    "branchcode": "DJJ000"
+}, {
+    "origincode": "DJJ10015",
+    "originname": "SENTANI,JAYAPURA",
+    "branchcode": "DJJ000"
+}, {
+    "origincode": "DJJ10026",
+    "originname": "NIMBOKRANG,JAYAPURA",
+    "branchcode": "DJJ000"
+}, {
+    "origincode": "DJJ10031",
+    "originname": "MUARA TAM,JAYAPURA",
+    "branchcode": "DJJ000"
+}, {
+    "origincode": "DJJ10036",
+    "originname": "YAPSI,JAYAPURA",
+    "branchcode": "DJJ000"
+}, {
+    "origincode": "DJJ20100",
+    "originname": "BIAK",
+    "branchcode": "DJJ000"
+}, {
+    "origincode": "DJJ20400",
+    "originname": "MERAUKE,KAB.MERAUKE",
+    "branchcode": "DJJ000"
+}, {
+    "origincode": "DJJ20500",
+    "originname": "NABIRE,KAB.NABIRE",
+    "branchcode": "DJJ000"
+}, {
+    "origincode": "DJJ20600",
+    "originname": "SERUI",
+    "branchcode": "DJJ000"
+}, {
+    "origincode": "DJJ20700",
+    "originname": "WAMENA,KAB.JAYAWIJAYA",
+    "branchcode": "DJJ000"
+}, {
+    "origincode": "DJJ21001",
+    "originname": "ARSO,WARIS",
+    "branchcode": "DJJ000"
+}, {
+    "origincode": "DJJ21300",
+    "originname": "OKSIBIL,KAB.PEG.BINTANG",
+    "branchcode": "DJJ000"
+}, {
+    "origincode": "DJJ21500",
+    "originname": "SARMI,KAB.SARMI",
+    "branchcode": "DJJ000"
+}, {
+    "origincode": "DPK10000",
+    "originname": "DEPOK",
+    "branchcode": "DPK000"
+}, {
+    "origincode": "DPS10000",
+    "originname": "DENPASAR",
+    "branchcode": "DPS000"
+}, {
+    "origincode": "DPS20108",
+    "originname": "KARANGASEM,AMLAPURA",
+    "branchcode": "DPS000"
+}, {
+    "origincode": "DPS20200",
+    "originname": "BANGLI,KAB.BANGLI",
+    "branchcode": "DPS000"
+}, {
+    "origincode": "DPS20300",
+    "originname": "GIANYAR",
+    "branchcode": "DPS000"
+}, {
+    "origincode": "DPS20400",
+    "originname": "NEGARA,KAB.JEMBRANA",
+    "branchcode": "DPS000"
+}, {
+    "origincode": "DPS20502",
+    "originname": "KLUNGKUNG,SEMARAPURA",
+    "branchcode": "DPS000"
+}, {
+    "origincode": "DPS20609",
+    "originname": "BULELENG,SINGARAJA",
+    "branchcode": "DPS000"
+}, {
+    "origincode": "DPS20700",
+    "originname": "TABANAN",
+    "branchcode": "DPS000"
+}, {
+    "origincode": "DPS21100",
+    "originname": "MENGUWI, KAB.BADUNG",
+    "branchcode": "DPS000"
+}, {
+    "origincode": "DTB10000",
+    "originname": "BALIGE, KAB.TOBA SAMOSIR",
+    "branchcode": "DTB000"
+}, {
+    "origincode": "DTB20100",
+    "originname": "GUNUNGSITOLI, KAB.NIAS",
+    "branchcode": "DTB000"
+}, {
+    "origincode": "DTB20200",
+    "originname": "TELUK DALAM,KAB.NIAS SELATAN",
+    "branchcode": "DTB000"
+}, {
+    "origincode": "DTB20300",
+    "originname": "LAHEWA,NIAS UTARA",
+    "branchcode": "DTB000"
+}, {
+    "origincode": "DTB20400",
+    "originname": "SIBOLGA, KAB.TAPANULI TENGAH",
+    "branchcode": "DTB000"
+}, {
+    "origincode": "DTB20500",
+    "originname": "PADANGSIDEMPUAN",
+    "branchcode": "DTB000"
+}, {
+    "origincode": "DTB20600",
+    "originname": "TARUTUNG, KAB.TAPANULI UTARA",
+    "branchcode": "DTB000"
+}, {
+    "origincode": "DTB20700",
+    "originname": "GUNUNG TUA, PADANGLAWAS UTARA",
+    "branchcode": "DTB000"
+}, {
+    "origincode": "DTB20800",
+    "originname": "DOLOKSANGGUL,KAB.HUMBANG",
+    "branchcode": "DTB000"
+}, {
+    "origincode": "DTB20900",
+    "originname": "PANYABUNGAN,",
+    "branchcode": "DTB000"
+}, {
+    "origincode": "DTB21000",
+    "originname": "SIBUHUAN",
+    "branchcode": "DTB000"
+}, {
+    "origincode": "DTB21100",
+    "originname": "SIPIROK",
+    "branchcode": "DTB000"
+}, {
+    "origincode": "DTB21200",
+    "originname": "BATANG TORU,TAPANULI SELATAN",
+    "branchcode": "DTB000"
+}, {
+    "origincode": "GTO10000",
+    "originname": "GORONTALO",
+    "branchcode": "GTO000"
+}, {
+    "origincode": "GTO20100",
+    "originname": "LIMBOTO,KAB.GORONTALO",
+    "branchcode": "GTO000"
+}, {
+    "origincode": "GTO20200",
+    "originname": "TILAMUTA,KAB.BOALEMO",
+    "branchcode": "GTO000"
+}, {
+    "origincode": "GTO20204",
+    "originname": "PAGUYAMAN,TILAMUTA",
+    "branchcode": "GTO000"
+}, {
+    "origincode": "GTO20302",
+    "originname": "KABILA,SUWAWA",
+    "branchcode": "GTO000"
+}, {
+    "origincode": "GTO20400",
+    "originname": "KWANDANG,KAB.GORONTALO UTARA",
+    "branchcode": "GTO000"
+}, {
+    "origincode": "GTO20500",
+    "originname": "MARISA,KAB.PAHUWATO",
+    "branchcode": "GTO000"
+}, {
+    "origincode": "GTO20504",
+    "originname": "POPAYATO,MARISA",
+    "branchcode": "GTO000"
+}, {
+    "origincode": "JBR10000",
+    "originname": "JEMBER",
+    "branchcode": "JBR000"
+}, {
+    "origincode": "JBR20100",
+    "originname": "BANYUWANGI, KAB BANYUWANGI",
+    "branchcode": "JBR000"
+}, {
+    "origincode": "JBR20200",
+    "originname": "BONDOWOSO, KAB BONDOWOSO",
+    "branchcode": "JBR000"
+}, {
+    "origincode": "JOG10000",
+    "originname": "YOGYAKARTA",
+    "branchcode": "JOG000"
+}, {
+    "origincode": "JOG20400",
+    "originname": "WATES,KAB.KULON PROGO",
+    "branchcode": "JOG000"
+}, {
+    "origincode": "JOG20500",
+    "originname": "WONOSARI,KAB.GN.KIDUL",
+    "branchcode": "JOG000"
+}, {
+    "origincode": "KDI10000",
+    "originname": "KENDARI",
+    "branchcode": "KDI000"
+}, {
+    "origincode": "KDI20100",
+    "originname": "BAU-BAU",
+    "branchcode": "KDI000"
+}, {
+    "origincode": "KDI20200",
+    "originname": "KOLAKA,KAB.KOLAKA",
+    "branchcode": "KDI000"
+}, {
+    "origincode": "KDI20209",
+    "originname": "TIRAWUTA,KOLAKA TIMUR",
+    "branchcode": "KDI000"
+}, {
+    "origincode": "KDI20300",
+    "originname": "RAHA,KAB.MUNA",
+    "branchcode": "KDI000"
+}, {
+    "origincode": "KDI20306",
+    "originname": "KULISUSU,RAHA",
+    "branchcode": "KDI000"
+}, {
+    "origincode": "KDI20400",
+    "originname": "UNAAHA,KAB.KONAWE",
+    "branchcode": "KDI000"
+}, {
+    "origincode": "KDI20500",
+    "originname": "RUMBIA,KAB.BOMBANA",
+    "branchcode": "KDI000"
+}, {
+    "origincode": "KDI20600",
+    "originname": "PASAR WAJO,KAB.BUTON",
+    "branchcode": "KDI000"
+}, {
+    "origincode": "KDI20601",
+    "originname": "BATAUGA, BUTON SELATAN",
+    "branchcode": "KDI000"
+}, {
+    "origincode": "KDI20603",
+    "originname": "GU,BUTON TENGAH",
+    "branchcode": "KDI000"
+}, {
+    "origincode": "KDI20700",
+    "originname": "LASUSUA,KAB.KOLAKA UTARA",
+    "branchcode": "KDI000"
+}, {
+    "origincode": "KDI20800",
+    "originname": "WANGGODO\/ANDOLO,KAB.KONAWE",
+    "branchcode": "KDI000"
+}, {
+    "origincode": "KDI20900",
+    "originname": "WANGI WANGI,KAB.WAKATOBI",
+    "branchcode": "KDI000"
+}, {
+    "origincode": "KDI21104",
+    "originname": "ANDOWIA,KONAWE UTR",
+    "branchcode": "KDI000"
+}, {
+    "origincode": "KDI21200",
+    "originname": "WAWONII BARAT,KONAWE",
+    "branchcode": "KDI000"
+}, {
+    "origincode": "KDR10000",
+    "originname": "KEDIRI",
+    "branchcode": "KDR000"
+}, {
+    "origincode": "KOE10000",
+    "originname": "KUPANG",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE10104",
+    "originname": "KATIKUTANA,WAIBAKUL",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE20100",
+    "originname": "ATAMBUA,KAB.BELU",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE20101",
+    "originname": "KOBALIMA,BETUN",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE20104",
+    "originname": "MALAKA TENGAH,ATAMBUA",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE20200",
+    "originname": "KALABAHI",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE20300",
+    "originname": "KEFAMENANU,KAB.TIMOR TGH UTARA",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE20400",
+    "originname": "LARANTUKA,KAB.FLORES TIMUR",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE20500",
+    "originname": "MAUMERE,KAB.SIKKA",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE20600",
+    "originname": "RUTENG,KAB.MANGGARAI",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE20700",
+    "originname": "SOE,KAB.TIMOR TENGAH SELATAN",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE20800",
+    "originname": "ENDE,KAB.ENDE",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE20900",
+    "originname": "BAJAWA,KAB.NGADA",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE21000",
+    "originname": "WAINGAPU,KAB.SUMBA TIMUR",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE21100",
+    "originname": "WAIKABUBAK",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE21200",
+    "originname": "LABUAN BAJO, LABUAN BAJO",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE21300",
+    "originname": "BORONG,KAB.MANGGARAI TIMUR",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE21400",
+    "originname": "MBAY,KAB.NAGEKEO",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE21500",
+    "originname": "BAA, BAA",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE21600",
+    "originname": "TAMBOLAKA, TAMBOLAKA",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KOE21800",
+    "originname": "LEWOLEBA, LEMBATA",
+    "branchcode": "KOE000"
+}, {
+    "origincode": "KRW10000",
+    "originname": "KARAWANG",
+    "branchcode": "KRW000"
+}, {
+    "origincode": "KRW10003",
+    "originname": "CIKAMPEK,KARAWANG",
+    "branchcode": "KRW000"
+}, {
+    "origincode": "KRW10012",
+    "originname": "RENGASDENGKLOK,KARAWANG",
+    "branchcode": "KRW000"
+}, {
+    "origincode": "MDC10000",
+    "originname": "MANADO",
+    "branchcode": "MDC000"
+}, {
+    "origincode": "MDC20100",
+    "originname": "KOTAMOBAGU,KOTAMOBAGU",
+    "branchcode": "MDC000"
+}, {
+    "origincode": "MDC20200",
+    "originname": "TAHUNA,KEP.SANGIHE",
+    "branchcode": "MDC000"
+}, {
+    "origincode": "MDC20300",
+    "originname": "TONDANO,KAB.MINAHASA",
+    "branchcode": "MDC000"
+}, {
+    "origincode": "MDC20800",
+    "originname": "AIRMADIDI,KAB.MINAHASA UTARA",
+    "branchcode": "MDC000"
+}, {
+    "origincode": "MDC21100",
+    "originname": "TOMOHON",
+    "branchcode": "MDC000"
+}, {
+    "origincode": "MDN10000",
+    "originname": "MADIUN",
+    "branchcode": "MDN000"
+}, {
+    "origincode": "MDN10100",
+    "originname": "CARUBAN,KAB.MADIUN",
+    "branchcode": "MDN000"
+}, {
+    "origincode": "MDN20100",
+    "originname": "MAGETAN, KAB MAGETAN",
+    "branchcode": "MDN000"
+}, {
+    "origincode": "MDN20200",
+    "originname": "NGAWI, KAB NGAWI",
+    "branchcode": "MDN000"
+}, {
+    "origincode": "MDN20300",
+    "originname": "PACITAN, KAB PACITAN",
+    "branchcode": "MDN000"
+}, {
+    "origincode": "MDN20400",
+    "originname": "PONOROGO, KAB PONOROGO",
+    "branchcode": "MDN000"
+}, {
+    "origincode": "MES10000",
+    "originname": "MEDAN",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES10100",
+    "originname": "KISARAN, KAB.ASAHAN",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES10300",
+    "originname": "SIDIKALANG, KAB.DAIRI",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES10600",
+    "originname": "LUBUK PAKAM,KAB.DELI SERDANG",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES10606",
+    "originname": "PANCUR BATU,LUBUK PAKAM",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES20200",
+    "originname": "BINJAI, KOTA BINJAI",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES20601",
+    "originname": "BANDAR,SIMALUNGUN",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES20700",
+    "originname": "RANTAUPRAPAT, KAB.LABUHAN BATU",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES20704",
+    "originname": "KOTAPINANG,RANTAUPRAPAT",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES20713",
+    "originname": "AEK KUO,LABUHANBATU",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES20800",
+    "originname": "KABANJAHE, KAB.KARO",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES20900",
+    "originname": "STABAT, KAB.LANGKAT",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES20915",
+    "originname": "BINJAI,LANGKAT",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES21100",
+    "originname": "TEBINGTINGGI",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES21508",
+    "originname": "SEI SUKA,LIMAPULUH",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES21511",
+    "originname": "LAUT TADOR,BATU BARA",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES22100",
+    "originname": "SALAK,KAB.PAKPAK BARAT",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES22200",
+    "originname": "PANGURURAN,KAB.SAMOSIR",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES22300",
+    "originname": "SEI RAMPAH,KAB.SERDANG BEDAGAI",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES22500",
+    "originname": "TANJUNG BALAI",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MES22600",
+    "originname": "PEMATANGSIANTAR",
+    "branchcode": "MES000"
+}, {
+    "origincode": "MGL10000",
+    "originname": "MAGELANG",
+    "branchcode": "MGL000"
+}, {
+    "origincode": "MGL10100",
+    "originname": "KEBUMEN",
+    "branchcode": "MGL000"
+}, {
+    "origincode": "MGL10200",
+    "originname": "WONOSOBO",
+    "branchcode": "MGL000"
+}, {
+    "origincode": "MGL10300",
+    "originname": "PURWOREJO,KAB.PURWOREJO",
+    "branchcode": "MGL000"
+}, {
+    "origincode": "MGL10400",
+    "originname": "TEMANGGUNG,KAB.TEMANGGUNG",
+    "branchcode": "MGL000"
+}, {
+    "origincode": "MJK10000",
+    "originname": "MOJOKERTO",
+    "branchcode": "MJK000"
+}, {
+    "origincode": "MJK10100",
+    "originname": "JOMBANG,KAB. JOMBANG",
+    "branchcode": "MJK000"
+}, {
+    "origincode": "MJK10200",
+    "originname": "NGANJUK,KAB. NGANJUK",
+    "branchcode": "MJK000"
+}, {
+    "origincode": "MXG10000",
+    "originname": "MALANG",
+    "branchcode": "MXG000"
+}, {
+    "origincode": "MXG20100",
+    "originname": "BLITAR",
+    "branchcode": "MXG000"
+}, {
+    "origincode": "MXG20200",
+    "originname": "BATU",
+    "branchcode": "MXG000"
+}, {
+    "origincode": "MXG20300",
+    "originname": "KEPANJEN,KAB. MALANG",
+    "branchcode": "MXG000"
+}, {
+    "origincode": "MXG20323",
+    "originname": "TUREN, KABUPATEN MALANG",
+    "branchcode": "MXG000"
+}, {
+    "origincode": "PBL10000",
+    "originname": "PROBOLINGGO",
+    "branchcode": "PBL000"
+}, {
+    "origincode": "PBL20100",
+    "originname": "LUMAJANG,KAB.LUMAJANG",
+    "branchcode": "PBL000"
+}, {
+    "origincode": "PBL20200",
+    "originname": "SITUBONDO,KAB.SITUBONDO",
+    "branchcode": "PBL000"
+}, {
+    "origincode": "PDG10000",
+    "originname": "PADANG",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG20100",
+    "originname": "BATUSANGKAR",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG20200",
+    "originname": "BUKITTINGGI",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG20300",
+    "originname": "LUBUKSIKAPING,KAB,PASAMAN",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG20500",
+    "originname": "PAINAN,KAB.PESISIR SELATAN",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG20600",
+    "originname": "PARIAMAN,KAB.PADANG PARIAMAN",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG20700",
+    "originname": "PAYAKUMBUH",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG20800",
+    "originname": "SAWAHLUNTO",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG20900",
+    "originname": "SOLOK",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG21100",
+    "originname": "PADANGPANJANG",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG21200",
+    "originname": "PULAU PUNJUNG,KAB.DHARMASRAYA",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG21400",
+    "originname": "TUAPEJAT",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG21403",
+    "originname": "SIBERUT SELATAN,TUAPEJAT",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG21500",
+    "originname": "SIMPANG EMPAT",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG21503",
+    "originname": "LEMBAH MELINTANG,SIMPANG EMPAT",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG21710",
+    "originname": "LEMBAH GUMANTI,AROSUKA",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG21800",
+    "originname": "PADANG ARO",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG21900",
+    "originname": "MUARA,KAB.SIJUNJUNG",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PDG22200",
+    "originname": "LUBUK BASUNG,KAB.AGAM",
+    "branchcode": "PDG000"
+}, {
+    "origincode": "PGK10000",
+    "originname": "PANGKALPINANG",
+    "branchcode": "PGK000"
+}, {
+    "origincode": "PGK10200",
+    "originname": "SUNGAI LIAT,BANGKA",
+    "branchcode": "PGK000"
+}, {
+    "origincode": "PGK10201",
+    "originname": "BELINYU,BANGKA",
+    "branchcode": "PGK000"
+}, {
+    "origincode": "PGK10206",
+    "originname": "MERAWANG,BANGKA",
+    "branchcode": "PGK000"
+}, {
+    "origincode": "PGK10300",
+    "originname": "KELAPA,BANGKA BARAT",
+    "branchcode": "PGK000"
+}, {
+    "origincode": "PGK10301",
+    "originname": "MENTOK (MUNTOK),BANGKA BARAT",
+    "branchcode": "PGK000"
+}, {
+    "origincode": "PGK10302",
+    "originname": "TEMPILANG,BANGKA BARAT",
+    "branchcode": "PGK000"
+}, {
+    "origincode": "PGK10304",
+    "originname": "JEBUS,BANGKA BARAT",
+    "branchcode": "PGK000"
+}, {
+    "origincode": "PGK10305",
+    "originname": "PARITTIGA,BANGKA BARAT",
+    "branchcode": "PGK000"
+}, {
+    "origincode": "PGK10400",
+    "originname": "KOBA,BANGKA TENGAH",
+    "branchcode": "PGK000"
+}, {
+    "origincode": "PGK10401",
+    "originname": "SUNGAI SELAN,BANGKA TENGAH",
+    "branchcode": "PGK000"
+}, {
+    "origincode": "PGK10402",
+    "originname": "SIMPANG KATIS,BANGKA TENGAH",
+    "branchcode": "PGK000"
+}, {
+    "origincode": "PGK10405",
+    "originname": "LUBUK BESAR,BANGKA TENGAH",
+    "branchcode": "PGK000"
+}, {
+    "origincode": "PGK10500",
+    "originname": "TOBOALI,BANGKA SELATAN",
+    "branchcode": "PGK000"
+}, {
+    "origincode": "PGK10502",
+    "originname": "PAYUNG,BANGKA SELATAN",
+    "branchcode": "PGK000"
+}, {
+    "origincode": "PGK10504",
+    "originname": "SIMPANG RIMBA,BANGKA SELATAN",
+    "branchcode": "PGK000"
+}, {
+    "origincode": "PGK10505",
+    "originname": "PULAU BESAR,BANGKA SELATAN",
+    "branchcode": "PGK000"
+}, {
+    "origincode": "PKU10000",
+    "originname": "PEKANBARU",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU10100",
+    "originname": "DUMAI, KOTA DUMAI",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20100",
+    "originname": "BANGKINANG, KAB KAMPAR",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20112",
+    "originname": "BANGKINANG BARAT,BANGKINANG",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20113",
+    "originname": "BANGKINANG SEBERANG",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20114",
+    "originname": "GUNUNG SAHILAN, BANGKINANG",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20119",
+    "originname": "PERHENTIAN RAJA, BANGKINANG",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20123",
+    "originname": "TAPUNG, BANGKINANG",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20200",
+    "originname": "BENGKALIS, KAB BENGKALIS",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20217",
+    "originname": "DURI-MANDAU,BENGKALIS",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20300",
+    "originname": "RENGAT, KAB INDRAGIRI HULU",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20305",
+    "originname": "PASIR PENYU,RENGAT",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20307",
+    "originname": "SIBERIDA,RENGAT",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20400",
+    "originname": "TEMBILAHAN, INDRAGIRI HILIR",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20412",
+    "originname": "KEMUNING, TEMBILAHAN",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20414",
+    "originname": "PULAU BURUNG, TEMBILAHAN",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20500",
+    "originname": "BAGANSIAPIAPI, KAB ROKAN HILIR",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20506",
+    "originname": "TANAH PUTIH, KAB ROKAN HILIR",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20507",
+    "originname": "BAGAN SINEMBAH, ROKAN",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20509",
+    "originname": "BANGKO PUSAKO, KAB ROKAN HILIR",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU20900",
+    "originname": "TELUK KUANTAN",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU21000",
+    "originname": "PANGKALAN KERINCI,PALALAWAN",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU21009",
+    "originname": "UKUI,KAB.PALALAWAN",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU21011",
+    "originname": "SOREK, KAB PELALAWAN",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU21012",
+    "originname": "BANDAR SEI KIJANG,PELALAWAN",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU21100",
+    "originname": "PASIR PANGARAIAN",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU21104",
+    "originname": "KUNTODARUSSALAM,P.PANGARAIAN",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU21109",
+    "originname": "TANDUN,PASIR PANGARAIAN",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU21112",
+    "originname": "UJUNGBATU,PASIR PANGARAIAN",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU21115",
+    "originname": "PENDALIAN V KOTO,ROKAN HULU",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU21204",
+    "originname": "KANDIS,SIAKSRIINDAPURA",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU21206",
+    "originname": "KOTO GASIP,SIAKSRIINDAPURA",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU21209",
+    "originname": "SIAK",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU21212",
+    "originname": "TUALANG,SIAKSRIINDAPURA",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKU21301",
+    "originname": "SELAT PANJANG, KAB MERANTI",
+    "branchcode": "PKU000"
+}, {
+    "origincode": "PKY10000",
+    "originname": "PALANGKARAYA",
+    "branchcode": "PKY000"
+}, {
+    "origincode": "PKY20200",
+    "originname": "KASONGAN,KAB.KATINGAN",
+    "branchcode": "PKY000"
+}, {
+    "origincode": "PKY20300",
+    "originname": "KUALAKAPUAS",
+    "branchcode": "PKY000"
+}, {
+    "origincode": "PKY20400",
+    "originname": "KURUN,KAB.GUNUNG MAS",
+    "branchcode": "PKY000"
+}, {
+    "origincode": "PKY20408",
+    "originname": "GUNUNG MAS,KUALAKURUN",
+    "branchcode": "PKY000"
+}, {
+    "origincode": "PKY20500",
+    "originname": "KUALA PEMBUANG",
+    "branchcode": "PKY000"
+}, {
+    "origincode": "PKY20700",
+    "originname": "PANGKALANBUN",
+    "branchcode": "PKY000"
+}, {
+    "origincode": "PKY20800",
+    "originname": "SAMPIT",
+    "branchcode": "PKY000"
+}, {
+    "origincode": "PKY20806",
+    "originname": "PARENGGEAN,SAMPIT",
+    "branchcode": "PKY000"
+}, {
+    "origincode": "PKY21300",
+    "originname": "SUKAMARA,KAB.SUKAMARA",
+    "branchcode": "PKY000"
+}, {
+    "origincode": "PLM10000",
+    "originname": "PALEMBANG",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM10300",
+    "originname": "MUARA BELITI BARU, MUSI RAWAS",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM10315",
+    "originname": "TUGUMULYO,MUARA BELITI BARU",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20100",
+    "originname": "BATURAJA",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20122",
+    "originname": "LUBUK RAJA KAB.OGAN KOMERING ULU",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20200",
+    "originname": "KAYUAGUNG,KAB.OGAN KOMERING",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20211",
+    "originname": "TULUNG SELAPAN,KAYUAGUNG",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20300",
+    "originname": "LAHAT,KAB.LAHAT",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20326",
+    "originname": "MERAPI BARAT KAB.LAHAT",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20500",
+    "originname": "MUARA ENIM,KAB.MUARA ENIM",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20503",
+    "originname": "TANJUNGAGUNG,MUARA ENIM",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20505",
+    "originname": "REMBANG DANGKU,MUARA ENIM",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20508",
+    "originname": "LAWANG KIDUL - TJ.ENIM,MUARA ENIM",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20511",
+    "originname": "PENUKAL ABAB,MUARA ENIM",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20513",
+    "originname": "SEMENDE DARAT LAUT,MUARA ENIM",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20517",
+    "originname": "TALANG UBI,MUARA ENIM",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20518",
+    "originname": "TANAH ABANG,MUARA ENIM",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20519",
+    "originname": "UJAN MAS,MUARA ENIM",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20600",
+    "originname": "PAGARALAM",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20700",
+    "originname": "PRABUMULIH",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20800",
+    "originname": "SEKAYU,KAB.MUSI BANYUASIN",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20805",
+    "originname": "BAYUNG LINCIR,SEKAYU",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20806",
+    "originname": "SUNGAI LILIN,SEKAYU",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM20819",
+    "originname": "SANGA DESA,SEKAYU",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM21000",
+    "originname": "PANGKALANBALAI,KAB.BANYUASIN",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM21001",
+    "originname": "BANYUASIN I,PANGKALANBALAI",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM21005",
+    "originname": "BETUNG,PANGKALANBALAI",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM21011",
+    "originname": "TALANGKELAPA,PANGKALANBALAI",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM21100",
+    "originname": "TEBING TINGGI,KAB.EMPAT LAWANG",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM21300",
+    "originname": "INDRALAYA,KAB.OGAN ILIR",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM21400",
+    "originname": "MARTAPURA,KAB.OGAN KOMERING",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM21401",
+    "originname": "BELITANG, MARTAPURA",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM21500",
+    "originname": "MUARADUA,KAB.OGAN KOMERING ULU",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLM21600",
+    "originname": "LUBUK LINGGAU",
+    "branchcode": "PLM000"
+}, {
+    "origincode": "PLW10000",
+    "originname": "PALU",
+    "branchcode": "PLW000"
+}, {
+    "origincode": "PLW20100",
+    "originname": "LUWUK,KAB.BANGGAI",
+    "branchcode": "PLW000"
+}, {
+    "origincode": "PLW20103",
+    "originname": "BATUI,LUWUK",
+    "branchcode": "PLW000"
+}, {
+    "origincode": "PLW20117",
+    "originname": "TOILI,LUWUK",
+    "branchcode": "PLW000"
+}, {
+    "origincode": "PLW20200",
+    "originname": "POSO",
+    "branchcode": "PLW000"
+}, {
+    "origincode": "PLW20212",
+    "originname": "PAMONA SELATAN,POSO",
+    "branchcode": "PLW000"
+}, {
+    "origincode": "PLW20300",
+    "originname": "TOLITOLI,KAB.TOLITOLI",
+    "branchcode": "PLW000"
+}, {
+    "origincode": "PLW20500",
+    "originname": "BANGGAI,KAB.BANGGAI KEP.",
+    "branchcode": "PLW000"
+}, {
+    "origincode": "PLW20600",
+    "originname": "BUOL, KAB. BUOL",
+    "branchcode": "PLW000"
+}, {
+    "origincode": "PLW20700",
+    "originname": "BANAWA,KAB.DONGGALA",
+    "branchcode": "PLW000"
+}, {
+    "origincode": "PLW20709",
+    "originname": "SIGI BIROMARU",
+    "branchcode": "PLW000"
+}, {
+    "origincode": "PLW20800",
+    "originname": "BUNGKU, KAB. MOROWALI",
+    "branchcode": "PLW000"
+}, {
+    "origincode": "PLW20900",
+    "originname": "PARIGI,KAB.PARIGI MOUTONG",
+    "branchcode": "PLW000"
+}, {
+    "origincode": "PLW21000",
+    "originname": "AMPANA KOTA,AMPANA",
+    "branchcode": "PLW000"
+}, {
+    "origincode": "PNK10000",
+    "originname": "PONTIANAK",
+    "branchcode": "PNK000"
+}, {
+    "origincode": "PNK10100",
+    "originname": "KETAPANG, KAB.KETAPANG",
+    "branchcode": "PNK000"
+}, {
+    "origincode": "PNK10105",
+    "originname": "NANGA TAYAP,KETAPANG",
+    "branchcode": "PNK000"
+}, {
+    "origincode": "PNK10200",
+    "originname": "SANGGAU, KAB SANGGAU",
+    "branchcode": "PNK000"
+}, {
+    "origincode": "PNK10214",
+    "originname": "SEKAYAM BK,SANGGAU",
+    "branchcode": "PNK000"
+}, {
+    "origincode": "PNK10223",
+    "originname": "ENTIKONG, SANGGAU",
+    "branchcode": "PNK000"
+}, {
+    "origincode": "PNK10300",
+    "originname": "SINGKAWANG",
+    "branchcode": "PNK000"
+}, {
+    "origincode": "PNK10400",
+    "originname": "SINTANG,KAB.SINTANG",
+    "branchcode": "PNK000"
+}, {
+    "origincode": "PNK20200",
+    "originname": "PUTUSSIBAU, KAB.KAPUAS HULU",
+    "branchcode": "PNK000"
+}, {
+    "origincode": "PNK20600",
+    "originname": "BENGKAYANG, KAB BENGKAYANG",
+    "branchcode": "PNK000"
+}, {
+    "origincode": "PNK20700",
+    "originname": "NGABANG, KAB LANDAK",
+    "branchcode": "PNK000"
+}, {
+    "origincode": "PNK20800",
+    "originname": "NANGA PINOH, KAB MELAWI",
+    "branchcode": "PNK000"
+}, {
+    "origincode": "PNK20900",
+    "originname": "MEMPAWAH, KAB PONTIANAK",
+    "branchcode": "PNK000"
+}, {
+    "origincode": "PNK21000",
+    "originname": "SAMBAS, KAB SAMBAS",
+    "branchcode": "PNK000"
+}, {
+    "origincode": "PNK21100",
+    "originname": "SEKADAU HILIR, KAB SEKADAU",
+    "branchcode": "PNK000"
+}, {
+    "origincode": "PSR10000",
+    "originname": "PASURUAN, PASURUAN",
+    "branchcode": "PSR000"
+}, {
+    "origincode": "PWT10000",
+    "originname": "PURWAKARTA,KAB.PURWAKARTA",
+    "branchcode": "PWT000"
+}, {
+    "origincode": "PWT20000",
+    "originname": "SUBANG,KAB.SUBANG",
+    "branchcode": "PWT000"
+}, {
+    "origincode": "SDA10000",
+    "originname": "SIDOARJO,SIDOARJO",
+    "branchcode": "SDA000"
+}, {
+    "origincode": "SMD10000",
+    "originname": "SAMARINDA",
+    "branchcode": "SMD000"
+}, {
+    "origincode": "SMD10007",
+    "originname": "PALARAN",
+    "branchcode": "SMD000"
+}, {
+    "origincode": "SMD20100",
+    "originname": "TENGGARONG,KAB.KUTAI",
+    "branchcode": "SMD000"
+}, {
+    "origincode": "SMD20108",
+    "originname": "KOTA BANGUN,TENGGARONG",
+    "branchcode": "SMD000"
+}, {
+    "origincode": "SMD20123",
+    "originname": "SEBULU,TENGGARONG",
+    "branchcode": "SMD000"
+}, {
+    "origincode": "SMD20127",
+    "originname": "MUARA BADAK",
+    "branchcode": "SMD000"
+}, {
+    "origincode": "SMD20210",
+    "originname": "MELAK, SENDAWAR",
+    "branchcode": "SMD000"
+}, {
+    "origincode": "SMI10000",
+    "originname": "SUKABUMI",
+    "branchcode": "SMI000"
+}, {
+    "origincode": "SMI10005",
+    "originname": "CIBADAK,SUKABUMI",
+    "branchcode": "SMI000"
+}, {
+    "origincode": "SMI10007",
+    "originname": "CICURUG,SUKABUMI",
+    "branchcode": "SMI000"
+}, {
+    "origincode": "SMI10014",
+    "originname": "CIKEMBAR,SUKABUMI",
+    "branchcode": "SMI000"
+}, {
+    "origincode": "SMI10023",
+    "originname": "JAMPANG KULON,SUKABUMI",
+    "branchcode": "SMI000"
+}, {
+    "origincode": "SMI10024",
+    "originname": "JAMPANG TENGAH,SUKABUMI",
+    "branchcode": "SMI000"
+}, {
+    "origincode": "SMI10034",
+    "originname": "PARUNGKUDA,SUKABUMI",
+    "branchcode": "SMI000"
+}, {
+    "origincode": "SMI10036",
+    "originname": "PELABUHANRATU,SUKABUMI",
+    "branchcode": "SMI000"
+}, {
+    "origincode": "SMI10038",
+    "originname": "SAGARANTEN,SUKABUMI",
+    "branchcode": "SMI000"
+}, {
+    "origincode": "SOC10000",
+    "originname": "SOLO",
+    "branchcode": "SOC000"
+}, {
+    "origincode": "SOC20100",
+    "originname": "BOYOLALI,KAB.BOYOLALI",
+    "branchcode": "SOC000"
+}, {
+    "origincode": "SOC20200",
+    "originname": "KARANGANYAR,KAB.KARANGANYAR",
+    "branchcode": "SOC000"
+}, {
+    "origincode": "SOC20300",
+    "originname": "KLATEN",
+    "branchcode": "SOC000"
+}, {
+    "origincode": "SOC20400",
+    "originname": "SRAGEN",
+    "branchcode": "SOC000"
+}, {
+    "origincode": "SOC20500",
+    "originname": "SUKOHARJO",
+    "branchcode": "SOC000"
+}, {
+    "origincode": "SOC20600",
+    "originname": "WONOGIRI,KAB.WONOGIRI",
+    "branchcode": "SOC000"
+}, {
+    "origincode": "SOQ10000",
+    "originname": "SORONG",
+    "branchcode": "SOQ000"
+}, {
+    "origincode": "SOQ10010",
+    "originname": "SAUSAPOR,SORONG",
+    "branchcode": "SOQ000"
+}, {
+    "origincode": "SOQ10019",
+    "originname": "AIMAS,SORONG",
+    "branchcode": "SOQ000"
+}, {
+    "origincode": "SOQ20000",
+    "originname": "FAK-FAK",
+    "branchcode": "SOQ000"
+}, {
+    "origincode": "SOQ20100",
+    "originname": "KAIMANA",
+    "branchcode": "SOQ000"
+}, {
+    "origincode": "SOQ20300",
+    "originname": "WAISAI,KAB.RAJA AMPAT",
+    "branchcode": "SOQ000"
+}, {
+    "origincode": "SOQ20400",
+    "originname": "TEMINABUAN,KAB.SORONG SELATAN",
+    "branchcode": "SOQ000"
+}, {
+    "origincode": "SOQ20404",
+    "originname": "AYAMARU,TEMINABUAN",
+    "branchcode": "SOQ000"
+}, {
+    "origincode": "SOQ20500",
+    "originname": "BINTUNI,KAB. TELUK BINTUNI",
+    "branchcode": "SOQ000"
+}, {
+    "origincode": "SOQ20603",
+    "originname": "WASIOR,RASEI",
+    "branchcode": "SOQ000"
+}, {
+    "origincode": "SOQ20608",
+    "originname": "MANOKWARI",
+    "branchcode": "SOQ000"
+}, {
+    "origincode": "SOQ20612",
+    "originname": "ORANSBARI, MANOKWARI",
+    "branchcode": "SOQ000"
+}, {
+    "origincode": "SOQ20613",
+    "originname": "RANSIKI, MANOKWARI",
+    "branchcode": "SOQ000"
+}, {
+    "origincode": "SOQ20617",
+    "originname": "PRAFI, MANOKWARI",
+    "branchcode": "SOQ000"
+}, {
+    "origincode": "SRG10000",
+    "originname": "SEMARANG",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG10100",
+    "originname": "JEPARA,KAB.JEPARA",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG10200",
+    "originname": "KUDUS,KAB.KUDUS",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG10300",
+    "originname": "PEKALONGAN",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG20200",
+    "originname": "BATANG ,KAB BATANG",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG20300",
+    "originname": "BLORA,KAB.BLORA",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG20309",
+    "originname": "CEPU,BLORA",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG20400",
+    "originname": "BOJONEGORO,KAB.BOJONEGORO",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG20700",
+    "originname": "DEMAK",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG20800",
+    "originname": "KENDAL,KAB.KENDAL",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG20900",
+    "originname": "PATI,KAB.PATI",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG21000",
+    "originname": "PEMALANG,KAB.PEMALANG",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG21100",
+    "originname": "PURWODADI,KAB.GROBOGAN",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG21200",
+    "originname": "REMBANG,KAB.REMBANG",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG21300",
+    "originname": "SALATIGA",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG21600",
+    "originname": "UNGARAN",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG21602",
+    "originname": "AMBARAWA, UNGARAN",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG21700",
+    "originname": "PURBALINGGA,KAB.PURBALINGGA",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SRG21800",
+    "originname": "BANJARNEGARA,KAB.BANJARNEGARA",
+    "branchcode": "SRG000"
+}, {
+    "origincode": "SUB10000",
+    "originname": "SURABAYA",
+    "branchcode": "SUB000"
+}, {
+    "origincode": "SUB10100",
+    "originname": "GRESIK,KAB.GRESIK",
+    "branchcode": "SUB000"
+}, {
+    "origincode": "SUB10200",
+    "originname": "LAMONGAN,KAB.LAMONGAN",
+    "branchcode": "SUB000"
+}, {
+    "origincode": "SUB20100",
+    "originname": "BANGKALAN,KAB.BANGKALAN",
+    "branchcode": "SUB000"
+}, {
+    "origincode": "SUB20500",
+    "originname": "PAMEKASAN,KAB.PAMEKASAN",
+    "branchcode": "SUB000"
+}, {
+    "origincode": "SUB20600",
+    "originname": "SAMPANG,KAB.SAMPANG",
+    "branchcode": "SUB000"
+}, {
+    "origincode": "SUB20800",
+    "originname": "SUMENEP,KAB.SUMENEP",
+    "branchcode": "SUB000"
+}, {
+    "origincode": "SUB20900",
+    "originname": "TUBAN,KAB.TUBAN",
+    "branchcode": "SUB000"
+}, {
+    "origincode": "SUB21000",
+    "originname": "TULUNGAGUNG,KAB.TULUNGAGUNG",
+    "branchcode": "SUB000"
+}, {
+    "origincode": "SUB22000",
+    "originname": "TRENGGALEK,KAB.TRENGGALEK",
+    "branchcode": "SUB000"
+}, {
+    "origincode": "TGL10000",
+    "originname": "TEGAL",
+    "branchcode": "TGL000"
+}, {
+    "origincode": "TGL10200",
+    "originname": "SLAWI,KAB.TEGAL",
+    "branchcode": "TGL000"
+}, {
+    "origincode": "TGL20000",
+    "originname": "BREBES,KAB.BREBES",
+    "branchcode": "TGL000"
+}, {
+    "origincode": "TGL20002",
+    "originname": "BUMIAYU,BREBES",
+    "branchcode": "TGL000"
+}, {
+    "origincode": "TGL30000",
+    "originname": "PURWOKERTO, BANYUMAS",
+    "branchcode": "TGL000"
+}, {
+    "origincode": "TGR10000",
+    "originname": "TANGERANG",
+    "branchcode": "TGR000"
+}, {
+    "origincode": "TGR10100",
+    "originname": "TIGARAKSA,KAB.TANGERANG",
+    "branchcode": "TGR000"
+}, {
+    "origincode": "TGR10113",
+    "originname": "SERPONG, TANGERANG SELATAN",
+    "branchcode": "TGR000"
+}, {
+    "origincode": "TIM10000",
+    "originname": "TIMIKA",
+    "branchcode": "TIM000"
+}, {
+    "origincode": "TJQ10000",
+    "originname": "TANJUNGPANDAN",
+    "branchcode": "TJQ000"
+}, {
+    "origincode": "TJQ10100",
+    "originname": "MANGGAR,KAB.BELITUNG TIMUR",
+    "branchcode": "TJQ000"
+}, {
+    "origincode": "TJQ10102",
+    "originname": "GANTUNG,BELITUNG TIMUR",
+    "branchcode": "TJQ000"
+}, {
+    "origincode": "TJQ10103",
+    "originname": "KELAPA KAMPIT,BELITUNG TIMUR",
+    "branchcode": "TJQ000"
+}, {
+    "origincode": "TKG10000",
+    "originname": "BANDARLAMPUNG",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TKG20100",
+    "originname": "KALIANDA, KAB.LAMPUNG SELATAN",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TKG20104",
+    "originname": "TANJUNG BINTANG, LAMPUNG SEL",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TKG20106",
+    "originname": "JATI AGUNG, KAB.LAMPUNG SEL",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TKG20107",
+    "originname": "KATIBUNG, KAB.LAMPUNG SELATAN",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TKG20200",
+    "originname": "KOTABUMI, KAB.LAMPUNG UTARA",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TKG20300",
+    "originname": "METRO, KOTA METRO",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TKG20400",
+    "originname": "LIWA, LAMPUNG BARAT",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TKG20404",
+    "originname": "KRUI, PESISIR BARAT",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TKG20906",
+    "originname": "TERBANGGIBESAR \/ BANDARJAYA",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TKG21008",
+    "originname": "SUKADANA,Lampung Timur",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TKG21102",
+    "originname": "BARADATU, BLAMPANGAN UMPU",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TKG21201",
+    "originname": "MESUJI, MESUJI",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TKG21204",
+    "originname": "BANJAR AGUNG, MENGGALA",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TKG21214",
+    "originname": "TUMIJAJAR, MENGGALA",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TKG21300",
+    "originname": "KOTA AGUNG, KAB.TANGGAMUS",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TKG21303",
+    "originname": "PRINGSEWU, PRINGSEWU",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TKG21400",
+    "originname": "GEDONG TATAAN,KAB.PESAWARAN",
+    "branchcode": "TKG000"
+}, {
+    "origincode": "TNJ10000",
+    "originname": "TANJUNGPINANG",
+    "branchcode": "TNJ000"
+}, {
+    "origincode": "TNJ10102",
+    "originname": "BINTAN UTARA, KAB.BINTAN",
+    "branchcode": "TNJ000"
+}, {
+    "origincode": "TRK10000",
+    "originname": "TARAKAN",
+    "branchcode": "TRK000"
+}, {
+    "origincode": "TRK20100",
+    "originname": "TANJUNG SELOR, KAB BULUNGAN",
+    "branchcode": "TRK000"
+}, {
+    "origincode": "TRK20105",
+    "originname": "PULAU BUNYU, TANJUNGSELOR",
+    "branchcode": "TRK000"
+}, {
+    "origincode": "TRK20200",
+    "originname": "MALINAU, KAB MALINAU",
+    "branchcode": "TRK000"
+}, {
+    "origincode": "TRK20300",
+    "originname": "NUNUKAN, KAB NUNUKAN",
+    "branchcode": "TRK000"
+}, {
+    "origincode": "TRK20301",
+    "originname": "KRAYAN, NUNUKAN",
+    "branchcode": "TRK000"
+}, {
+    "origincode": "TRK20304",
+    "originname": "SEBATIK , NUNUKAN",
+    "branchcode": "TRK000"
+}, {
+    "origincode": "TRK20400",
+    "originname": "TANA TIDUNG, KAB TANA TIDUNG",
+    "branchcode": "TRK000"
+}, {
+    "origincode": "TSM10000",
+    "originname": "TASIKMALAYA",
+    "branchcode": "TSM000"
+}, {
+    "origincode": "TSM20000",
+    "originname": "BANJAR , BANJAR",
+    "branchcode": "TSM000"
+}, {
+    "origincode": "TSM30000",
+    "originname": "CIAMIS , CIAMIS",
+    "branchcode": "TSM000"
+}, {
+    "origincode": "TSM40000",
+    "originname": "PANGANDARAN , PANGANDARAN",
+    "branchcode": "TSM000"
+}, {
+    "origincode": "TTE10000",
+    "originname": "TERNATE",
+    "branchcode": "TTE000"
+}, {
+    "origincode": "TTE20200",
+    "originname": "JAILOLO",
+    "branchcode": "TTE000"
+}, {
+    "origincode": "TTE20300",
+    "originname": "LABUHA",
+    "branchcode": "TTE000"
+}, {
+    "origincode": "TTE20307",
+    "originname": "OBI,LABUHA",
+    "branchcode": "TTE000"
+}, {
+    "origincode": "TTE20400",
+    "originname": "WEDA,KAB.HALMAHERA TENGAH",
+    "branchcode": "TTE000"
+}, {
+    "origincode": "TTE20500",
+    "originname": "MABA,KAB.HALMAHERA TIMUR",
+    "branchcode": "TTE000"
+}, {
+    "origincode": "TTE20501",
+    "originname": "MABA SELATAN,MABA",
+    "branchcode": "TTE000"
+}, {
+    "origincode": "TTE20600",
+    "originname": "TOBELO,KAB.HALMAHERA UTARA",
+    "branchcode": "TTE000"
+}, {
+    "origincode": "TTE20700",
+    "originname": "SANANA,KAB.KEP.SULA",
+    "branchcode": "TTE000"
+}, {
+    "origincode": "TTE20800",
+    "originname": "TIDORE",
+    "branchcode": "TTE000"
+}, {
+    "origincode": "TTE20802",
+    "originname": "OBA UTARA,TIDORE",
+    "branchcode": "TTE000"
+}, {
+    "origincode": "TTE20900",
+    "originname": "MOROTAI TIMUR,PULAU MOROTAI",
+    "branchcode": "TTE000"
+}, {
+    "origincode": "UPG10000",
+    "originname": "MAKASAR",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG20100",
+    "originname": "BANTAENG,KAB.BANTAENG",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG20200",
+    "originname": "BARRU,KAB.BARRU",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG20300",
+    "originname": "BULUKUMBA",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG20400",
+    "originname": "ENREKANG,KAB.ENREKANG",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG20500",
+    "originname": "JENEPONTO,KAB.JENEPONTO",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG20600",
+    "originname": "MAKALE,KAB.TANA TORAJA",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG20605",
+    "originname": "RANTEPAO KAB. TANA TORAJA UTR",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG20700",
+    "originname": "MAMUJU,MAMUJU",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG20715",
+    "originname": "TOPOYO,MAMUJU",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG20800",
+    "originname": "MAROS",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG20900",
+    "originname": "MAJENE,MAJENE",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG21000",
+    "originname": "PALOPO",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG21100",
+    "originname": "PINRANG",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG21200",
+    "originname": "POLEWALI,POLEWALI MANDAR",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG21208",
+    "originname": "WONOMULYO,POLEWALI MANDAR",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG21300",
+    "originname": "SIDENRENG,KAB.SIDENRENG",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG21400",
+    "originname": "SENGKANG, WAJO",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG21500",
+    "originname": "SINJAI",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG21600",
+    "originname": "SUNGGUMINASA,KAB.GOWA",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG21700",
+    "originname": "TAKALAR",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG21800",
+    "originname": "WATAMPONE,KAB.BONE",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG21900",
+    "originname": "WATANSOPPENG",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG22000",
+    "originname": "BENTENG,KAB.SELAYAR",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG22100",
+    "originname": "PANGKAJENE,KEP.PANGKAJENE",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG22300",
+    "originname": "PARE-PARE",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG23100",
+    "originname": "BELOPA,KAB.LUWU",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG23112",
+    "originname": "WALENRANG,BELOPA",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG23200",
+    "originname": "MALILI,KAB.LUWU TIMUR",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG23203",
+    "originname": "MANGKUTANA,KAB.LUWU TIMUR",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG23204",
+    "originname": "SOROAKO\/NUHA,KAB.LUWU TIMUR",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG23300",
+    "originname": "MASAMBA,KAB.LUWU UTARA",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG23400",
+    "originname": "MAMASA,MAMASA",
+    "branchcode": "UPG000"
+}, {
+    "origincode": "UPG23500",
+    "originname": "PASANGKAYU,MAMUJU UTARA",
+    "branchcode": "UPG000"
+}]

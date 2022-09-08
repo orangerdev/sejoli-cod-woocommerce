@@ -162,9 +162,7 @@ class SCOD_Shipping {
 		 * The class responsible for defining API related functions.
 		 */
 		require_once SCOD_SHIPPING_DIR . 'includes/class-scod-shipping-api.php';
-		require_once SCOD_SHIPPING_DIR . 'api/class-scod-shipping-jne.php';
 		require_once SCOD_SHIPPING_DIR . 'api/class-scod-shipping-arveoli.php';
-		require_once SCOD_SHIPPING_DIR . 'api/class-scod-shipping-sicepat.php';
 		require_once SCOD_SHIPPING_DIR . 'api/class-scod-shipping-saas.php';
 
 		// Custom WebHook & Callback

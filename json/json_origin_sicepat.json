@@ -1,0 +1,928 @@
+[{
+    "origin_code": "AMQ",
+    "origin_name": "Ambon"
+}, {
+    "origin_code": "BPN",
+    "origin_name": "Balikpapan"
+}, {
+    "origin_code": "BTJ",
+    "origin_name": "Bandaaceh"
+}, {
+    "origin_code": "BDO",
+    "origin_name": "Bandung"
+}, {
+    "origin_code": "BKL",
+    "origin_name": "Bangkalan"
+}, {
+    "origin_code": "BJR",
+    "origin_name": "Banjar"
+}, {
+    "origin_code": "BDJ",
+    "origin_name": "Banjarmasin"
+}, {
+    "origin_code": "BNR",
+    "origin_name": "Banjarnegara"
+}, {
+    "origin_code": "BWI",
+    "origin_name": "Banyuwangi"
+}, {
+    "origin_code": "BTH",
+    "origin_name": "Batam"
+}, {
+    "origin_code": "BTA",
+    "origin_name": "Batang"
+}, {
+    "origin_code": "BTU",
+    "origin_name": "Batu"
+}, {
+    "origin_code": "BTR",
+    "origin_name": "Baturaja"
+}, {
+    "origin_code": "BKI",
+    "origin_name": "Bekasi"
+}, {
+    "origin_code": "BKS",
+    "origin_name": "Bengkulu"
+}, {
+    "origin_code": "BIN",
+    "origin_name": "Binjai"
+}, {
+    "origin_code": "BLT",
+    "origin_name": "Blitar"
+}, {
+    "origin_code": "BLA",
+    "origin_name": "Blora"
+}, {
+    "origin_code": "BOO",
+    "origin_name": "Bogor"
+}, {
+    "origin_code": "BJN",
+    "origin_name": "Bojonegoro"
+}, {
+    "origin_code": "BDW",
+    "origin_name": "Bondowoso"
+}, {
+    "origin_code": "BTG",
+    "origin_name": "Bontang"
+}, {
+    "origin_code": "BYO",
+    "origin_name": "Boyolali"
+}, {
+    "origin_code": "BES",
+    "origin_name": "Brebes"
+}, {
+    "origin_code": "BUK",
+    "origin_name": "Bukit Tinggi"
+}, {
+    "origin_code": "CMI",
+    "origin_name": "Ciamis"
+}, {
+    "origin_code": "CJR",
+    "origin_name": "Cianjur"
+}, {
+    "origin_code": "CXP",
+    "origin_name": "Cilacap"
+}, {
+    "origin_code": "CLG",
+    "origin_name": "Cilegon"
+}, {
+    "origin_code": "CBN",
+    "origin_name": "Cirebon"
+}, {
+    "origin_code": "DMK",
+    "origin_name": "Demak"
+}, {
+    "origin_code": "DPS",
+    "origin_name": "Denpasar"
+}, {
+    "origin_code": "DPK",
+    "origin_name": "Depok"
+}, {
+    "origin_code": "DUM",
+    "origin_name": "Dumai"
+}, {
+    "origin_code": "GRT",
+    "origin_name": "Garut"
+}, {
+    "origin_code": "GIN",
+    "origin_name": "Gianyar"
+}, {
+    "origin_code": "GTO",
+    "origin_name": "Gorontalo"
+}, {
+    "origin_code": "GSK",
+    "origin_name": "Gresik"
+}, {
+    "origin_code": "IDR",
+    "origin_name": "Indramayu"
+}, {
+    "origin_code": "CGK",
+    "origin_name": "Jakarta"
+}, {
+    "origin_code": "DJB",
+    "origin_name": "Jambi"
+}, {
+    "origin_code": "DJJ",
+    "origin_name": "Jayapura"
+}, {
+    "origin_code": "JBR",
+    "origin_name": "Jember"
+}, {
+    "origin_code": "JRN",
+    "origin_name": "Jembrana"
+}, {
+    "origin_code": "JPR",
+    "origin_name": "Jepara"
+}, {
+    "origin_code": "JBG",
+    "origin_name": "Jombang"
+}, {
+    "origin_code": "ACB",
+    "origin_name": "Kab. Aceh Barat"
+}, {
+    "origin_code": "ABD",
+    "origin_name": "Kab. Aceh Barat Daya"
+}, {
+    "origin_code": "JTH",
+    "origin_name": "Kab. Aceh Besar"
+}, {
+    "origin_code": "LBB",
+    "origin_name": "Kab. Agam"
+}, {
+    "origin_code": "BAD",
+    "origin_name": "Kab. Badung"
+}, {
+    "origin_code": "BLG",
+    "origin_name": "Kab. Balangan"
+}, {
+    "origin_code": "BLY",
+    "origin_name": "Kab. Bangka"
+}, {
+    "origin_code": "MTK",
+    "origin_name": "Kab. Bangka Barat"
+}, {
+    "origin_code": "BGS",
+    "origin_name": "Kab. Bangka Selatan"
+}, {
+    "origin_code": "KBA",
+    "origin_name": "Kab. Bangka Tengah"
+}, {
+    "origin_code": "BLI",
+    "origin_name": "Kab. Bangli"
+}, {
+    "origin_code": "BTL",
+    "origin_name": "Kab. Bantul"
+}, {
+    "origin_code": "BYN",
+    "origin_name": "Kab. Banyuasin"
+}, {
+    "origin_code": "MBN",
+    "origin_name": "Kab. Batang Hari"
+}, {
+    "origin_code": "LMP",
+    "origin_name": "Kab. Batubara"
+}, {
+    "origin_code": "BLS",
+    "origin_name": "Kab. Bengkalis"
+}, {
+    "origin_code": "BKY",
+    "origin_name": "Kab. Bengkayang"
+}, {
+    "origin_code": "MNA",
+    "origin_name": "Kab. Bengkulu Selatan"
+}, {
+    "origin_code": "AGM",
+    "origin_name": "Kab. Bengkulu Utara"
+}, {
+    "origin_code": "BIK",
+    "origin_name": "Kab. Biak Numfor"
+}, {
+    "origin_code": "BIR",
+    "origin_name": "Kab. Bireuen"
+}, {
+    "origin_code": "BNE",
+    "origin_name": "Kab. Bone"
+}, {
+    "origin_code": "BLK",
+    "origin_name": "Kab. Bulukumba"
+}, {
+    "origin_code": "DRI",
+    "origin_name": "Kab. Dairi"
+}, {
+    "origin_code": "TMW",
+    "origin_name": "Kab. Deli Serdang"
+}, {
+    "origin_code": "DMS",
+    "origin_name": "Kab. Dharmasraya"
+}, {
+    "origin_code": "DPU",
+    "origin_name": "Kab. Dompu"
+}, {
+    "origin_code": "END",
+    "origin_name": "Kab. Ende"
+}, {
+    "origin_code": "ENR",
+    "origin_name": "Kab. Enrekang"
+}, {
+    "origin_code": "GOA",
+    "origin_name": "Kab. Goa"
+}, {
+    "origin_code": "GKL",
+    "origin_name": "Kab. Gunung Kidul"
+}, {
+    "origin_code": "KGN",
+    "origin_name": "Kab. Hulu Sungai Selatan"
+}, {
+    "origin_code": "BRB",
+    "origin_name": "Kab. Hulu Sungai Tengah"
+}, {
+    "origin_code": "AMT",
+    "origin_name": "Kab. Hulu Sungai Utara"
+}, {
+    "origin_code": "RGT",
+    "origin_name": "Kab. Indragiri Hulu"
+}, {
+    "origin_code": "STN",
+    "origin_name": "Kab. Jayapura"
+}, {
+    "origin_code": "BKN",
+    "origin_name": "Kab. Kampar"
+}, {
+    "origin_code": "PTS",
+    "origin_name": "Kab. Kapuas Hulu"
+}, {
+    "origin_code": "KRG",
+    "origin_name": "Kab. Karang Anyar"
+}, {
+    "origin_code": "TBK",
+    "origin_name": "Kab. Karimun"
+}, {
+    "origin_code": "KBJ",
+    "origin_name": "Kab. Karo"
+}, {
+    "origin_code": "KAR",
+    "origin_name": "Kab. Kaur"
+}, {
+    "origin_code": "KYU",
+    "origin_name": "Kab. Kayong Utara"
+}, {
+    "origin_code": "KPH",
+    "origin_name": "Kab. Kepahiang"
+}, {
+    "origin_code": "KPM",
+    "origin_name": "Kab. Kepulauan Meranti"
+}, {
+    "origin_code": "KRC",
+    "origin_name": "Kab. Kerinci"
+}, {
+    "origin_code": "KTP",
+    "origin_name": "Kab. Ketapang"
+}, {
+    "origin_code": "KLU",
+    "origin_name": "Kab. Klungkung"
+}, {
+    "origin_code": "KKA",
+    "origin_name": "Kab. Kolaka"
+}, {
+    "origin_code": "KNW",
+    "origin_name": "Kab. Konawe"
+}, {
+    "origin_code": "ADL",
+    "origin_name": "Kab. Konawe Selatan"
+}, {
+    "origin_code": "BAU",
+    "origin_name": "Kab. Kota Bau-Bau"
+}, {
+    "origin_code": "KWB",
+    "origin_name": "Kab. Kotawaringin Barat"
+}, {
+    "origin_code": "TLK",
+    "origin_name": "Kab. Kuantan Sengingi"
+}, {
+    "origin_code": "WAT",
+    "origin_name": "Kab. Kulon Progo"
+}, {
+    "origin_code": "SDW",
+    "origin_name": "Kab. Kutai Barat"
+}, {
+    "origin_code": "KKT",
+    "origin_name": "Kab. Kutai Kartanegara"
+}, {
+    "origin_code": "SGT",
+    "origin_name": "Kab. Kutai Timur"
+}, {
+    "origin_code": "RAP",
+    "origin_name": "Kab. Labuhan Batu"
+}, {
+    "origin_code": "LMD",
+    "origin_name": "Kab. Lamandau"
+}, {
+    "origin_code": "LIW",
+    "origin_name": "Kab. Lampung Barat"
+}, {
+    "origin_code": "KLA",
+    "origin_name": "Kab. Lampung Selatan"
+}, {
+    "origin_code": "BNJ",
+    "origin_name": "Kab. Lampung Tengah"
+}, {
+    "origin_code": "WJP",
+    "origin_name": "Kab. Lampung Timur"
+}, {
+    "origin_code": "KTB",
+    "origin_name": "Kab. Lampung Utara"
+}, {
+    "origin_code": "LDK",
+    "origin_name": "Kab. Landak"
+}, {
+    "origin_code": "STB",
+    "origin_name": "Kab. Langkat"
+}, {
+    "origin_code": "RBT",
+    "origin_name": "Kab. Lebak"
+}, {
+    "origin_code": "SRK",
+    "origin_name": "Kab. Lima Puluh Kota"
+}, {
+    "origin_code": "LMB",
+    "origin_name": "Kab. Lombok Barat"
+}, {
+    "origin_code": "PYA",
+    "origin_name": "Kab. Lombok Tengah"
+}, {
+    "origin_code": "SEL",
+    "origin_name": "Kab. Lombok Timur"
+}, {
+    "origin_code": "LWU",
+    "origin_name": "Kab. Luwu"
+}, {
+    "origin_code": "LWT",
+    "origin_name": "Kab. Luwu Timur"
+}, {
+    "origin_code": "MSB",
+    "origin_name": "Kab. Luwu Utara"
+}, {
+    "origin_code": "MJN",
+    "origin_name": "Kab. Majene"
+}, {
+    "origin_code": "MAM",
+    "origin_name": "Kab. Mamuju"
+}, {
+    "origin_code": "PYB",
+    "origin_name": "Kab. Mandailing Natal"
+}, {
+    "origin_code": "MGR",
+    "origin_name": "Kab. Manggarai"
+}, {
+    "origin_code": "MGB",
+    "origin_name": "Kab. Manggarai Barat"
+}, {
+    "origin_code": "MRS",
+    "origin_name": "Kab. Maros"
+}, {
+    "origin_code": "MPW",
+    "origin_name": "Kab. Mempawah"
+}, {
+    "origin_code": "MRG",
+    "origin_name": "Kab. Merangin"
+}, {
+    "origin_code": "MSJ",
+    "origin_name": "Kab. Mesuji"
+}, {
+    "origin_code": "TIM",
+    "origin_name": "Kab. Mimika"
+}, {
+    "origin_code": "MNH",
+    "origin_name": "Kab. Minahasa"
+}, {
+    "origin_code": "MHS",
+    "origin_name": "Kab. Minahasa Selatan"
+}, {
+    "origin_code": "MHT",
+    "origin_name": "Kab. Minahasa Tenggara"
+}, {
+    "origin_code": "MHU",
+    "origin_name": "Kab. Minahasa Utara"
+}, {
+    "origin_code": "PAB",
+    "origin_name": "Kab. Muara Enim"
+}, {
+    "origin_code": "SNT",
+    "origin_name": "Kab. Muaro Jambi"
+}, {
+    "origin_code": "SKY",
+    "origin_name": "Kab. Musi Banyuasin"
+}, {
+    "origin_code": "MSR",
+    "origin_name": "Kab. Musi Rawas"
+}, {
+    "origin_code": "GNS",
+    "origin_name": "Kab. Nias"
+}, {
+    "origin_code": "TLD",
+    "origin_name": "Kab. Nias Selatan"
+}, {
+    "origin_code": "IDL",
+    "origin_name": "Kab. Ogan Ilir"
+}, {
+    "origin_code": "OKI",
+    "origin_name": "Kab. Ogan Komering Ilir"
+}, {
+    "origin_code": "OKS",
+    "origin_name": "Kab. Ogan Komering Ulu Selatan"
+}, {
+    "origin_code": "OKU",
+    "origin_name": "Kab. Ogan Komering Ulu Timur"
+}, {
+    "origin_code": "PDW",
+    "origin_name": "Kab. Padang Lawas"
+}, {
+    "origin_code": "PNJ",
+    "origin_name": "Kab. Panajam Paser Utara"
+}, {
+    "origin_code": "PDL",
+    "origin_name": "Kab. Pandeglang"
+}, {
+    "origin_code": "PKJ",
+    "origin_name": "Kab. Pangkajene Kepulauan"
+}, {
+    "origin_code": "PSM",
+    "origin_name": "Kab. Pasaman"
+}, {
+    "origin_code": "PAS",
+    "origin_name": "Kab. Paser"
+}, {
+    "origin_code": "PWN",
+    "origin_name": "Kab. Pelalawan"
+}, {
+    "origin_code": "PSW",
+    "origin_name": "Kab. Pesawaran"
+}, {
+    "origin_code": "SGI",
+    "origin_name": "Kab. Pidie"
+}, {
+    "origin_code": "PIN",
+    "origin_name": "Kab. Pinrang"
+}, {
+    "origin_code": "PWM",
+    "origin_name": "Kab. Polewali Mandar"
+}, {
+    "origin_code": "RKH",
+    "origin_name": "Kab. Rokan Hilir"
+}, {
+    "origin_code": "PRP",
+    "origin_name": "Kab. Rokan Hulu"
+}, {
+    "origin_code": "SBS",
+    "origin_name": "Kab. Sambas"
+}, {
+    "origin_code": "SPG",
+    "origin_name": "Kab. Sampang"
+}, {
+    "origin_code": "SAG",
+    "origin_name": "Kab. Sanggau"
+}, {
+    "origin_code": "SRL",
+    "origin_name": "Kab. sarolangun"
+}, {
+    "origin_code": "SKD",
+    "origin_name": "Kab. Sekadau"
+}, {
+    "origin_code": "SDB",
+    "origin_name": "Kab. Serdang Bedagai"
+}, {
+    "origin_code": "SAK",
+    "origin_name": "Kab. Siak"
+}, {
+    "origin_code": "SIK",
+    "origin_name": "Kab. Sikka"
+}, {
+    "origin_code": "SML",
+    "origin_name": "Kab. Simalungun"
+}, {
+    "origin_code": "SNJ",
+    "origin_name": "Kab. Sinjai"
+}, {
+    "origin_code": "SLE",
+    "origin_name": "Kab. Sleman"
+}, {
+    "origin_code": "SLS",
+    "origin_name": "Kab. Solok Selatan"
+}, {
+    "origin_code": "SPE",
+    "origin_name": "Kab. Soppeng"
+}, {
+    "origin_code": "SOQ",
+    "origin_name": "Kab. Sorong"
+}, {
+    "origin_code": "SKH",
+    "origin_name": "Kab. Sukoharjo"
+}, {
+    "origin_code": "SMB",
+    "origin_name": "Kab. Sumba Barat"
+}, {
+    "origin_code": "SBD",
+    "origin_name": "Kab. Sumba Barat Daya"
+}, {
+    "origin_code": "WGP",
+    "origin_name": "Kab. Sumba Timur"
+}, {
+    "origin_code": "SBW",
+    "origin_name": "Kab. Sumbawa"
+}, {
+    "origin_code": "TLW",
+    "origin_name": "Kab. Sumbawa Barat"
+}, {
+    "origin_code": "TBL",
+    "origin_name": "Kab. Tabalong"
+}, {
+    "origin_code": "TRJ",
+    "origin_name": "Kab. Tana Toraja"
+}, {
+    "origin_code": "TRU",
+    "origin_name": "Kab. Tana Toraja Utara"
+}, {
+    "origin_code": "TBB",
+    "origin_name": "Kab. Tanah Bumbu"
+}, {
+    "origin_code": "TDR",
+    "origin_name": "Kab. Tanah Datar"
+}, {
+    "origin_code": "TNL",
+    "origin_name": "Kab. Tanah Laut"
+}, {
+    "origin_code": "PRW",
+    "origin_name": "Kab. Tanggamus"
+}, {
+    "origin_code": "TGM",
+    "origin_name": "Kab. Tanggamus"
+}, {
+    "origin_code": "TJT",
+    "origin_name": "Kab. Tanjung Jabung Timur"
+}, {
+    "origin_code": "TNU",
+    "origin_name": "Kab. Tapanuli Utara"
+}, {
+    "origin_code": "RTA",
+    "origin_name": "Kab. Tapin"
+}, {
+    "origin_code": "TBO",
+    "origin_name": "Kab. Tebo"
+}, {
+    "origin_code": "TBS",
+    "origin_name": "Kab. Toba Samosir"
+}, {
+    "origin_code": "TWG",
+    "origin_name": "Kab. Tulang Bawang"
+}, {
+    "origin_code": "WAJ",
+    "origin_name": "Kab. Wajo"
+}, {
+    "origin_code": "BBU",
+    "origin_name": "Kab. Way Kanan"
+}, {
+    "origin_code": "MTP",
+    "origin_name": "Kab.Banjar, Martapura"
+}, {
+    "origin_code": "KRA",
+    "origin_name": "Karangasem"
+}, {
+    "origin_code": "KRW",
+    "origin_name": "Karawang"
+}, {
+    "origin_code": "KBM",
+    "origin_name": "Kebumen"
+}, {
+    "origin_code": "KDR",
+    "origin_name": "Kediri"
+}, {
+    "origin_code": "KDL",
+    "origin_name": "Kendal"
+}, {
+    "origin_code": "KDI",
+    "origin_name": "Kendari"
+}, {
+    "origin_code": "KIS",
+    "origin_name": "Kisaran"
+}, {
+    "origin_code": "KLN",
+    "origin_name": "Klaten"
+}, {
+    "origin_code": "BJB",
+    "origin_name": "Kota Banjarbaru"
+}, {
+    "origin_code": "BIM",
+    "origin_name": "Kota Bima"
+}, {
+    "origin_code": "BIT",
+    "origin_name": "Kota Bitung"
+}, {
+    "origin_code": "CMH",
+    "origin_name": "Kota Cimahi"
+}, {
+    "origin_code": "LGS",
+    "origin_name": "Kota Langsa"
+}, {
+    "origin_code": "LSW",
+    "origin_name": "Kota Lhokseumawe"
+}, {
+    "origin_code": "LOP",
+    "origin_name": "Kota Mataram"
+}, {
+    "origin_code": "PDP",
+    "origin_name": "Kota Padang Panjang"
+}, {
+    "origin_code": "PGA",
+    "origin_name": "Kota Pagar Alam"
+}, {
+    "origin_code": "PRE",
+    "origin_name": "Kota Pare-Pare"
+}, {
+    "origin_code": "PRM",
+    "origin_name": "Kota Pariaman"
+}, {
+    "origin_code": "SGA",
+    "origin_name": "Kota Sibolga"
+}, {
+    "origin_code": "MRJ",
+    "origin_name": "Kota Sijunjung"
+}, {
+    "origin_code": "SLK",
+    "origin_name": "Kota Solok"
+}, {
+    "origin_code": "SUS",
+    "origin_name": "Kota Subulussalam"
+}, {
+    "origin_code": "TGB",
+    "origin_name": "Kota Tanjung Balai"
+}, {
+    "origin_code": "TBT",
+    "origin_name": "Kota Tebing Tinggi"
+}, {
+    "origin_code": "TMH",
+    "origin_name": "Kota Tomohon"
+}, {
+    "origin_code": "KTG",
+    "origin_name": "Kotamobagu"
+}, {
+    "origin_code": "KWT",
+    "origin_name": "Kotawaringin Timur"
+}, {
+    "origin_code": "TJB",
+    "origin_name": "Kualatungkal"
+}, {
+    "origin_code": "KDS",
+    "origin_name": "Kudus"
+}, {
+    "origin_code": "KUN",
+    "origin_name": "Kuningan"
+}, {
+    "origin_code": "KOE",
+    "origin_name": "Kupang"
+}, {
+    "origin_code": "LHT",
+    "origin_name": "Lahat"
+}, {
+    "origin_code": "LMG",
+    "origin_name": "Lamongan"
+}, {
+    "origin_code": "TKG",
+    "origin_name": "Lampung"
+}, {
+    "origin_code": "LLG",
+    "origin_name": "Lubuk linggau"
+}, {
+    "origin_code": "LMJ",
+    "origin_name": "Lumajang"
+}, {
+    "origin_code": "MDN",
+    "origin_name": "Madiun"
+}, {
+    "origin_code": "MGL",
+    "origin_name": "Magelang"
+}, {
+    "origin_code": "MGT",
+    "origin_name": "Magetan"
+}, {
+    "origin_code": "MJL",
+    "origin_name": "Majalengka"
+}, {
+    "origin_code": "UPG",
+    "origin_name": "Makassar"
+}, {
+    "origin_code": "MLG",
+    "origin_name": "Malang"
+}, {
+    "origin_code": "MDC",
+    "origin_name": "Manado"
+}, {
+    "origin_code": "MKW",
+    "origin_name": "Manokwari"
+}, {
+    "origin_code": "MES",
+    "origin_name": "Medan"
+}, {
+    "origin_code": "MKQ",
+    "origin_name": "Merauke"
+}, {
+    "origin_code": "MET",
+    "origin_name": "Metro"
+}, {
+    "origin_code": "MJK",
+    "origin_name": "Mojokerto"
+}, {
+    "origin_code": "MBO",
+    "origin_name": "Muara Bungo"
+}, {
+    "origin_code": "MEN",
+    "origin_name": "Muara Enim"
+}, {
+    "origin_code": "NJK",
+    "origin_name": "Nganjuk"
+}, {
+    "origin_code": "NGW",
+    "origin_name": "Ngawi"
+}, {
+    "origin_code": "PCT",
+    "origin_name": "Pacitan"
+}, {
+    "origin_code": "PDG",
+    "origin_name": "Padang"
+}, {
+    "origin_code": "PSP",
+    "origin_name": "Padang Sidempuan"
+}, {
+    "origin_code": "PKY",
+    "origin_name": "Palangkaraya"
+}, {
+    "origin_code": "PLM",
+    "origin_name": "Palembang"
+}, {
+    "origin_code": "PLP",
+    "origin_name": "Palopo"
+}, {
+    "origin_code": "PLW",
+    "origin_name": "Palu"
+}, {
+    "origin_code": "PMK",
+    "origin_name": "Pamekasan"
+}, {
+    "origin_code": "PGN",
+    "origin_name": "Pangandaran"
+}, {
+    "origin_code": "PGK",
+    "origin_name": "Pangkal Pinang"
+}, {
+    "origin_code": "PDN",
+    "origin_name": "Pasuruan"
+}, {
+    "origin_code": "PAT",
+    "origin_name": "Pati"
+}, {
+    "origin_code": "PYH",
+    "origin_name": "Payakumbuh"
+}, {
+    "origin_code": "PKL",
+    "origin_name": "Pekalongan"
+}, {
+    "origin_code": "PKU",
+    "origin_name": "Pekanbaru"
+}, {
+    "origin_code": "PML",
+    "origin_name": "Pemalang"
+}, {
+    "origin_code": "PMS",
+    "origin_name": "PematangSiantar"
+}, {
+    "origin_code": "PNG",
+    "origin_name": "Ponorogo"
+}, {
+    "origin_code": "PNK",
+    "origin_name": "Pontianak"
+}, {
+    "origin_code": "PBM",
+    "origin_name": "Prabumulih"
+}, {
+    "origin_code": "PBL",
+    "origin_name": "Probolinggo"
+}, {
+    "origin_code": "PBG",
+    "origin_name": "Purbalingga"
+}, {
+    "origin_code": "PWA",
+    "origin_name": "Purwakarta"
+}, {
+    "origin_code": "GRO",
+    "origin_name": "Purwodadi"
+}, {
+    "origin_code": "PWT",
+    "origin_name": "Purwokerto"
+}, {
+    "origin_code": "PWR",
+    "origin_name": "Purworejo"
+}, {
+    "origin_code": "RJL",
+    "origin_name": "Rejang Lebong"
+}, {
+    "origin_code": "RBG",
+    "origin_name": "Rembang"
+}, {
+    "origin_code": "SLT",
+    "origin_name": "Salatiga"
+}, {
+    "origin_code": "SRI",
+    "origin_name": "Samarinda"
+}, {
+    "origin_code": "SRG",
+    "origin_name": "Semarang"
+}, {
+    "origin_code": "SEG",
+    "origin_name": "Serang"
+}, {
+    "origin_code": "SDA",
+    "origin_name": "Sidoarjo"
+}, {
+    "origin_code": "SRJ",
+    "origin_name": "Singaraja"
+}, {
+    "origin_code": "SKW",
+    "origin_name": "Singkawang"
+}, {
+    "origin_code": "SIT",
+    "origin_name": "Situbondo"
+}, {
+    "origin_code": "SOC",
+    "origin_name": "Solo"
+}, {
+    "origin_code": "SGN",
+    "origin_name": "Sragen"
+}, {
+    "origin_code": "SBG",
+    "origin_name": "Subang"
+}, {
+    "origin_code": "SMI",
+    "origin_name": "Sukabumi"
+}, {
+    "origin_code": "SMD",
+    "origin_name": "Sumedang"
+}, {
+    "origin_code": "SMP",
+    "origin_name": "Sumenep"
+}, {
+    "origin_code": "SNP",
+    "origin_name": "Sungai Penuh"
+}, {
+    "origin_code": "SUB",
+    "origin_name": "Surabaya"
+}, {
+    "origin_code": "TAB",
+    "origin_name": "Tabanan"
+}, {
+    "origin_code": "TGR",
+    "origin_name": "Tangerang"
+}, {
+    "origin_code": "TJQ",
+    "origin_name": "Tanjung Pandan"
+}, {
+    "origin_code": "TNJ",
+    "origin_name": "Tanjung Pinang"
+}, {
+    "origin_code": "TRK",
+    "origin_name": "Tarakan"
+}, {
+    "origin_code": "TSI",
+    "origin_name": "Tasikmalaya"
+}, {
+    "origin_code": "TLG",
+    "origin_name": "Tegal"
+}, {
+    "origin_code": "TMG",
+    "origin_name": "Temanggung"
+}, {
+    "origin_code": "TMB",
+    "origin_name": "Tembilahan"
+}, {
+    "origin_code": "TTE",
+    "origin_name": "Ternate"
+}, {
+    "origin_code": "TGK",
+    "origin_name": "Trenggalek"
+}, {
+    "origin_code": "TBN",
+    "origin_name": "Tuban"
+}, {
+    "origin_code": "TGA",
+    "origin_name": "Tulungagung"
+}, {
+    "origin_code": "WAR",
+    "origin_name": "Waru"
+}, {
+    "origin_code": "WNG",
+    "origin_name": "Wonogiri"
+}, {
+    "origin_code": "WSB",
+    "origin_name": "Wonosobo"
+}, {
+    "origin_code": "JOG",
+    "origin_name": "Yogyakarta"
+}]

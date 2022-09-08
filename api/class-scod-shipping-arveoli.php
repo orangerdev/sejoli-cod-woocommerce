@@ -30,10 +30,12 @@ class ARVEOLI extends \SCOD_Shipping\API {
      */
 	public static function set_sandbox_data() {
 
-		$api_key = '0o4k0gs4o0kwg8cs840oskwscc4k0g4swwww8804';
+		$access_key = 'c8gk4wggsoock40gkwo4kc8c8swo08g04scwkcos';
+		$app_key    = 'cxrucexvrel5QLO0LFfRlAMXXPLKsAv0sT5VifKq';
 
 		self::$headers = array(
-			'access-key' => $api_key
+			'access-key' => $access_key,
+			'app-key'    => $app_key
 		);
 
 	}
@@ -45,10 +47,12 @@ class ARVEOLI extends \SCOD_Shipping\API {
      */
 	public static function set_live_data() {
 
-		$api_key = '0o4k0gs4o0kwg8cs840oskwscc4k0g4swwww8804';
+		$access_key = 'c8gk4wggsoock40gkwo4kc8c8swo08g04scwkcos';
+		$app_key    = 'cxrucexvrel5QLO0LFfRlAMXXPLKsAv0sT5VifKq';
 
 		self::$headers = array(
-			'access-key' => $api_key
+			'access-key' => $access_key,
+			'app-key'    => $app_key
 		);
 
 	}
@@ -301,59 +305,8 @@ class ARVEOLI extends \SCOD_Shipping\API {
 			self::$endpoint = 'https://sandbox.arveoli.com/api/orders?ordertype=pickup';
 			self::$method 	= 'POST';
 
-			// $pickupDataArray = array(
-			// 	"expedition" => $pickupParams['expedition'], // new
-			//   	"cod" 		 => $pickupParams['codflag'],
-			//   	"insurance"  => $pickupParams['insurance'],
-			//   	"sender" 	 => [ array(
-			//     	"name"		 => $pickupParams['shipperName'],
-			//     	"phone" 	 => $pickupParams['shipperPhone'],
-			//     	"address" 	 => $pickupParams['shipperAddress'],
-			//     	"city" 		 => $pickupParams['shipperCity'],
-			//     	"postal" 	 => $pickupParams['shipperZip'],
-			//     	"origincode" => $pickupParams['origin'],
-			//     	"branchcode" => $pickupParams['branch'] // new
-			//   	) ],
-			//   	"recipient" => [ array(
-			//     	"name"			  => $pickupParams['receiverName'],
-			// 	    "phone"			  => $pickupParams['receiverPhone'],
-			// 	    "address"		  => $pickupParams['receiverAddress'],
-			// 	    "address2"		  => "",
-			// 	    "address3"	 	  => "",
-			// 	    "district"		  => $pickupParams['receiverDistrict'],
-			// 	    "city"			  => $pickupParams['receiverCity'],
-			// 	    "province"		  => $pickupParams['receiverProvince'],
-			// 	    "postal"		  => $pickupParams['receiverZip'],
-			// 	    "service"		  => $pickupParams['service'],
-			// 	    "cost"			  => $pickupParams['shippingPrice'],
-			// 	    "destinationcode" => $pickupParams['destination']
-			// 	) ],
-			//   	"goods" => [ array(
-			// 	    "description" => $pickupParams['description'],
-			// 	    "quantity" 	  => $pickupParams['qty'],
-			// 	    "weight"	  => $pickupParams['weight'],
-			// 	    "value"		  => $pickupParams['packageAmount'], // new
-			// 	    "notes"		  => $pickupParams['note'],
-			// 	    "category"	  => $pickupParams['productCategory'], // new
-			// 	    "cod"		  => $pickupParams['codAmount']
-			//   	) ],
-			//   	"pickup" => [ array(
-			// 	    "name"     => "arya",
-			// 	    "date"	   => date('d-m-Y'),
-			// 	    "time"	   => date('H:i'),
-			// 	    "pic"	   => "TEAS",
-			// 	    "picphone" => "6289100000002",
-			// 	    "address"  => "JAKARTA",
-			// 	    "district" => "JAKARTA",
-			// 	    "city"     => "JAKARTA",
-			// 	    "province" => "DKI JAKARTA",
-			// 	    "service"  => "Reguler",
-			// 	    "vehicle"  => "MOTOR"
-			//   	) ]
-			// );
-
 			$pickupDataArray = array(
-				"expedition" => "sicepat",
+				"expedition" => $pickupParams['expedition'],
 			  	"cod" 		 => $pickupParams['codflag'],
 			  	"insurance"  => $pickupParams['insurance'],
 			  	"sender" 	 => array(
@@ -362,8 +315,8 @@ class ARVEOLI extends \SCOD_Shipping\API {
 			    	"address" 	 => $pickupParams['shipperAddress'],
 			    	"city" 		 => $pickupParams['shipperCity'],
 			    	"postal" 	 => $pickupParams['shipperZip'],
-			    	"origincode" => "CGK",
-			    	"branchcode" => "CGK000"
+			    	"origincode" => $pickupParams['origin'],
+			    	"branchcode" => $pickupParams['branch']
 			  	),
 			  	"recipient" => array(
 			    	"name"			  => $pickupParams['receiverName'],
@@ -375,30 +328,30 @@ class ARVEOLI extends \SCOD_Shipping\API {
 				    "city"			  => $pickupParams['receiverCity'],
 				    "province"		  => $pickupParams['receiverProvince'],
 				    "postal"		  => $pickupParams['receiverZip'],
-				    "service"		  => "SIUNT",
+				    "service"		  => $pickupParams['service'],
 				    "cost"			  => $pickupParams['shippingPrice'],
-				    "destinationcode" => "BDO10000"
+				    "destinationcode" => $pickupParams['destination']
 				),
 			  	"goods" => array(
 				    "description" => $pickupParams['description'],
 				    "quantity" 	  => $pickupParams['qty'],
 				    "weight"	  => $pickupParams['weight'],
-				    "value"		  => $pickupParams['packageAmount'], // new
+				    "value"		  => $pickupParams['packageAmount'],
 				    "notes"		  => "Mohon Segera Diproses, Terima Kasih",
-				    "category"	  => $pickupParams['category'], // new
+				    "category"	  => $pickupParams['category'],
 				    "cod"		  => $pickupParams['codAmount']
 			  	),
 			  	"pickup" => array(
-				    "name"     => "arya",
+				    "name"     => $pickupParams['shipperName'],
 				    "date"	   => date('d-m-Y'),
 				    "time"	   => date('H:i'),
-				    "pic"	   => "TEAS",
-				    "picphone" => "6289100000002",
-				    "address"  => "JAKARTA",
-				    "district" => "JAKARTA",
-				    "city"     => "JAKARTA",
-				    "province" => "DKI JAKARTA",
-				    "service"  => "Reguler",
+				    "pic"	   => $pickupParams['shipperName'],
+				    "picphone" => $pickupParams['shipperPhone'],
+				    "address"  => $pickupParams['shipperAddress'],
+				    "district" => $pickupParams['shipperDistrict'],
+				    "city"     => $pickupParams['shipperCity'],
+				    "province" => $pickupParams['shipperProvince'],
+				    "service"  => 'Reguler',
 				    "vehicle"  => "MOTOR"
 			  	)
 			);
@@ -406,6 +359,8 @@ class ARVEOLI extends \SCOD_Shipping\API {
 			self::$body = $pickupDataArray;
 
 			$get_response = self::do_request();
+
+			error_log(print_r($get_response, true));
 
 			if ( ! is_wp_error( $get_response ) ) :
 
