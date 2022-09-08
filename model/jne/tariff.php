@@ -86,32 +86,32 @@ class Tariff extends Eloquent
             $label[] = $this->label;
         }
 
-        if( $rate->service_display ) {
-            $label[] = $rate->service_display;
+        if( $rate->service_name ) {
+            $label[] = $rate->service_name;
         }
 
         $label = implode( " - ", $label );
 
-        if( $rate->etd_from && $rate->etd_thru ) {
+        // if( $rate->etd_from && $rate->etd_thru ) {
 
-            $label .= ' (';
+        //     $label .= ' (';
 
-            if( $rate->etd_from == 1 && $rate->etd_from == $rate->etd_thru ) {
-                $label .= $rate->etd_from;
+        //     if( $rate->etd_from == 1 && $rate->etd_from == $rate->etd_thru ) {
+        //         $label .= $rate->etd_from;
 
-                if( $rate->times == 'D' ) {
-                    $label .= ' hari';
-                }
-            } else {
-                $label .= $rate->etd_from . " - " . $rate->etd_thru;
+        //         if( $rate->times == 'D' ) {
+        //             $label .= ' hari';
+        //         }
+        //     } else {
+        //         $label .= $rate->etd_from . " - " . $rate->etd_thru;
 
-                if( $rate->times == 'D' ) {
-                    $label .= ' hari';
-                }
-            }
+        //         if( $rate->times == 'D' ) {
+        //             $label .= ' hari';
+        //         }
+        //     }
 
-            $label .= ')';
-        }
+        //     $label .= ')';
+        // }
 
         return $label;
     }
@@ -126,7 +126,7 @@ class Tariff extends Eloquent
     public function getRateID( $prefix, $rate ) {
 
         $ids = array( $prefix , $this->label );
-        $code = $rate->service_code;
+        $code = $rate->service_name;
         $separator = "_";
 
         $lessthan_pattern = "/</i";

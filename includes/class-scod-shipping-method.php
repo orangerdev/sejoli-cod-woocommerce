@@ -902,9 +902,9 @@ function scod_shipping_init() {
 	       			return false;
 	       		}
 
-	       		foreach ( $arveoli_jne_tariff->tariff_data->price as $key => $rate ) {
+	       		foreach ( $arveoli_jne_tariff->tariff_data->data as $key => $rate ) {
 
-					if( \in_array( $rate->service_code, $this->get_arveoli_jne_services() ) ) {
+					if( \in_array( $rate->service_name, $this->get_arveoli_jne_services() ) ) {
 
 						$chosen_shipping_method = WC()->session->get('chosen_shipping_methods');
 						$chosen_payment_method  = WC()->session->get( 'chosen_payment_method' );
@@ -984,9 +984,9 @@ function scod_shipping_init() {
 	       			return false;
 	       		}
 
-	       		foreach ( $arveoli_sicepat_tariff->tariff_data->price as $key => $rate ) {
+	       		foreach ( $arveoli_sicepat_tariff->tariff_data->data as $key => $rate ) {
 
-					if( \in_array( $rate->service, $this->get_sicepat_services() ) ) {
+					if( \in_array( $rate->service_code, $this->get_sicepat_services() ) ) {
 
 						$chosen_shipping_method = WC()->session->get('chosen_shipping_methods');
 						$chosen_payment_method  = WC()->session->get( 'chosen_payment_method' );
@@ -1005,7 +1005,7 @@ function scod_shipping_init() {
 								        $this->add_rate( array(
 											'id'    => $arveoli_sicepat_tariff->getRateID( $this->id, $rate ),
 											'label' => $arveoli_sicepat_tariff->getLabel( $rate ),
-											'cost' 	=> ($rate->tariff + $percentage_fee) * $cart_weight
+											'cost' 	=> ($rate->price + $percentage_fee) * $cart_weight
 										));
 
 								}
@@ -1015,7 +1015,7 @@ function scod_shipping_init() {
 								$this->add_rate( array(
 									'id'    => $arveoli_sicepat_tariff->getRateID( $this->id, $rate ),
 									'label' => $arveoli_sicepat_tariff->getLabel( $rate ),
-									'cost' 	=> $rate->tariff * $cart_weight
+									'cost' 	=> $rate->price * $cart_weight
 								));
 
 							}
@@ -1025,7 +1025,7 @@ function scod_shipping_init() {
 					 		$this->add_rate( array(
 								'id'    => $arveoli_sicepat_tariff->getRateID( $this->id, $rate ),
 								'label' => $arveoli_sicepat_tariff->getLabel( $rate ),
-								'cost' 	=> $rate->tariff * $cart_weight
+								'cost' 	=> $rate->price * $cart_weight
 							));
 
 					 	}

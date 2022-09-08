@@ -96,20 +96,20 @@ class Tariff extends Eloquent
             $label[] = $this->label;
         }
 
-        if( $rate->service ) {
-            $label[] = $rate->service;
+        if( $rate->service_code ) {
+            $label[] = $rate->service_code;
         }
 
         $label = implode( " - ", $label );
 
-        if( $rate->etd ) {
+        // if( $rate->etd ) {
 
-            $label .= ' (';
+        //     $label .= ' (';
 
-                $label .= $rate->etd;
+        //         $label .= $rate->etd;
 
-            $label .= ')';
-        }
+        //     $label .= ')';
+        // }
 
         return $label;
 
@@ -125,7 +125,7 @@ class Tariff extends Eloquent
     public function getRateID( $prefix, $rate ) {
 
         $ids = array( $prefix , $this->label );
-        $code = $rate->service;
+        $code = $rate->service_code;
         $separator = "_";
 
         $lessthan_pattern = "/</i";
