@@ -117,7 +117,7 @@ class ARVEOLI extends \SCOD_Shipping\API {
 
 		try {
 
-			self::$endpoint = 'https://sandbox.arveoli.com/api/region/origins/jne?query='.$city;
+			self::$endpoint = 'https://apiv3.arveoli.com/api/region/origins/jne?query='.$city;
 			self::$method 	= 'GET';
 
 			$get_response = self::do_request();
@@ -176,7 +176,7 @@ class ARVEOLI extends \SCOD_Shipping\API {
 
 		try {
 
-			self::$endpoint = 'https://sandbox.arveoli.com/api/region/destinations/jne/'.$city.'/'.$district;
+			self::$endpoint = 'https://apiv3.arveoli.com/api/region/destinations/jne/'.$city.'/'.$district;
 			self::$method 	= 'GET';
 
 			$get_response = self::do_request();
@@ -236,7 +236,7 @@ class ARVEOLI extends \SCOD_Shipping\API {
 
 		try {
 
-			self::$endpoint = 'https://sandbox.arveoli.com/api/tariff/check';
+			self::$endpoint = 'https://apiv3.arveoli.com/api/tariff/check';
 			self::$method 	= 'POST';
 
 			$tariffDataArray = array(
@@ -302,7 +302,7 @@ class ARVEOLI extends \SCOD_Shipping\API {
 		
 		try {
 
-			self::$endpoint = 'https://sandbox.arveoli.com/api/orders?ordertype=pickup';
+			self::$endpoint = 'https://apiv3.arveoli.com/api/orders?ordertype=pickup';
 			self::$method 	= 'POST';
 
 			$pickupDataArray = array(
@@ -415,7 +415,7 @@ class ARVEOLI extends \SCOD_Shipping\API {
 
 		try {
 
-			self::$endpoint = 'https://sandbox.arveoli.com/api/orders/track';
+			self::$endpoint = 'https://apiv3.arveoli.com/api/orders/track';
 			self::$method 	= 'POST';
 
 			$trackingDataArray = array(
