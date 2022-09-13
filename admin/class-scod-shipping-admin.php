@@ -711,67 +711,65 @@ class Admin {
 
 		   		if ( ! is_wp_error( $trace_tracking_arveoli_jne ) ) {
 
-	                if( isset( $trace_tracking_arveoli_jne->jne ) && $trace_tracking_arveoli_jne->jne->status->code === 200 ):
+	                if( isset( $trace_tracking_arveoli->cnote ) ):
 
-				        $html .= '<h6>'.__('Number Resi:', 'scod-shipping').'</h6>';
-				    	$html .= '<div class="shipping-number" style="font-size:26px;"><b>'.$shipping_number.'</b></div>';
+				        $html = '<h6>'.__('Number Resi:', 'sejoli-standalone-cod').'</h6>';
+				    	$html .= '<div class="shipping-number" style="font-size:26px;"><b>'.$params['shipmentNumber'].'</b></div>';
 
-					   	$html .= '<h6>'.__('Shipping Details:', 'scod-shipping').'</h6>';
+					   	$html .= '<h6>'.__('Shipping Details:', 'sejoli-standalone-cod').'</h6>';
 					   	$html .= '<table style="text-align: left;">';
 					   	$html .= '<tr>';
-					   		$html .= '<th>'.__('Courier:', 'scod-shipping').'</th>';
-					   		$html .= '<td>SICEPAT - '.$trace_tracking_arveoli_jne->jne->result->service.'</td>';
+					   		$html .= '<th>'.__('Courier:', 'sejoli-standalone-cod').'</th>';
+					   		$html .= '<td>JNE - '.$trace_tracking_arveoli->cnote->cnote_services_code.'</td>';
 					   	$html .= '</tr>';
 					   	$html .= '<tr>';
-					   		$html .= '<th>'.__('Total Price:', 'scod-shipping').'</th>';
-					   		$html .= '<td>'.wc_price( $trace_tracking_arveoli_jne->jne->result->totalprice ).'</td>';
+					   		$html .= '<th>'.__('Total Price:', 'sejoli-standalone-cod').'</th>';
+					   		$html .= '<td>'.sejolisa_price_format( $trace_tracking_arveoli->cnote->cnote_amount ).'</td>';
 					   	$html .= '</tr>';
 					   	$html .= '<tr>';
-					   		$html .= '<th>'.__('Weight:', 'scod-shipping').'</th>';
-					   		$html .= '<td>'.$trace_tracking_arveoli_jne->jne->result->weight.' kg</td>';
+					   		$html .= '<th>'.__('Weight:', 'sejoli-standalone-cod').'</th>';
+					   		$html .= '<td>'.$trace_tracking_arveoli->cnote->cnote_weight.' kg</td>';
 					   	$html .= '</tr>';
 					   	$html .= '<tr>';
-					   		$html .= '<th>'.__('Send Date:', 'scod-shipping').'</th>';
-					   		$html .= '<td>'.date_i18n( 'F d, Y H:i:s', strtotime( $trace_tracking_arveoli_jne->jne->result->send_date ) ).'</td>';
+					   		$html .= '<th>'.__('Send Date:', 'sejoli-standalone-cod').'</th>';
+					   		$html .= '<td>'.date_i18n( 'F d, Y H:i:s', strtotime( $trace_tracking_arveoli->cnote->cnote_date ) ).'</td>';
 					   	$html .= '</tr>';
 					   	$html .= '<tr>';
-					   		$html .= '<th>'.__('From:', 'scod-shipping').'</th>';
-					   		$html .= '<td>'.$trace_tracking_arveoli_jne->jne->result->sender.'</td>';
+					   		$html .= '<th>'.__('From:', 'sejoli-standalone-cod').'</th>';
+					   		$html .= '<td>'.$trace_tracking_arveoli->detail[0]->cnote_shipper_name.'</td>';
 					   	$html .= '</tr>';
 					   	$html .= '<tr>';
-					   		$html .= '<th>'.__('Shipper Address:', 'scod-shipping').'</th>';
-					   		$html .= '<td>'.$trace_tracking_arveoli_jne->jne->result->sender_address.'</td>';
+					   		$html .= '<th>'.__('Shipper Address:', 'sejoli-standalone-cod').'</th>';
+					   		$html .= '<td>'.$trace_tracking_arveoli->detail[0]->cnote_shipper_addr1. ' ' .$trace_tracking_arveoli->detail[0]->cnote_shipper_addr2.'</td>';
 					   	$html .= '</tr>';
 					   	$html .= '<tr>';
-					   		$html .= '<th>'.__('To:', 'scod-shipping').'</th>';
-					   		$html .= '<td>'.$trace_tracking_arveoli_jne->jne->result->receiver_name.'</td>';
+					   		$html .= '<th>'.__('To:', 'sejoli-standalone-cod').'</th>';
+					   		$html .= '<td>'.$trace_tracking_arveoli->cnote->cnote_receiver_name.'</td>';
 					   	$html .= '</tr>';
 					   	$html .= '<tr>';
-					   		$html .= '<th>'.__('Receiver Address:', 'scod-shipping').'</th>';
-					   		$html .= '<td>'.$trace_tracking_arveoli_jne->jne->result->receiver_address.'</td>';
+					   		$html .= '<th>'.__('Receiver Address:', 'sejoli-standalone-cod').'</th>';
+					   		$html .= '<td>'.$trace_tracking_arveoli->cnote->city_name.'</td>';
 					   	$html .= '</tr>';
 					   	$html .= '<tr>';
-					   		$html .= '<th>'.__('Receiver:', 'scod-shipping').'</th>';
-					   		$html .= '<td>'.$trace_tracking_arveoli_jne->jne->result->POD_receiver.' - '.date_i18n( 'F d, Y H:i:s', strtotime( $trace_tracking_arveoli_jne->jne->result->POD_receiver_time ) ).'</td>';
+					   		$html .= '<th>'.__('Receiver:', 'sejoli-standalone-cod').'</th>';
+					   		$html .= '<td>'.$trace_tracking_arveoli->cnote->cnote_pod_receiver.' - '.date_i18n( 'F d, Y H:i:s', strtotime( $trace_tracking_arveoli->cnote->cnote_pod_date ) ).'</td>';
 					   	$html .= '</tr>';
 					   	$html .= '<tr>';
-					   		$html .= '<th>'.__('Last Status:', 'scod-shipping').'</th>';
-					   		$html .= '<td>'.$trace_tracking_arveoli_jne->jne->result->last_status->status.' - '.$trace_tracking_arveoli_jne->jne->result->last_status->receiver_name.'</td>';
+					   		$html .= '<th>'.__('Last Status:', 'sejoli-standalone-cod').'</th>';
+					   		$html .= '<td>'.$trace_tracking_arveoli->cnote->last_status.'</td>';
 					   	$html .= '</tr>';
 					   	$html .= '</table>';
 
-				        $html .= '<h6>'.__('Tracking History:', 'scod-shipping').'</h6>';
+				        $html .= '<h6>'.__('Tracking History:', 'sejoli-standalone-cod').'</h6>';
 				   		$html .= '<table style="text-align: left;">';
 				   		$html .= '<tr>';
-					   		$html .= '<th>'.__('Date', 'scod-shipping').'</th>';
-					   		$html .= '<th>'.__('Status', 'scod-shipping').'</th>';
-					   		$html .= '<th>'.__('Description', 'scod-shipping').'</th>';
+					   		$html .= '<th>'.__('Date', 'sejoli-standalone-cod').'</th>';
+					   		$html .= '<th colspan="2">'.__('Description', 'sejoli-standalone-cod').'</th>';
 					   	$html .= '</tr>';	
-					   	foreach ($trace_tracking_arveoli_jne->jne->result->track_history as $history) {
+					   	foreach ($trace_tracking_arveoli->history as $history) {
 							$html .= '<tr>';
-						   		$html .= '<td>'.date_i18n( 'F d, Y H:i:s', strtotime( $history->date_time ) ).'</td>';
-						   		$html .= '<td>'.$history->status.'</td>';
-						   		$html .= '<td>'.(isset($history->city) ? $history->city : '-').'</td>';
+						   		$html .= '<td>'.date_i18n( 'F d, Y H:i:s', strtotime( $history->date ) ).'</td>';
+						   		$html .= '<td colspan="2">'.$history->desc.'</td>';
 						   	$html .= '</tr>';
 					   	}
 					   	$html .= '</table>';
@@ -1165,7 +1163,7 @@ class Admin {
 		    $trace_tracking_arveoli_jne = API_ARVEOLI::set_params()->get_tracking( 'jne', $shipping_number );
 	        $trace_tracking_arveoli_sicepat = API_ARVEOLI::set_params()->get_tracking( 'sicepat', $shipping_number );
 
-			$tracking_pod_status_jne = ( isset($trace_tracking_arveoli_jne->jne->result->last_status->status) ? $trace_tracking_arveoli_jne->jne->result->last_status->status : false );
+			$tracking_pod_status_jne = ( isset($trace_tracking_arveoli_jne->cnote->pod_status) ? $trace_tracking_arveoli_jne->cnote->pod_status : false );
 		    if( false !== $tracking_pod_status_jne ) :
 			    if( $tracking_pod_status_jne == "DELIVERED" ){
 			    	// Send update status data to API
