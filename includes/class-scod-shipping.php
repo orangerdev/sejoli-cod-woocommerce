@@ -132,7 +132,7 @@ class SCOD_Shipping {
 		/**
 		 * The class responsible for database seed.
 		 */
-		require_once SCOD_SHIPPING_DIR . 'database/indonesia/seed.php';
+		// require_once SCOD_SHIPPING_DIR . 'database/indonesia/seed.php';
 
 		/**
 		 * The class responsible for database models.
