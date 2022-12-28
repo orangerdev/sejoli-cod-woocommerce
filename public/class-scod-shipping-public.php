@@ -836,7 +836,6 @@ class Front {
 			$total_order = WC()->cart->get_cart_contents_total();
 			if( ! empty( $chosen_shipping_methods ) ) :
 				if( $chosen_shipping_methods[0] === 'scod-shipping_jne_yes' ||
-					$chosen_shipping_methods[0] === 'scod-shipping_jne_sps' ||
 					$chosen_shipping_methods[0] === 'scod-shipping_jne_oke' ||
 					$chosen_shipping_methods[0] === 'scod-shipping_jne_jtr' ||
 					$chosen_shipping_methods[0] === 'scod-shipping_jne_jtr250' ||
@@ -876,10 +875,6 @@ class Front {
 
 				if( isset( $rates['scod-shipping_jne_yes'] ) ) :
 					unset( $rates['scod-shipping_jne_yes'] );
-				endif;
-
-				if( isset( $rates['scod-shipping_jne_sps'] ) ) :
-					unset( $rates['scod-shipping_jne_sps'] );
 				endif;
 
 				if( isset( $rates['scod-shipping_jne_oke'] ) ) :
@@ -1048,11 +1043,11 @@ class Front {
 			}
 
 			if( \str_contains( strtolower( $shipping_name ), 'jne' ) ):
-				if($shipping_name == "JNE - REG (1 - 2 hari)") {
+				if($shipping_name == "JNE - REG") {
 					$shipping_service = "REG";
-				} elseif($shipping_name == "JNE - OKE (2 - 3 hari)") {
+				} elseif($shipping_name == "JNE - OKE") {
 					$shipping_service = "OKE";
-				} elseif($shipping_name == "JNE - YES (1 hari)") {
+				} elseif($shipping_name == "JNE - YES") {
 					$shipping_service = "YES";
 				} else {
 					$shipping_service = "JTR";
@@ -1060,17 +1055,17 @@ class Front {
 			endif;
 
 			if( \str_contains( strtolower( $shipping_name ), 'sicepat' ) ):
-				if($shipping_name === "SICEPAT - BEST (1 hari)") {
+				if($shipping_name === "SICEPAT - BEST") {
 					$shipping_service = "BEST";
-				} elseif($shipping_name === "SICEPAT - GOKIL (2 - 3 hari)") {
+				} elseif($shipping_name === "SICEPAT - GOKIL") {
 					$shipping_service = "GOKIL";
-				} elseif($shipping_name === "SICEPAT - KEPO (1 - 2 hari)") {
+				} elseif($shipping_name === "SICEPAT - KEPO") {
 					$shipping_service = "KEPO";
-				} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)") {
+				} elseif($shipping_name === "SICEPAT - REG") {
 					$shipping_service = "REG";
-				} elseif($shipping_name === "SICEPAT - SDS (1 hari)") {
+				} elseif($shipping_name === "SICEPAT - SDS") {
 					$shipping_service = "SDS";
-				} elseif($shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
+				} elseif($shipping_name === "SICEPAT - SIUNT") {
 					$shipping_service = "SIUNT";
 				} else {
 					$shipping_service = "Cargo";
@@ -1104,13 +1099,13 @@ class Front {
 				$packages['destination']['city2'] 	  = $order_shipping_city;
 				$packages['destination']['district']  = $order_shipping_district;
 
-				if($shipping_name === "JNE - YES (1 hari)" || $shipping_name === "JNE - REG (1 - 2 hari)" || $shipping_name === "JNE - OKE (2 - 3 hari)" || $shipping_name === "JNE - JTR>250 (3 - 4 hari)" || $shipping_name === "JNE - JTR<150 (3 - 4 hari)" || $shipping_name === "JNE - JTR250 (3 - 4 hari)" || $shipping_name === "JNE - JTR (3 - 4 hari)") {
-		        	$getOrigin     = $method_instance->get_origin_info();
-					$destination   = $method_instance->get_destination_info( $packages['destination'] );
-					$branch        = $method_instance->get_branch_info();
-				} elseif($shipping_name === "SICEPAT - REG (1 - 2 hari)" || $shipping_name === "SICEPAT - GOKIL (2 - 3 hari)" || $shipping_name === "SICEPAT - BEST (1 hari)" || $shipping_name === "SICEPAT - KEPO (1 - 2 hari)" || $shipping_name === "SICEPAT - SDS (1 hari)"  || $shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
-		        	$getOrigin     = $method_instance->get_sicepat_origin_info();
-					$destination   = $method_instance->get_sicepat_destination_info( $packages['destination'] );
+				if($shipping_name === "JNE - YES" || $shipping_name === "JNE - REG" || $shipping_name === "JNE - OKE" || $shipping_name === "JNE - JTR>250" || $shipping_name === "JNE - JTR<150" || $shipping_name === "JNE - JTR250" || $shipping_name === "JNE - JTR") {
+		        	$getOrigin     = $shipping_class->get_origin_info();
+					$destination   = $shipping_class->get_destination_info( $packages['destination'] );
+					$branch        = $shipping_class->get_branch_info();
+				} elseif($shipping_name === "SICEPAT - REG" || $shipping_name === "SICEPAT - GOKIL" || $shipping_name === "SICEPAT - BEST" || $shipping_name === "SICEPAT - KEPO" || $shipping_name === "SICEPAT - SDS"  || $shipping_name === "SICEPAT - SIUNT") {
+		        	$getOrigin     = $shipping_class->get_sicepat_origin_info();
+					$destination   = $shipping_class->get_sicepat_destination_info( $packages['destination'] );
 					$branch        = $getOrigin;
 				}
 				
@@ -1139,11 +1134,11 @@ class Front {
 			$order_payment_method = $order_data['payment_method'];
 
 	        if($order_payment_method === "cod"){
-	        	if($shipping_name === "JNE - REG (1 - 2 hari)") {
+	        	if($shipping_name === "JNE - REG") {
 					$codamount  = $order->get_total();
 					$codflag    = '1';
 					$expedition = 'jne';
-				} elseif($shipping_name === "SICEPAT - SIUNT (1 - 2 hari)") {
+				} elseif($shipping_name === "SICEPAT - SIUNT") {
 					$codamount = $order->get_total();
 					$codflag   = '1';
 					$expedition = 'sicepat';

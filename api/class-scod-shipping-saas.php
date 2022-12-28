@@ -387,6 +387,8 @@ class SCOD {
 			$set_body 	  = $this->set_body_params( $body_params );
 			$get_response = $this->do_request();
 
+			error_log(print_r($get_response, true));
+
 			if ( ! is_wp_error( $get_response ) ) :
 				$body = json_decode( $get_response['body'] );
 				$response_code = wp_remote_retrieve_response_code( $get_response );

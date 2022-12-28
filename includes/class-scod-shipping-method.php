@@ -153,11 +153,6 @@ function scod_shipping_init() {
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
-        		'arveoli_jne_service_sps' => array(
-        			'label'			=> __( 'SPS', 'scod-shipping' ),
-        			'type' 			=> 'checkbox',
-					'default'		=> 'yes',
-        		),
         		'arveoli_jne_service_reg' => array(
         			'label'			=> __( 'Regular (COD Available)', 'scod-shipping' ),
         			'type' 			=> 'checkbox',
@@ -364,10 +359,6 @@ function scod_shipping_init() {
 
 			if( $this->get_option('arveoli_jne_service_yes') === 'yes' ) {
 				$services[] = 'YES19';
-			}
-
-			if( $this->get_option('arveoli_jne_service_sps') === 'yes' ) {
-				$services[] = 'SPS19';
 			}
 
 			if( $this->get_option('arveoli_jne_service_oke') === 'yes' ) {
