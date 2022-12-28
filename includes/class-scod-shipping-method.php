@@ -363,23 +363,23 @@ function scod_shipping_init() {
 			$services = array();
 
 			if( $this->get_option('arveoli_jne_service_yes') === 'yes' ) {
-				$services[] = 'YES';
+				$services[] = 'YES19';
 			}
 
 			if( $this->get_option('arveoli_jne_service_sps') === 'yes' ) {
-				$services[] = 'SPS';
+				$services[] = 'SPS19';
 			}
 
 			if( $this->get_option('arveoli_jne_service_oke') === 'yes' ) {
-				$services[] = 'OKE';
+				$services[] = 'OKE19';
 			}
 
 			if( $this->get_option('arveoli_jne_service_reg') === 'yes' ) {
-				$services[] = 'REG';
+				$services[] = 'REG19';
 			}
 
 			if( $this->get_option('arveoli_jne_service_jtr') === 'yes' ) {
-				$codes = array( 'JTR', 'JTR250', 'JTR<150', 'JTR>250' );
+				$codes = array( 'JTR18', 'JTR250', 'JTR<150', 'JTR>250' );
 				$services = array_merge( $services, $codes );
 			}
 
@@ -913,7 +913,7 @@ function scod_shipping_init() {
 
 	       		foreach ( $arveoli_jne_tariff->tariff_data->data as $key => $rate ) {
 
-					if( \in_array( $rate->service_name, $this->get_arveoli_jne_services() ) ) {
+					if( \in_array( $rate->service_code, $this->get_arveoli_jne_services() ) ) {
 
 						$chosen_shipping_method = WC()->session->get('chosen_shipping_methods');
 						$chosen_payment_method  = WC()->session->get( 'chosen_payment_method' );
