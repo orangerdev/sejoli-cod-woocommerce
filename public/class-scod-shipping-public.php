@@ -1271,9 +1271,9 @@ class Front {
 					$percentage     = 0.04;
 					$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
 				 	
-				 	// if($option_biaya_markup !== "no") {
-						// WC()->cart->add_fee($label_biaya_markup, $percentage_fee);
-				 	// }
+				 	if($option_biaya_markup === "no") {
+						WC()->cart->add_fee($label_biaya_markup, $percentage_fee);
+				 	}
 				}
 
 			}
@@ -1300,9 +1300,9 @@ class Front {
 					$percentage     = 0.04;
 					$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
 				 	
-				 	// if($option_biaya_markup !== "no") {
-						// WC()->cart->add_fee($label_biaya_markup, $percentage_fee);
-				 	// }
+				 	if($option_biaya_markup === "no") {
+						WC()->cart->add_fee($label_biaya_markup, $percentage_fee);
+				 	}
 				}
 
 			}
