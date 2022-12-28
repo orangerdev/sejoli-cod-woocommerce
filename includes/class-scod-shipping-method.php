@@ -153,6 +153,11 @@ function scod_shipping_init() {
         			'type' 			=> 'checkbox',
 					'default'		=> 'yes',
         		),
+        		'arveoli_jne_service_sps' => array(
+        			'label'			=> __( 'SPS', 'scod-shipping' ),
+        			'type' 			=> 'checkbox',
+					'default'		=> 'yes',
+        		),
         		'arveoli_jne_service_reg' => array(
         			'label'			=> __( 'Regular (COD Available)', 'scod-shipping' ),
         			'type' 			=> 'checkbox',
@@ -358,19 +363,23 @@ function scod_shipping_init() {
 			$services = array();
 
 			if( $this->get_option('arveoli_jne_service_yes') === 'yes' ) {
-				$services[] = 'YES19';
+				$services[] = 'YES';
+			}
+
+			if( $this->get_option('arveoli_jne_service_sps') === 'yes' ) {
+				$services[] = 'SPS';
 			}
 
 			if( $this->get_option('arveoli_jne_service_oke') === 'yes' ) {
-				$services[] = 'OKE19';
+				$services[] = 'OKE';
 			}
 
 			if( $this->get_option('arveoli_jne_service_reg') === 'yes' ) {
-				$services[] = 'REG19';
+				$services[] = 'REG';
 			}
 
 			if( $this->get_option('arveoli_jne_service_jtr') === 'yes' ) {
-				$codes = array( 'JTR18', 'JTR250', 'JTR<150', 'JTR>250' );
+				$codes = array( 'JTR', 'JTR250', 'JTR<150', 'JTR>250' );
 				$services = array_merge( $services, $codes );
 			}
 
@@ -922,18 +931,17 @@ function scod_shipping_init() {
 
 						$percentage     = 0.04;
 						$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
-					 	
 						if($option_biaya_markup === 'yes') {
 
 							if($chosen_payment_method === 'cod') {
 
-						        if (strpos( $chosen_shipping_method[0], 'scod-shipping_jne_reg19' ) !== false) {
-								       
-								        $this->add_rate( array(
-											'id'    => $arveoli_jne_tariff->getRateID( $this->id, $rate ),
-											'label' => $arveoli_jne_tariff->getLabel( $rate ),
-											'cost' 	=> ($rate->price + $percentage_fee) * $cart_weight
-										));
+						        if (strpos( $chosen_shipping_method[0], 'scod-shipping_jne_reg' ) !== false) {
+							 	
+							        $this->add_rate( array(
+										'id'    => $arveoli_jne_tariff->getRateID( $this->id, $rate ),
+										'label' => $arveoli_jne_tariff->getLabel( $rate ),
+										'cost' 	=> ($rate->price * $cart_weight) + $percentage_fee
+									));
 
 								}
 
@@ -1002,11 +1010,11 @@ function scod_shipping_init() {
 
 						        if (strpos( $chosen_shipping_method[0], 'scod-shipping_sicepat_siunt' ) !== false) {
 
-								        $this->add_rate( array(
-											'id'    => $arveoli_sicepat_tariff->getRateID( $this->id, $rate ),
-											'label' => $arveoli_sicepat_tariff->getLabel( $rate ),
-											'cost' 	=> ($rate->price + $percentage_fee) * $cart_weight
-										));
+							        $this->add_rate( array(
+										'id'    => $arveoli_sicepat_tariff->getRateID( $this->id, $rate ),
+										'label' => $arveoli_sicepat_tariff->getLabel( $rate ),
+										'cost' 	=> ($rate->price * $cart_weight) + $percentage_fee
+									));
 
 								}
 

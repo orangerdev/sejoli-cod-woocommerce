@@ -540,133 +540,11 @@ class Front {
 
                 if( isset( $trace_tracking_arveoli_jne->jne ) && $trace_tracking_arveoli_jne->jne->status->code === 200 ):
 
-			        $html .= '<h6>'.__('Number Resi:', 'scod-shipping').'</h6>';
-			    	$html .= '<div class="shipping-number" style="font-size:26px;"><b>'.$shipping_number.'</b></div>';
-
-				   	$html .= '<h6>'.__('Shipping Details:', 'scod-shipping').'</h6>';
-				   	$html .= '<table style="text-align: left;">';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Courier:', 'scod-shipping').'</th>';
-				   		$html .= '<td>SICEPAT - '.$trace_tracking_arveoli_jne->jne->result->service.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Total Price:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.wc_price( $trace_tracking_arveoli_jne->jne->result->totalprice ).'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Weight:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli_jne->jne->result->weight.' kg</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Send Date:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.date_i18n( 'F d, Y H:i:s', strtotime( $trace_tracking_arveoli_jne->jne->result->send_date ) ).'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('From:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli_jne->jne->result->sender.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Shipper Address:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli_jne->jne->result->sender_address.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('To:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli_jne->jne->result->receiver_name.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Receiver Address:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli_jne->jne->result->receiver_address.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Receiver:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli_jne->jne->result->POD_receiver.' - '.date_i18n( 'F d, Y H:i:s', strtotime( $trace_tracking_arveoli_jne->jne->result->POD_receiver_time ) ).'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Last Status:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli_jne->jne->result->last_status->status.' - '.$trace_tracking_arveoli_jne->jne->result->last_status->receiver_name.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '</table>';
-
-			        $html .= '<h6>'.__('Tracking History:', 'scod-shipping').'</h6>';
-			   		$html .= '<table style="text-align: left;">';
-			   		$html .= '<tr>';
-				   		$html .= '<th>'.__('Date', 'scod-shipping').'</th>';
-				   		$html .= '<th>'.__('Status', 'scod-shipping').'</th>';
-				   		$html .= '<th>'.__('Description', 'scod-shipping').'</th>';
-				   	$html .= '</tr>';	
-				   	foreach ($trace_tracking_arveoli_jne->jne->result->track_history as $history) {
-						$html .= '<tr>';
-					   		$html .= '<td>'.date_i18n( 'F d, Y H:i:s', strtotime( $history->date_time ) ).'</td>';
-					   		$html .= '<td>'.$history->status.'</td>';
-					   		$html .= '<td>'.(isset($history->city) ? $history->city : '-').'</td>';
-					   	$html .= '</tr>';
-				   	}
-				   	$html .= '</table>';
+			        require_once( plugin_dir_path( __FILE__ ) . 'partials/scod-jne-tracking.php' );
 
 				elseif( isset( $trace_tracking_arveoli_sicepat->sicepat ) && $trace_tracking_arveoli_sicepat->sicepat->status->code === 200 ):
 
-			        $html = '<h6>'.__('Number Resi:', 'scod-shipping').'</h6>';
-			    	$html .= '<div class="shipping-number" style="font-size:26px;"><b>'.$shipping_number.'</b></div>';
-
-				   	$html .= '<h6>'.__('Shipping Details:', 'scod-shipping').'</h6>';
-				   	$html .= '<table style="text-align: left;">';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Courier:', 'scod-shipping').'</th>';
-				   		$html .= '<td>SICEPAT - '.$trace_tracking_arveoli_sicepat->sicepat->result->service.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Total Price:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.wc_price( $trace_tracking_arveoli_sicepat->sicepat->result->totalprice ).'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Weight:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli_sicepat->sicepat->result->weight.' kg</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Send Date:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.date_i18n( 'F d, Y H:i:s', strtotime( $trace_tracking_arveoli_sicepat->sicepat->result->send_date ) ).'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('From:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli_sicepat->sicepat->result->sender.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Shipper Address:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli_sicepat->sicepat->result->sender_address.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('To:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli_sicepat->sicepat->result->receiver_name.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Receiver Address:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli_sicepat->sicepat->result->receiver_address.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Receiver:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli_sicepat->sicepat->result->POD_receiver.' - '.date_i18n( 'F d, Y H:i:s', strtotime( $trace_tracking_arveoli_sicepat->sicepat->result->POD_receiver_time ) ).'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Last Status:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli_sicepat->sicepat->result->last_status->status.' - '.$trace_tracking_arveoli_sicepat->sicepat->result->last_status->receiver_name.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '</table>';
-
-			        $html .= '<h6>'.__('Tracking History:', 'scod-shipping').'</h6>';
-			   		$html .= '<table style="text-align: left;">';
-			   		$html .= '<tr>';
-				   		$html .= '<th>'.__('Date', 'scod-shipping').'</th>';
-				   		$html .= '<th>'.__('Status', 'scod-shipping').'</th>';
-				   		$html .= '<th>'.__('Description', 'scod-shipping').'</th>';
-				   	$html .= '</tr>';	
-				   	foreach ($trace_tracking_arveoli_sicepat->sicepat->result->track_history as $history) {
-						$html .= '<tr>';
-					   		$html .= '<td>'.date_i18n( 'F d, Y H:i:s', strtotime( $history->date_time ) ).'</td>';
-					   		$html .= '<td>'.$history->status.'</td>';
-					   		$html .= '<td>'.(isset($history->city) ? $history->city : '-').'</td>';
-					   	$html .= '</tr>';
-				   	}
-				   	$html .= '</table>';
+			        require_once( plugin_dir_path( __FILE__ ) . 'partials/scod-sicepat-tracking.php' );
 
 				else:
 
@@ -724,133 +602,11 @@ class Front {
 
                 if( $trace_tracking_arveoli->jne->status->code === 200 ):
 
-			        $html = '<h6>'.__('Number Resi:', 'scod-shipping').'</h6>';
-			    	$html .= '<div class="shipping-number" style="font-size:26px;"><b>'.$params['shipmentNumber'].'</b></div>';
-
-				   	$html .= '<h6>'.__('Shipping Details:', 'scod-shipping').'</h6>';
-				   	$html .= '<table style="text-align: left;">';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Courier:', 'scod-shipping').'</th>';
-				   		$html .= '<td>JNE - '.$trace_tracking_arveoli->jne->result->service.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Total Price:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.wc_price( $trace_tracking_arveoli->jne->result->totalprice ).'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Weight:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli->jne->result->weight.' kg</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Send Date:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.date_i18n( 'F d, Y H:i:s', strtotime( $trace_tracking_arveoli->jne->result->send_date ) ).'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('From:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli->jne->result->sender.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Shipper Address:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli->jne->result->sender_address.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('To:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli->jne->result->receiver_name.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Receiver Address:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli->jne->result->receiver_address.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Receiver:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli->jne->result->POD_receiver.' - '.date_i18n( 'F d, Y H:i:s', strtotime( $trace_tracking_arveoli->jne->result->POD_receiver_time ) ).'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Last Status:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli->jne->result->last_status->status.' - '.$trace_tracking_arveoli->jne->result->last_status->receiver_name.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '</table>';
-
-			        $html .= '<h6>'.__('Tracking History:', 'scod-shipping').'</h6>';
-			   		$html .= '<table style="text-align: left;">';
-			   		$html .= '<tr>';
-				   		$html .= '<th>'.__('Date', 'scod-shipping').'</th>';
-				   		$html .= '<th>'.__('Status', 'scod-shipping').'</th>';
-				   		$html .= '<th>'.__('Description', 'scod-shipping').'</th>';
-				   	$html .= '</tr>';	
-				   	foreach ($trace_tracking_arveoli->jne->result->track_history as $history) {
-						$html .= '<tr>';
-					   		$html .= '<td>'.date_i18n( 'F d, Y H:i:s', strtotime( $history->date_time ) ).'</td>';
-					   		$html .= '<td>'.$history->status.'</td>';
-					   		$html .= '<td>'.(isset($history->city) ? $history->city : '-').'</td>';
-					   	$html .= '</tr>';
-				   	}
-				   	$html .= '</table>';
+			        require_once( plugin_dir_path( __FILE__ ) . 'partials/scod-jne-tracking.php' );
 
 				elseif( $trace_tracking_arveoli->sicepat->status->code === 200 ):
 
-			        $html = '<h6>'.__('Number Resi:', 'scod-shipping').'</h6>';
-			    	$html .= '<div class="shipping-number" style="font-size:26px;"><b>'.$params['shipmentNumber'].'</b></div>';
-
-				   	$html .= '<h6>'.__('Shipping Details:', 'scod-shipping').'</h6>';
-				   	$html .= '<table style="text-align: left;">';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Courier:', 'scod-shipping').'</th>';
-				   		$html .= '<td>SICEPAT - '.$trace_tracking_arveoli->sicepat->result->service.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Total Price:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.wc_price( $trace_tracking_arveoli->sicepat->result->totalprice ).'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Weight:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli->sicepat->result->weight.' kg</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Send Date:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.date_i18n( 'F d, Y H:i:s', strtotime( $trace_tracking_arveoli->sicepat->result->send_date ) ).'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('From:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli->sicepat->result->sender.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Shipper Address:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli->sicepat->result->sender_address.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('To:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli->sicepat->result->receiver_name.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Receiver Address:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli->sicepat->result->receiver_address.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Receiver:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli->sicepat->result->POD_receiver.' - '.date_i18n( 'F d, Y H:i:s', strtotime( $trace_tracking_arveoli->sicepat->result->POD_receiver_time ) ).'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '<tr>';
-				   		$html .= '<th>'.__('Last Status:', 'scod-shipping').'</th>';
-				   		$html .= '<td>'.$trace_tracking_arveoli->sicepat->result->last_status->status.' - '.$trace_tracking_arveoli->sicepat->result->last_status->receiver_name.'</td>';
-				   	$html .= '</tr>';
-				   	$html .= '</table>';
-
-			        $html .= '<h6>'.__('Tracking History:', 'scod-shipping').'</h6>';
-			   		$html .= '<table style="text-align: left;">';
-			   		$html .= '<tr>';
-				   		$html .= '<th>'.__('Date', 'scod-shipping').'</th>';
-				   		$html .= '<th>'.__('Status', 'scod-shipping').'</th>';
-				   		$html .= '<th>'.__('Description', 'scod-shipping').'</th>';
-				   	$html .= '</tr>';	
-				   	foreach ($trace_tracking_arveoli->sicepat->result->track_history as $history) {
-						$html .= '<tr>';
-					   		$html .= '<td>'.date_i18n( 'F d, Y H:i:s', strtotime( $history->date_time ) ).'</td>';
-					   		$html .= '<td>'.$history->status.'</td>';
-					   		$html .= '<td>'.(isset($history->city) ? $history->city : '-').'</td>';
-					   	$html .= '</tr>';
-				   	}
-				   	$html .= '</table>';
+			        require_once( plugin_dir_path( __FILE__ ) . 'partials/scod-sicepat-tracking.php' );
 
 				else:
 
@@ -1079,9 +835,10 @@ class Front {
 			$chosen_shipping_methods = WC()->session->get( 'chosen_shipping_methods' );
 			$total_order = WC()->cart->get_cart_contents_total();
 			if( ! empty( $chosen_shipping_methods ) ) :
-				if( $chosen_shipping_methods[0] === 'scod-shipping_jne_yes19' ||
-					$chosen_shipping_methods[0] === 'scod-shipping_jne_oke19' ||
-					$chosen_shipping_methods[0] === 'scod-shipping_jne_jtr18' ||
+				if( $chosen_shipping_methods[0] === 'scod-shipping_jne_yes' ||
+					$chosen_shipping_methods[0] === 'scod-shipping_jne_sps' ||
+					$chosen_shipping_methods[0] === 'scod-shipping_jne_oke' ||
+					$chosen_shipping_methods[0] === 'scod-shipping_jne_jtr' ||
 					$chosen_shipping_methods[0] === 'scod-shipping_jne_jtr250' ||
 					$chosen_shipping_methods[0] === 'scod-shipping_jne_jtrlt150' ||
 					$chosen_shipping_methods[0] === 'scod-shipping_jne_jtrbt250' ||
@@ -1097,16 +854,6 @@ class Front {
 					endif;
 
 				endif;
-
-				// Requirement COD SiCepat
-				// if( $chosen_shipping_methods[0] === 'scod-shipping_sicepat_gokil' ||
-				// 	$chosen_shipping_methods[0] === 'scod-shipping_sicepat_siunt' ) :
-				// 	if($total_order < 5000.00 || $total_order > 15000000.00):
-				// 		if( isset( $available_gateways['cod'] ) ) :
-				// 			unset( $available_gateways['cod'] );
-				// 		endif;
-				// 	endif;
-				// endif;
 			endif;
 
 			return $available_gateways;
@@ -1127,16 +874,20 @@ class Front {
 			$chosen_payment_method = WC()->session->get( 'chosen_payment_method' );
 			if( $chosen_payment_method === 'cod' ) :
 
-				if( isset( $rates['scod-shipping_jne_yes19'] ) ) :
-					unset( $rates['scod-shipping_jne_yes19'] );
+				if( isset( $rates['scod-shipping_jne_yes'] ) ) :
+					unset( $rates['scod-shipping_jne_yes'] );
 				endif;
 
-				if( isset( $rates['scod-shipping_jne_oke19'] ) ) :
-					unset( $rates['scod-shipping_jne_oke19'] );
+				if( isset( $rates['scod-shipping_jne_sps'] ) ) :
+					unset( $rates['scod-shipping_jne_sps'] );
 				endif;
 
-				if( isset( $rates['scod-shipping_jne_jtr18'] ) ) :
-					unset( $rates['scod-shipping_jne_jtr18'] );
+				if( isset( $rates['scod-shipping_jne_oke'] ) ) :
+					unset( $rates['scod-shipping_jne_oke'] );
+				endif;
+
+				if( isset( $rates['scod-shipping_jne_jtr'] ) ) :
+					unset( $rates['scod-shipping_jne_jtr'] );
 				endif;
 
 				if( isset( $rates['scod-shipping_jne_jtr250'] ) ) :
@@ -1463,7 +1214,7 @@ class Front {
 				'notes'			       => $order->get_customer_note(),
 				'order'			       => $order
 			);
-			error_log(print_r($order_params, true));
+
 			// Send data to API
 			$api_scod 	  = new API_SCOD();
 			$create_order = $api_scod->post_create_order( $order_params );
@@ -1498,7 +1249,7 @@ class Front {
 	 			
 	 	if($chosen_payment_method === 'cod') {
 			
-			if (strpos( $chosen_shipping_method[0], 'scod-shipping_jne_reg19' ) !== false) {
+			if (strpos( $chosen_shipping_method[0], 'scod-shipping_jne_reg' ) !== false) {
 				
 				foreach ( WC()->cart->get_shipping_packages() as $package_id => $package ) {
 				    // Check if a shipping for the current package exist
@@ -1516,15 +1267,13 @@ class Front {
 					$shipping_class      = new Shipping_Method( $shipping_instance_id );
 					$label_biaya_markup  = $shipping_class->get_option( 'arveoli_jne_label_markup_cod' );
 					$option_biaya_markup = $shipping_class->get_option( 'arveoli_jne_biaya_markup' );
-					
+
 					$percentage     = 0.04;
 					$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
 				 	
-				 	if($option_biaya_markup === 'no') {
-						WC()->cart->add_fee($label_biaya_markup, $percentage_fee);
-				 	} else {
-				 		return false;
-				 	}
+				 	// if($option_biaya_markup !== "no") {
+						// WC()->cart->add_fee($label_biaya_markup, $percentage_fee);
+				 	// }
 				}
 
 			}
@@ -1547,19 +1296,19 @@ class Front {
 					$shipping_class      = new Shipping_Method( $shipping_instance_id );
 					$label_biaya_markup  = $shipping_class->get_option( 'sicepat_label_markup_cod' );
 					$option_biaya_markup = $shipping_class->get_option( 'sicepat_biaya_markup' );
-					
+
 					$percentage     = 0.04;
 					$percentage_fee = WC()->cart->get_cart_contents_total() * $percentage;
 				 	
-				 	if($option_biaya_markup === 'no') {
-						WC()->cart->add_fee($label_biaya_markup, $percentage_fee);
-				 	} else {
-				 		return false;
-				 	}
+				 	// if($option_biaya_markup !== "no") {
+						// WC()->cart->add_fee($label_biaya_markup, $percentage_fee);
+				 	// }
 				}
 
 			}
 
+		} else {
+			return;
 		}
 	}
 
@@ -1595,9 +1344,9 @@ class Front {
 
 		    // Mandatory to make it work with shipping methods
 		    foreach ( WC()->cart->get_shipping_packages() as $package_key => $package ) {
-		        
+
 		        WC()->session->set( 'shipping_for_package_' . $package_key, $bool );
-		    
+
 		    }
 
 		    WC()->cart->calculate_shipping();
