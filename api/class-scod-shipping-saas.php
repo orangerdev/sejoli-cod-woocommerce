@@ -387,8 +387,6 @@ class SCOD {
 			$set_body 	  = $this->set_body_params( $body_params );
 			$get_response = $this->do_request();
 
-			error_log(print_r($get_response, true));
-
 			if ( ! is_wp_error( $get_response ) ) :
 				$body = json_decode( $get_response['body'] );
 				$response_code = wp_remote_retrieve_response_code( $get_response );
@@ -482,14 +480,14 @@ class SCOD {
      *
      * @since   1.0.0
      */
-	public function validate_body( $body ) {
-		$error_codes = array( 'jwt_auth_failed', 'jwt_auth_invalid_token' );
-		
-		if( $body->code && in_array( $body->code, $error_codes ) ) {
-			return false;
-		}
+    public function validate_body( $body ) {
 
-		return true;
+        if ( 'jwt_auth_valid_token' === $body->code ) :
+            return true;
+        endif;
+
+        return false;       
+    
     }
 
 	/**

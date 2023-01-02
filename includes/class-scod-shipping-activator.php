@@ -43,7 +43,7 @@ class SCOD_Shipping_Activator {
 		SCOD_Shipping\Database\SiCepat\Destination::create_table();
 		SCOD_Shipping\Database\SiCepat\Tariff::create_table();
 
-		// $seed = new SCOD_Shipping\Database\Seed();
+		$seed = new SCOD_Shipping\Database\Seed();
 
 	}
 
