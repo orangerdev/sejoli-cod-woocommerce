@@ -13,9 +13,9 @@
  * @package           SCOD_Shipping
  *
  * @wordpress-plugin
- * Plugin Name:       Sejoli COD - WooCommerce Shipping
+ * Plugin Name:       Sejoli - WooCommerce Shipping
  * Plugin URI:        https://sejoli.co.id
- * Description:       Plugin Sejoli COD untuk WooCommerce shipping.
+ * Description:       Plugin Sejoli Shipping untuk WooCommerce shipping.
  * Version:           1.0.0
  * Author:            Sejoli Team
  * Author URI:        https://sejoli.co.id

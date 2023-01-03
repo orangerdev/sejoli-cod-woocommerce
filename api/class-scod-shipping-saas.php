@@ -480,14 +480,14 @@ class SCOD {
      *
      * @since   1.0.0
      */
-	public function validate_body( $body ) {
-		$error_codes = array( 'jwt_auth_failed', 'jwt_auth_invalid_token' );
-		
-		if( $body->code && in_array( $body->code, $error_codes ) ) {
-			return false;
-		}
+    public function validate_body( $body ) {
 
-		return true;
+        if ( 'jwt_auth_valid_token' === $body->code ) :
+            return true;
+        endif;
+
+        return false;       
+    
     }
 
 	/**
